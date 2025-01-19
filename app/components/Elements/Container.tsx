@@ -6,7 +6,7 @@ import { Resizer } from "../Resizer";
 type ContainerProps = {
     background: string;
     padding: number;
-    children: React.ReactNode;
+    children?: React.ReactNode;
     width?: number | string;
     height?: number | string;
 };
@@ -44,23 +44,6 @@ export function Container({
             >
                 {children}
             </Resizer>
-            {/* <div
-                {...props}
-                ref={(ref) => {
-                    if (ref) {
-                        connect(ref);
-                    }
-                }}
-                style={{
-                    margin: "5px 0",
-                    background,
-                    padding: `${padding}px`,
-                    width,
-                    height,
-                }}
-            >
-                {children}
-            </div> */}
         </>
     );
 }
@@ -85,18 +68,15 @@ export const ContainerSettings = () => {
                 <Input
                     label="Width"
                     value={width}
-                    onChange={(e) => {
-                        setProp((props) => (props.width = e.target.value), 500);
+                    onValueChange={(e) => {
+                        setProp((props) => (props.width = e), 500);
                     }}
                 />
                 <Input
                     label="Height"
                     value={height}
-                    onChange={(e) => {
-                        setProp(
-                            (props) => (props.height = e.target.value),
-                            500,
-                        );
+                    onValueChange={(e) => {
+                        setProp((props) => (props.height = e), 500);
                     }}
                 />
             </div>
@@ -133,8 +113,12 @@ export const ContainerDefaultProps = {
 };
 
 Container.craft = {
+    displayName: "Container",
     props: ContainerDefaultProps,
     related: {
         settings: ContainerSettings,
+    },
+    rules: {
+        canDrag: () => true,
     },
 };

@@ -34,7 +34,7 @@ export default function App() {
                                 id="1"
                                 is={Text}
                                 text="Hello world"
-                                fontSize={15}
+                                fontSize={1}
                                 textAlign="left"
                             />
                             <Element
@@ -42,7 +42,7 @@ export default function App() {
                                 id="1"
                                 is={Text}
                                 text="Hello world"
-                                fontSize={15}
+                                fontSize={1}
                                 textAlign="left"
                             />
                             <Element
@@ -50,7 +50,7 @@ export default function App() {
                                 id="1"
                                 is={Text}
                                 text="Hello world"
-                                fontSize={15}
+                                fontSize={1}
                                 textAlign="left"
                             />
                         </Element>

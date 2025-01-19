@@ -65,6 +65,10 @@ export default function Header() {
                         href="#"
                         variant="flat"
                         isIconOnly
+                        onPress={() => {
+                            const json = JSON.parse(query.serialize());
+                            console.log(json);
+                        }}
                     >
                         <BsSave />
                     </Button>

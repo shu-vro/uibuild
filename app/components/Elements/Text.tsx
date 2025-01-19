@@ -1,16 +1,42 @@
 import { useNode } from "@craftjs/core";
-import { Select, SelectItem, Slider } from "@nextui-org/react";
+import {
+    Accordion,
+    AccordionItem,
+    Input,
+    Radio,
+    RadioGroup,
+    Select,
+    SelectItem,
+    Slider,
+} from "@nextui-org/react";
 import React, { useState, useEffect } from "react";
 import ContentEditable from "react-contenteditable";
 
+type TextAlign = "left" | "center" | "right";
+
 interface TextProps {
-    text: string;
-    fontSize: number;
-    textAlign: string;
+    text?: string;
+    fontSize?: number;
+    textAlign?: TextAlign;
+    display?: string;
+    flexGrow?: number;
+    flexShrink?: number;
+    flexBasis?: string;
+    width?: string;
     [key: string]: any;
 }
 
-export function Text({ text, fontSize, textAlign, ...props }) {
+export function Text({
+    text,
+    fontSize,
+    textAlign,
+    display,
+    flexGrow,
+    flexBasis,
+    flexShrink,
+    width,
+    ...props
+}: TextProps) {
     const {
         connectors: { connect },
         selected,
@@ -33,7 +59,12 @@ export function Text({ text, fontSize, textAlign, ...props }) {
     return (
         <div
             style={{
-                width: "100%",
+                // width: "100%",
+                fontSize: `${fontSize}rem`,
+                textAlign,
+                display,
+                flex: `${flexGrow} ${flexShrink} ${flexBasis}`,
+                width: `${width}px`,
             }}
             {...props}
             ref={(ref) => {
@@ -44,7 +75,7 @@ export function Text({ text, fontSize, textAlign, ...props }) {
             onClick={() => selected && setEditable(true)}
         >
             <ContentEditable
-                html={text}
+                html={text as string}
                 disabled={!editable}
                 onChange={(e) =>
                     setProp(
@@ -57,7 +88,7 @@ export function Text({ text, fontSize, textAlign, ...props }) {
                     )
                 }
                 tagName="p"
-                style={{ fontSize: `${fontSize}px`, textAlign }}
+                style={{}}
             />
         </div>
     );
@@ -68,54 +99,185 @@ const TextSettings = () => {
         actions: { setProp },
         fontSize,
         textAlign,
+        display,
+        width,
+        flexGrow,
+        flexShrink,
+        flexBasis,
     } = useNode((node) => ({
         text: node.data.props.text,
         fontSize: node.data.props.fontSize,
+        width: node.data.props.width,
         textAlign: node.data.props.textAlign,
+        display: node.data.props.display,
+        flexGrow: node.data.props.flexGrow,
+        flexShrink: node.data.props.flexShrink,
+        flexBasis: node.data.props.flexBasis,
     }));
 
     return (
         <>
-            <Slider
-                value={fontSize || 7}
-                label="Font size"
-                step={7}
-                minValue={1}
-                maxValue={50}
-                onChange={(value) => {
-                    setProp((props: any) => (props.fontSize = value), 1000);
-                }}
-            />
-            <Select
-                className="max-w-xs"
-                label="text align"
-                value={textAlign}
-                onChange={(value) => {
-                    console.log(value.target.value);
-                    setProp(
-                        (props: any) => (props.textAlign = value.target.value),
-                        1000,
-                    );
-                }}
-            >
-                <SelectItem key="left" value="left">
-                    Left
-                </SelectItem>
-                <SelectItem key="center" value="center">
-                    Center
-                </SelectItem>
-                <SelectItem key="right" value="right">
-                    Right
-                </SelectItem>
-            </Select>
+            <Accordion selectionMode="multiple" variant="splitted">
+                <AccordionItem
+                    key="1"
+                    aria-label="Layout"
+                    title="Layout"
+                    classNames={{
+                        content: "flex flex-col gap-4",
+                    }}
+                >
+                    <Slider
+                        value={fontSize || 7}
+                        label="Font size"
+                        size="sm"
+                        step={0.1}
+                        minValue={0.75}
+                        maxValue={6}
+                        getValue={(v) => `${v}rem`}
+                        onChange={(value) => {
+                            setProp(
+                                (props: any) => (props.fontSize = value),
+                                1000,
+                            );
+                        }}
+                    />
+                    <Select
+                        className="max-w-xs"
+                        label="Display"
+                        labelPlacement="outside"
+                        placeholder="Select an option"
+                        value={display}
+                        onChange={(value) => {
+                            setProp(
+                                (props: any) =>
+                                    (props.display = value.target.value),
+                                1000,
+                            );
+                        }}
+                    >
+                        <SelectItem key="inline" value="inline">
+                            inline
+                        </SelectItem>
+                        <SelectItem key="block" value="block">
+                            block
+                        </SelectItem>
+                        <SelectItem key="inline-block" value="inline-block">
+                            inline-block
+                        </SelectItem>
+                        <SelectItem key="flex" value="flex">
+                            flex
+                        </SelectItem>
+                        <SelectItem key="none" value="none">
+                            none
+                        </SelectItem>
+                    </Select>
+                    <RadioGroup
+                        label="Text align"
+                        orientation="horizontal"
+                        value={textAlign}
+                        onChange={(value) => {
+                            setProp(
+                                (props: any) =>
+                                    (props.textAlign = value.target.value),
+                                1000,
+                            );
+                        }}
+                    >
+                        <Radio value="left">left</Radio>
+                        <Radio value="center">center</Radio>
+                        <Radio value="right">right</Radio>
+                    </RadioGroup>
+                    <div className="flex gap-4 flex-col">
+                        Flex:
+                        <Input
+                            type="number"
+                            label="Grow"
+                            value={flexGrow}
+                            onChange={(e) => {
+                                setProp(
+                                    (props: any) =>
+                                        (props.flexGrow = e.target.value),
+                                    1000,
+                                );
+                            }}
+                        />
+                        <Input
+                            type="number"
+                            label="Shrink"
+                            value={flexShrink}
+                            onChange={(e) => {
+                                setProp(
+                                    (props: any) =>
+                                        (props.flexShrink = e.target.value),
+                                    1000,
+                                );
+                            }}
+                        />
+                        <Select
+                            className="max-w-xs"
+                            label="basis"
+                            labelPlacement="outside"
+                            placeholder="Select an option"
+                            value={flexBasis}
+                            onChange={(value) => {
+                                setProp(
+                                    (props: any) =>
+                                        (props.flexBasis = value.target.value),
+                                    1000,
+                                );
+                            }}
+                        >
+                            <SelectItem key="auto" value="auto">
+                                auto
+                            </SelectItem>
+                            <SelectItem key="block" value="inherit">
+                                inherit
+                            </SelectItem>
+                        </Select>
+                    </div>
+                </AccordionItem>
+                <AccordionItem
+                    key="2"
+                    aria-label="Size"
+                    title="Size"
+                    classNames={{
+                        content: "flex flex-col gap-4",
+                    }}
+                >
+                    <Input
+                        type="string"
+                        label="Shrink"
+                        value={width}
+                        onChange={(e) => {
+                            setProp((props: any) => {
+                                let width = e.target.value;
+                                if (width === "0") {
+                                    width = "auto";
+                                }
+                                return (props.width = width);
+                            }, 1000);
+                        }}
+                    />
+                </AccordionItem>
+                <AccordionItem
+                    key="3"
+                    aria-label="Accordion 3"
+                    title="Accordion 3"
+                ></AccordionItem>
+            </Accordion>
         </>
     );
 };
 
 export const TextDefaultProps = {
     text: "Hi",
-    fontSize: 20,
+    fontSize: 1,
     textAlign: "left",
+    width: "auto",
+    display: "block",
+    flexGrow: 0,
+    flexShrink: 1,
+    flexBasis: "auto",
 };
 
 Text.craft = {

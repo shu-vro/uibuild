@@ -173,8 +173,11 @@ export const Resizer = ({ propKey, children, ...props }: any) => {
     };
 
     useEffect(() => {
-        if (!isResizing.current) updateInternalDimensionsWithOriginal();
-    }, [nodeWidth, nodeHeight, updateInternalDimensionsWithOriginal]);
+        setInternalDimensions({
+            width: nodeWidth,
+            height: nodeHeight,
+        });
+    }, [nodeWidth, nodeHeight]);
 
     useEffect(() => {
         const listener = debounce(updateInternalDimensionsWithOriginal, 1);

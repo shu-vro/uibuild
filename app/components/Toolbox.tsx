@@ -37,14 +37,7 @@ export default function Toolbox() {
                     Icon={RiText}
                     ref={(ref) => {
                         if (ref) {
-                            connectors.create(
-                                ref,
-                                <Text
-                                    fontSize={15}
-                                    textAlign="start"
-                                    text="Hello brother"
-                                />,
-                            );
+                            connectors.create(ref, <Text />);
                         }
                     }}
                 >
@@ -61,9 +54,7 @@ export default function Toolbox() {
                                     is={Container}
                                     padding={20}
                                     background={"#aaaaaa"}
-                                    data-cy="root-container"
-                                    children
-                                ></Element>,
+                                />,
                             );
                         }
                     }}
