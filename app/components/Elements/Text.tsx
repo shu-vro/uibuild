@@ -35,6 +35,7 @@ export function Text({
     flexBasis,
     flexShrink,
     width,
+    maxWidth,
     ...props
 }: TextProps) {
     const {
@@ -64,7 +65,8 @@ export function Text({
                 textAlign,
                 display,
                 flex: `${flexGrow} ${flexShrink} ${flexBasis}`,
-                width: `${width}px`,
+                width,
+                maxWidth,
             }}
             {...props}
             ref={(ref) => {
@@ -101,6 +103,7 @@ const TextSettings = () => {
         textAlign,
         display,
         width,
+        maxWidth,
         flexGrow,
         flexShrink,
         flexBasis,
@@ -108,6 +111,7 @@ const TextSettings = () => {
         text: node.data.props.text,
         fontSize: node.data.props.fontSize,
         width: node.data.props.width,
+        maxWidth: node.data.props.maxWidth,
         textAlign: node.data.props.textAlign,
         display: node.data.props.display,
         flexGrow: node.data.props.flexGrow,
@@ -246,23 +250,31 @@ const TextSettings = () => {
                 >
                     <Input
                         type="string"
-                        label="Shrink"
+                        label="Width"
                         value={width}
-                        onChange={(e) => {
+                        labelPlacement="outside"
+                        onValueChange={(e) => {
                             setProp((props: any) => {
-                                let width = e.target.value;
-                                if (width === "0") {
-                                    width = "auto";
-                                }
-                                return (props.width = width);
+                                return (props.width = e);
+                            }, 1000);
+                        }}
+                    />
+                    <Input
+                        type="string"
+                        label="Max Width"
+                        value={maxWidth}
+                        labelPlacement="outside"
+                        onValueChange={(e) => {
+                            setProp((props: any) => {
+                                return (props.maxWidth = e);
                             }, 1000);
                         }}
                     />
                 </AccordionItem>
                 <AccordionItem
                     key="3"
-                    aria-label="Accordion 3"
-                    title="Accordion 3"
+                    aria-label="Space"
+                    title="Space"
                 ></AccordionItem>
             </Accordion>
         </>
@@ -274,6 +286,7 @@ export const TextDefaultProps = {
     fontSize: 1,
     textAlign: "left",
     width: "auto",
+    maxWidth: "auto",
     display: "block",
     flexGrow: 0,
     flexShrink: 1,
