@@ -7,7 +7,7 @@ import {
     NavbarItem,
     Link,
     Button,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import ThemeButton from "./ThemeButton";
 import { LiaUndoSolid, LiaRedoSolid } from "react-icons/lia";
 import { BsSave } from "react-icons/bs";

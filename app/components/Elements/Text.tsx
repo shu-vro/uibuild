@@ -8,7 +8,7 @@ import {
     Select,
     SelectItem,
     Slider,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import React, { useState, useEffect } from "react";
 import ContentEditable from "react-contenteditable";
 
@@ -58,7 +58,7 @@ export function Text({
     }, [selected]);
 
     return (
-        <div
+        (<div
             style={{
                 // width: "100%",
                 fontSize: `${fontSize}rem`,
@@ -92,7 +92,7 @@ export function Text({
                 tagName="p"
                 style={{}}
             />
-        </div>
+        </div>)
     );
 }
 

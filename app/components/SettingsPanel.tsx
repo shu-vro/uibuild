@@ -1,5 +1,5 @@
 import { useEditor } from "@craftjs/core";
-import { Button, Chip } from "@nextui-org/react";
+import { Button, Chip } from "@heroui/react";
 import React from "react";
 
 export default function SettingsPanel() {

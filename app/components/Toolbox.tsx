@@ -1,5 +1,5 @@
 import { useEditor, Element } from "@craftjs/core";
-import { Button, Listbox, ListboxItem } from "@nextui-org/react";
+import { Button, Listbox, ListboxItem } from "@heroui/react";
 import { RiText } from "react-icons/ri";
 import { PiAppWindowBold } from "react-icons/pi";
 import { Text } from "./Elements/Text";
