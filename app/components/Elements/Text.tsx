@@ -19,6 +19,8 @@ import SizeInput from "../SizeInput";
 
 type TextAlign = "left" | "center" | "right";
 
+type Position = "relative" | "absolute" | "fixed" | "sticky" | "static";
+
 interface TextProps {
     text?: string;
     fontSize?: string;
@@ -40,6 +42,11 @@ interface TextProps {
     marginRight?: string;
     marginTop?: string;
     marginBottom?: string;
+    position?: Position;
+    left?: string;
+    right?: string;
+    top?: string;
+    bottom?: string;
     [key: string]: any;
 }
 
@@ -65,6 +72,11 @@ export function Text({
     marginRight,
     marginTop,
     marginBottom,
+    position,
+    left,
+    right,
+    top,
+    bottom,
     ...props
 }: TextProps) {
     const {
@@ -96,6 +108,11 @@ export function Text({
                 flex: `${flexGrow} ${flexShrink} ${flexBasis}`,
                 width,
                 maxWidth,
+                position,
+                top,
+                left,
+                right,
+                bottom,
                 padding:
                     paddingOption === "all"
                         ? paddingAll
@@ -156,6 +173,11 @@ const TextSettings = () => {
         marginRight,
         marginTop,
         marginBottom,
+        position,
+        top,
+        left,
+        right,
+        bottom,
     } = useNode((node) => ({
         text: node.data.props.text,
         fontSize: node.data.props.fontSize,
@@ -180,18 +202,30 @@ const TextSettings = () => {
         marginRight: node.data.props.marginRight,
         marginTop: node.data.props.marginTop,
         marginBottom: node.data.props.marginBottom,
+
+        position: node.data.props.position,
+        top: node.data.props.top,
+        left: node.data.props.left,
+        right: node.data.props.right,
+        bottom: node.data.props.bottom,
     }));
 
     return (
         <>
-            <Accordion selectionMode="multiple" variant="splitted">
+            <Accordion
+                selectionMode="multiple"
+                variant="splitted"
+                itemClasses={{
+                    content: "flex flex-col gap-4 pl-2",
+                }}
+            >
                 <AccordionItem
                     key="1"
                     aria-label="Layout"
                     title="Layout"
-                    classNames={{
-                        content: "flex flex-col gap-4",
-                    }}
+                    // classNames={{
+                    //     content: "",
+                    // }}
                 >
                     {/* <Slider
                         value={fontSize || 7}
@@ -218,7 +252,7 @@ const TextSettings = () => {
                         label="Display"
                         labelPlacement="outside"
                         placeholder="Select an option"
-                        value={display}
+                        selectedKeys={[display]}
                         onChange={(value) => {
                             setProp(
                                 (props: any) =>
@@ -243,6 +277,7 @@ const TextSettings = () => {
                             none
                         </SelectItem>
                     </Select>
+
                     <RadioGroup
                         label="Text align"
                         orientation="horizontal"
@@ -308,14 +343,7 @@ const TextSettings = () => {
                         </Select>
                     </div>
                 </AccordionItem>
-                <AccordionItem
-                    key="2"
-                    aria-label="Size"
-                    title="Size"
-                    classNames={{
-                        content: "flex flex-col gap-4",
-                    }}
-                >
+                <AccordionItem key="2" aria-label="Size" title="Size">
                     <SizeInput propName="width" value={width} label="Width" />
                     <SizeInput
                         propName="maxWidth"
@@ -421,6 +449,61 @@ const TextSettings = () => {
                         </Tab>
                     </Tabs>
                 </AccordionItem>
+                <AccordionItem key="4" aria-label="Position" title="Position">
+                    <Select
+                        className="max-w-xs"
+                        label="Display"
+                        labelPlacement="outside"
+                        placeholder="Select an option"
+                        selectedKeys={[position]}
+                        onChange={(value) => {
+                            setProp(
+                                (props: any) =>
+                                    (props.position = value.target.value),
+                                1000,
+                            );
+                        }}
+                    >
+                        <SelectItem key="relative" value="relative">
+                            relative
+                        </SelectItem>
+                        <SelectItem key="absolute" value="absolute">
+                            absolute
+                        </SelectItem>
+                        <SelectItem key="fixed" value="fixed">
+                            fixed
+                        </SelectItem>
+                        <SelectItem key="sticky" value="sticky">
+                            sticky
+                        </SelectItem>
+                        <SelectItem key="static" value="static">
+                            static
+                        </SelectItem>
+                    </Select>
+                    {position === "relative" ||
+                    position === "absolute" ||
+                    position === "fixed" ||
+                    position === "sticky" ? (
+                        <>
+                            <SizeInput propName="top" value={top} label="Top" />
+                            <SizeInput
+                                propName="left"
+                                value={left}
+                                label="Left"
+                            />
+                            <SizeInput
+                                propName="right"
+                                value={right}
+                                label="Right"
+                            />
+                            <SizeInput
+                                propName="bottom"
+                                value={bottom}
+                                label="Bottom"
+                            />
+                        </>
+                    ) : null}
+                </AccordionItem>
             </Accordion>
         </>
     );
@@ -433,6 +516,7 @@ export const TextDefaultProps = {
     width: "auto",
     maxWidth: "auto",
     display: "block",
+    position: "relative",
     flexGrow: 0,
     flexShrink: 1,
     flexBasis: "auto",
