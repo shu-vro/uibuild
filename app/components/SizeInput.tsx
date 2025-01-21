@@ -71,8 +71,12 @@ export default function SizeInput({
                     setUnit(e.target.value);
                 }}
             >
-                <SelectItem key="initial">initial</SelectItem>
-                <SelectItem key="auto">auto</SelectItem>
+                <>
+                    {customValues.map((option) => (
+                        <SelectItem key={option}>{option}</SelectItem>
+                    ))}
+                </>
+
                 <SelectItem key="px">px</SelectItem>
                 <SelectItem key="rem">rem</SelectItem>
                 <SelectItem key="em">em</SelectItem>

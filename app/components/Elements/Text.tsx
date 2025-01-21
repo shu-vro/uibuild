@@ -16,15 +16,20 @@ import {
 import React, { useState, useEffect } from "react";
 import ContentEditable from "react-contenteditable";
 import SizeInput from "../SizeInput";
+import SelectableInput from "../SelectableInput";
 
 type TextAlign = "left" | "center" | "right";
 
 type Position = "relative" | "absolute" | "fixed" | "sticky" | "static";
 
+type TextTransform = "none" | "capitalize" | "uppercase" | "lowercase";
+
+type Direction = "ltr" | "rtl";
+
+type WordBreak = "normal" | "break-all" | "keep-all" | "break-word";
+
 interface TextProps {
     text?: string;
-    fontSize?: string;
-    textAlign?: TextAlign;
     display?: string;
     flexGrow?: number;
     flexShrink?: number;
@@ -47,13 +52,24 @@ interface TextProps {
     right?: string;
     top?: string;
     bottom?: string;
+
+    fontName?: string;
+    fontColor?: string;
+    fontSize?: string;
+    textAlign?: TextAlign;
+    fontWeight?: string;
+    fontLineHeight?: string;
+    fontSpacing?: string;
+    fontVerticalAlign?: string;
+    textBreaking?: WordBreak;
+    textDirection?: Direction;
+    textDecoration?: string;
+    textStyle?: string;
     [key: string]: any;
 }
 
 export function Text({
     text,
-    fontSize,
-    textAlign,
     display,
     flexGrow,
     flexBasis,
@@ -77,6 +93,21 @@ export function Text({
     right,
     top,
     bottom,
+
+    fontName,
+    fontLineHeight,
+    fontSize,
+    fontWeight,
+    textStyle,
+
+    fontColor,
+    textAlign,
+    fontSpacing,
+    fontVerticalAlign,
+    textTransform,
+    textDirection,
+    textBreaking,
+    textDecoration,
     ...props
 }: TextProps) {
     const {
@@ -101,9 +132,6 @@ export function Text({
     return (
         <div
             style={{
-                // width: "100%",
-                fontSize: `${fontSize}`,
-                textAlign,
                 display,
                 flex: `${flexGrow} ${flexShrink} ${flexBasis}`,
                 width,
@@ -113,6 +141,15 @@ export function Text({
                 left,
                 right,
                 bottom,
+                font: `${textStyle} normal ${fontWeight} ${fontSize}/${fontLineHeight} ${fontName}`,
+                color: fontColor,
+                textAlign,
+                verticalAlign: fontVerticalAlign,
+                textTransform,
+                direction: textDirection,
+                wordBreak: textBreaking,
+                textDecoration,
+                letterSpacing: fontSpacing,
                 padding:
                     paddingOption === "all"
                         ? paddingAll
@@ -178,12 +215,14 @@ const TextSettings = () => {
         left,
         right,
         bottom,
+        fontColor,
+        fontLineHeight,
+        fontSpacing,
+        fontVerticalAlign,
     } = useNode((node) => ({
         text: node.data.props.text,
-        fontSize: node.data.props.fontSize,
         width: node.data.props.width,
         maxWidth: node.data.props.maxWidth,
-        textAlign: node.data.props.textAlign,
         display: node.data.props.display,
         flexGrow: node.data.props.flexGrow,
         flexShrink: node.data.props.flexShrink,
@@ -208,6 +247,20 @@ const TextSettings = () => {
         left: node.data.props.left,
         right: node.data.props.right,
         bottom: node.data.props.bottom,
+
+        fontName: node.data.props.fontName,
+        fontColor: node.data.props.fontColor,
+        fontSize: node.data.props.fontSize,
+        fontWeight: node.data.props.fontWeight,
+        fontLineHeight: node.data.props.fontLineHeight,
+        fontSpacing: node.data.props.fontSpacing,
+        textAlign: node.data.props.textAlign,
+        fontVerticalAlign: node.data.props.fontVerticalAlign,
+        textTransform: node.data.props.textTransform,
+        textDirection: node.data.props.textDirection,
+        textBreaking: node.data.props.textBreaking,
+        textDecoration: node.data.props.textDecoration,
+        textStyle: node.data.props.textStyle,
     }));
 
     return (
@@ -219,81 +272,19 @@ const TextSettings = () => {
                     content: "flex flex-col gap-4 pl-2",
                 }}
             >
-                <AccordionItem
-                    key="1"
-                    aria-label="Layout"
-                    title="Layout"
-                    // classNames={{
-                    //     content: "",
-                    // }}
-                >
-                    {/* <Slider
-                        value={fontSize || 7}
-                        label="Font size"
-                        size="sm"
-                        step={0.1}
-                        minValue={0.75}
-                        maxValue={6}
-                        getValue={(v) => `${v}rem`}
-                        onChange={(value) => {
-                            setProp(
-                                (props: any) => (props.fontSize = value),
-                                1000,
-                            );
-                        }}
-                    /> */}
-                    <SizeInput
-                        propName="fontSize"
-                        value={fontSize}
-                        label="Font size"
-                    />
-                    <Select
-                        className="max-w-xs"
+                <AccordionItem key="1" aria-label="Layout" title="Layout">
+                    <SelectableInput
                         label="Display"
-                        labelPlacement="outside"
-                        placeholder="Select an option"
-                        selectedKeys={[display]}
-                        onChange={(value) => {
-                            setProp(
-                                (props: any) =>
-                                    (props.display = value.target.value),
-                                1000,
-                            );
-                        }}
-                    >
-                        <SelectItem key="inline" value="inline">
-                            inline
-                        </SelectItem>
-                        <SelectItem key="block" value="block">
-                            block
-                        </SelectItem>
-                        <SelectItem key="inline-block" value="inline-block">
-                            inline-block
-                        </SelectItem>
-                        <SelectItem key="flex" value="flex">
-                            flex
-                        </SelectItem>
-                        <SelectItem key="none" value="none">
-                            none
-                        </SelectItem>
-                    </Select>
+                        propName="display"
+                        options={[
+                            "inline",
+                            "block",
+                            "inline-block",
+                            "flex",
+                            "none",
+                        ]}
+                    />
 
-                    <RadioGroup
-                        label="Text align"
-                        orientation="horizontal"
-                        value={textAlign}
-                        onChange={(value) => {
-                            setProp(
-                                (props: any) =>
-                                    (props.textAlign = value.target.value),
-                                1000,
-                            );
-                        }}
-                    >
-                        <Radio value="left">left</Radio>
-                        <Radio value="center">center</Radio>
-                        <Radio value="right">right</Radio>
-                    </RadioGroup>
                     <div className="flex gap-4 flex-col">
                         Flex:
                         <Input
@@ -320,27 +311,11 @@ const TextSettings = () => {
                                 );
                             }}
                         />
-                        <Select
-                            className="max-w-xs"
-                            label="basis"
-                            labelPlacement="outside"
-                            placeholder="Select an option"
-                            value={flexBasis}
-                            onChange={(value) => {
-                                setProp(
-                                    (props: any) =>
-                                        (props.flexBasis = value.target.value),
-                                    1000,
-                                );
-                            }}
-                        >
-                            <SelectItem key="auto" value="auto">
-                                auto
-                            </SelectItem>
-                            <SelectItem key="block" value="inherit">
-                                inherit
-                            </SelectItem>
-                        </Select>
+                        <SelectableInput
+                            label="Flex basis"
+                            propName="flexBasis"
+                            options={["auto", "inherit"]}
+                        />
                     </div>
                 </AccordionItem>
                 <AccordionItem key="2" aria-label="Size" title="Size">
@@ -452,7 +427,7 @@ const TextSettings = () => {
                 <AccordionItem key="4" aria-label="Position" title="Position">
                     <Select
                         className="max-w-xs"
-                        label="Display"
+                        label="Position"
                         labelPlacement="outside"
                         placeholder="Select an option"
                         selectedKeys={[position]}
@@ -504,6 +479,152 @@ const TextSettings = () => {
                         </>
                     ) : null}
                 </AccordionItem>
+                <AccordionItem
+                    key="5"
+                    aria-label="Typography"
+                    title="Typography"
+                >
+                    <SelectableInput
+                        label="Font Name"
+                        propName="fontName"
+                        options={[
+                            "MontSerrat",
+                            "Arial",
+                            "Times New Roman",
+                            "Courier New",
+                        ]}
+                    />
+                    {/* <SelectableInput
+                        label="Font Color"
+                        propName="fontColor"
+                        options={["black", "white", "red", "green", "blue"]}
+                    /> */}
+                    <label htmlFor="color-select">
+                        <div>Color</div>
+                        <input
+                            className="w-full h-10"
+                            type="color"
+                            id="color-select"
+                            value={fontColor}
+                            onChange={(e) => {
+                                setProp((props: any) => {
+                                    return (props.fontColor = e.target.value);
+                                }, 1000);
+                            }}
+                        />
+                    </label>
+                    <SizeInput
+                        propName="fontSize"
+                        value={fontSize}
+                        label="Font size"
+                    />
+                    <RadioGroup
+                        label="Text align"
+                        orientation="horizontal"
+                        value={textAlign}
+                        onChange={(value) => {
+                            setProp(
+                                (props: any) =>
+                                    (props.textAlign = value.target.value),
+                                1000,
+                            );
+                        }}
+                    >
+                        <Radio value="left">left</Radio>
+                        <Radio value="center">center</Radio>
+                        <Radio value="right">right</Radio>
+                    </RadioGroup>
+                    <RadioGroup
+                        label="Text Vertical align"
+                        orientation="horizontal"
+                        value={fontVerticalAlign}
+                        onChange={(value) => {
+                            setProp(
+                                (props: any) =>
+                                    (props.textAlign = value.target.value),
+                                1000,
+                            );
+                        }}
+                    >
+                        <Radio value="baseline">baseline</Radio>
+                        <Radio value="top">top</Radio>
+                        <Radio value="middle">middle</Radio>
+                        <Radio value="bottom">bottom</Radio>
+                    </RadioGroup>
+
+                    <SelectableInput
+                        propName="fontWeight"
+                        label="Font Weight"
+                        options={[
+                            "normal",
+                            "bold",
+                            "bolder",
+                            "lighter",
+                            "initial",
+                            "inherit",
+                            "100",
+                            "200",
+                            "300",
+                            "400",
+                            "500",
+                            "600",
+                            "700",
+                            "800",
+                            "900",
+                        ]}
+                    />
+                    <SizeInput
+                        propName="fontLineHeight"
+                        value={fontLineHeight}
+                        label="Line Height"
+                        customValues={["normal"]}
+                    />
+                    <SizeInput
+                        value={fontSpacing}
+                        propName="fontSpacing"
+                        label="Text Spacing"
+                    />
+                    <SelectableInput
+                        propName="textTransform"
+                        label="Text Transform"
+                        options={[
+                            "none",
+                            "capitalize",
+                            "uppercase",
+                            "lowercase",
+                        ]}
+                    />
+                    <SelectableInput
+                        propName="textDirection"
+                        label="Text Direction"
+                        options={["ltr", "rtl"]}
+                    />
+                    <SelectableInput
+                        propName="textBreaking"
+                        label="Text Breaking"
+                        options={[
+                            "normal",
+                            "break-all",
+                            "keep-all",
+                            "break-word",
+                        ]}
+                    />
+                    <SelectableInput
+                        propName="textDecoration"
+                        label="Text Decoration"
+                        options={[
+                            "none",
+                            "underline",
+                            "overline",
+                            "line-through",
+                        ]}
+                    />
+                    <SelectableInput
+                        propName="textStyle"
+                        label="Text Style"
+                        options={["normal", "italic", "oblique"]}
+                    />
+                </AccordionItem>
             </Accordion>
         </>
     );
@@ -511,8 +632,6 @@ const TextSettings = () => {
 
 export const TextDefaultProps = {
     text: "Hi",
-    fontSize: "1rem",
-    textAlign: "left",
     width: "auto",
     maxWidth: "auto",
     display: "block",
@@ -532,6 +651,19 @@ export const TextDefaultProps = {
     marginRight: "0rem",
     marginTop: "0rem",
     marginBottom: "0rem",
+    fontName: "MontSerrat",
+    fontColor: "white",
+    fontSize: "1rem",
+    textAlign: "left",
+    fontWeight: "400",
+    fontLineHeight: "normal",
+    fontSpacing: "normal",
+    fontVerticalAlign: "baseline",
+    textTransform: "none",
+    textDirection: "ltr",
+    textBreaking: "normal", // white space
+    textDecoration: "none",
+    textStyle: "normal",
 };
 
 Text.craft = {
