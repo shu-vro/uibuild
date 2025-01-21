@@ -34,24 +34,18 @@ export default function App() {
                                 id="1"
                                 is={Text}
                                 text="Hello world"
-                                fontSize={1}
-                                textAlign="left"
                             />
                             <Element
                                 canvas
                                 id="1"
                                 is={Text}
                                 text="Hello world"
-                                fontSize={1}
-                                textAlign="left"
                             />
                             <Element
                                 canvas
                                 id="1"
                                 is={Text}
                                 text="Hello world"
-                                fontSize={1}
-                                textAlign="left"
                             />
                         </Element>
                     </Frame>
