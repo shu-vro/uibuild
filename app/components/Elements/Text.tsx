@@ -7,9 +7,6 @@ import {
     Input,
     Radio,
     RadioGroup,
-    Select,
-    SelectItem,
-    Slider,
     Tab,
     Tabs,
 } from "@heroui/react";
@@ -17,12 +14,12 @@ import React, { useState, useEffect } from "react";
 import ContentEditable from "react-contenteditable";
 import SizeInput from "../SizeInput";
 import SelectableInput from "../SelectableInput";
+import { debounce } from "lodash";
+import ColorInput from "../ColorInput";
 
 type TextAlign = "left" | "center" | "right";
 
 type Position = "relative" | "absolute" | "fixed" | "sticky" | "static";
-
-type TextTransform = "none" | "capitalize" | "uppercase" | "lowercase";
 
 type Direction = "ltr" | "rtl";
 
@@ -65,6 +62,35 @@ interface TextProps {
     textDirection?: Direction;
     textDecoration?: string;
     textStyle?: string;
+
+    borderRadiusOption?: string;
+    borderRadiusAll?: string;
+    borderRadiusTopLeft?: string;
+    borderRadiusTopRight?: string;
+    borderRadiusBottomRight?: string;
+    borderRadiusBottomLeft?: string;
+
+    borderWidthOption?: string;
+    borderWidthAll?: string;
+    borderWidthLeft?: string;
+    borderWidthRight?: string;
+    borderWidthTop?: string;
+    borderWidthBottom?: string;
+
+    borderStyleOption?: string;
+    borderStyleAll?: string;
+    borderStyleLeft?: string;
+    borderStyleRight?: string;
+    borderStyleTop?: string;
+    borderStyleBottom?: string;
+
+    borderColorOption?: string;
+    borderColorAll?: string;
+    borderColorLeft?: string;
+    borderColorRight?: string;
+    borderColorTop?: string;
+    borderColorBottom?: string;
+
     [key: string]: any;
 }
 
@@ -108,6 +134,34 @@ export function Text({
     textDirection,
     textBreaking,
     textDecoration,
+
+    borderRadiusOption,
+    borderRadiusAll,
+    borderRadiusTopLeft,
+    borderRadiusTopRight,
+    borderRadiusBottomRight,
+    borderRadiusBottomLeft,
+
+    borderWidthOption,
+    borderWidthAll,
+    borderWidthLeft,
+    borderWidthRight,
+    borderWidthTop,
+    borderWidthBottom,
+
+    borderStyleOption,
+    borderStyleAll,
+    borderStyleLeft,
+    borderStyleRight,
+    borderStyleTop,
+    borderStyleBottom,
+
+    borderColorOption,
+    borderColorAll,
+    borderColorLeft,
+    borderColorRight,
+    borderColorTop,
+    borderColorBottom,
     ...props
 }: TextProps) {
     const {
@@ -150,6 +204,22 @@ export function Text({
                 wordBreak: textBreaking,
                 textDecoration,
                 letterSpacing: fontSpacing,
+                borderRadius:
+                    borderRadiusOption === "all"
+                        ? borderRadiusAll
+                        : `${borderRadiusTopLeft} ${borderRadiusTopRight} ${borderRadiusBottomRight} ${borderRadiusBottomLeft}`,
+                borderWidth:
+                    borderWidthOption === "all"
+                        ? borderWidthAll
+                        : `${borderWidthTop} ${borderWidthRight} ${borderWidthBottom} ${borderWidthLeft}`,
+                borderStyle:
+                    borderStyleOption === "all"
+                        ? borderStyleAll
+                        : `${borderStyleTop} ${borderStyleRight} ${borderStyleBottom} ${borderStyleLeft}`,
+                borderColor:
+                    borderColorOption === "all"
+                        ? borderColorAll
+                        : `${borderColorTop} ${borderColorRight} ${borderColorBottom} ${borderColorLeft}`,
                 padding:
                     paddingOption === "all"
                         ? paddingAll
@@ -192,24 +262,10 @@ const TextSettings = () => {
         actions: { setProp },
         fontSize,
         textAlign,
-        display,
-        width,
-        maxWidth,
         flexGrow,
         flexShrink,
-        flexBasis,
         paddingOption,
-        paddingAll,
-        paddingLeft,
-        paddingRight,
-        paddingTop,
-        paddingBottom,
         marginOption,
-        marginAll,
-        marginLeft,
-        marginRight,
-        marginTop,
-        marginBottom,
         position,
         top,
         left,
@@ -219,6 +275,10 @@ const TextSettings = () => {
         fontLineHeight,
         fontSpacing,
         fontVerticalAlign,
+        borderWidthOption,
+        borderStyleOption,
+        borderRadiusOption,
+        borderColorOption,
     } = useNode((node) => ({
         text: node.data.props.text,
         width: node.data.props.width,
@@ -261,6 +321,34 @@ const TextSettings = () => {
         textBreaking: node.data.props.textBreaking,
         textDecoration: node.data.props.textDecoration,
         textStyle: node.data.props.textStyle,
+
+        borderRadiusOption: node.data.props.borderRadiusOption,
+        borderRadiusAll: node.data.props.borderRadiusAll,
+        borderRadiusTopLeft: node.data.props.borderRadiusTopLeft,
+        borderRadiusTopRight: node.data.props.borderRadiusTopRight,
+        borderRadiusBottomRight: node.data.props.borderRadiusBottomRight,
+        borderRadiusBottomLeft: node.data.props.borderRadiusBottomLeft,
+
+        borderWidthOption: node.data.props.borderWidthOption,
+        borderWidthAll: node.data.props.borderWidthAll,
+        borderWidthLeft: node.data.props.borderWidthLeft,
+        borderWidthRight: node.data.props.borderWidthRight,
+        borderWidthTop: node.data.props.borderWidthTop,
+        borderWidthBottom: node.data.props.borderWidthBottom,
+
+        borderStyleOption: node.data.props.borderStyleOption,
+        borderStyleAll: node.data.props.borderStyleAll,
+        borderStyleLeft: node.data.props.borderStyleLeft,
+        borderStyleRight: node.data.props.borderStyleRight,
+        borderStyleTop: node.data.props.borderStyleTop,
+        borderStyleBottom: node.data.props.borderStyleBottom,
+
+        borderColorOption: node.data.props.borderColorOption,
+        borderColorAll: node.data.props.borderColorAll,
+        borderColorLeft: node.data.props.borderColorLeft,
+        borderColorRight: node.data.props.borderColorRight,
+        borderColorTop: node.data.props.borderColorTop,
+        borderColorBottom: node.data.props.borderColorBottom,
     }));
 
     return (
@@ -319,12 +407,8 @@ const TextSettings = () => {
                     </div>
                 </AccordionItem>
                 <AccordionItem key="2" aria-label="Size" title="Size">
-                    <SizeInput propName="width" value={width} label="Width" />
-                    <SizeInput
-                        propName="maxWidth"
-                        value={maxWidth}
-                        label="Max Width"
-                    />
+                    <SizeInput propName="width" label="Width" />
+                    <SizeInput propName="maxWidth" label="Max Width" />
                 </AccordionItem>
                 <AccordionItem key="3" aria-label="Space" title="Space">
                     <p>Padding</p>
@@ -342,7 +426,6 @@ const TextSettings = () => {
                                 <CardBody>
                                     <SizeInput
                                         propName="paddingAll"
-                                        value={paddingAll}
                                         label="Padding All"
                                     />
                                 </CardBody>
@@ -352,24 +435,20 @@ const TextSettings = () => {
                             <Card>
                                 <CardBody className="flex flex-col gap-8">
                                     <SizeInput
-                                        value={paddingLeft}
-                                        propName="paddingLeft"
-                                        label="Padding Left"
-                                    />
-                                    <SizeInput
-                                        value={paddingRight}
-                                        propName="paddingRight"
-                                        label="Padding Right"
-                                    />
-                                    <SizeInput
-                                        value={paddingTop}
                                         propName="paddingTop"
                                         label="Padding Top"
                                     />
                                     <SizeInput
-                                        value={paddingBottom}
+                                        propName="paddingLeft"
+                                        label="Padding Left"
+                                    />
+                                    <SizeInput
                                         propName="paddingBottom"
                                         label="Padding Bottom"
+                                    />
+                                    <SizeInput
+                                        propName="paddingRight"
+                                        label="Padding Right"
                                     />
                                 </CardBody>
                             </Card>
@@ -390,7 +469,6 @@ const TextSettings = () => {
                                 <CardBody>
                                     <SizeInput
                                         propName="marginAll"
-                                        value={marginAll}
                                         label="Margin All"
                                     />
                                 </CardBody>
@@ -400,24 +478,20 @@ const TextSettings = () => {
                             <Card>
                                 <CardBody className="flex flex-col gap-8">
                                     <SizeInput
-                                        value={marginLeft}
-                                        propName="marginLeft"
-                                        label="Margin Left"
-                                    />
-                                    <SizeInput
-                                        value={marginRight}
-                                        propName="marginRight"
-                                        label="Margin Right"
-                                    />
-                                    <SizeInput
-                                        value={marginTop}
                                         propName="marginTop"
                                         label="Margin Top"
                                     />
                                     <SizeInput
-                                        value={marginBottom}
+                                        propName="marginLeft"
+                                        label="Margin Left"
+                                    />
+                                    <SizeInput
                                         propName="marginBottom"
                                         label="Margin Bottom"
+                                    />
+                                    <SizeInput
+                                        propName="marginRight"
+                                        label="Margin Right"
                                     />
                                 </CardBody>
                             </Card>
@@ -425,36 +499,17 @@ const TextSettings = () => {
                     </Tabs>
                 </AccordionItem>
                 <AccordionItem key="4" aria-label="Position" title="Position">
-                    <Select
-                        className="max-w-xs"
+                    <SelectableInput
                         label="Position"
-                        labelPlacement="outside"
-                        placeholder="Select an option"
-                        selectedKeys={[position]}
-                        onChange={(value) => {
-                            setProp(
-                                (props: any) =>
-                                    (props.position = value.target.value),
-                                1000,
-                            );
-                        }}
-                    >
-                        <SelectItem key="relative" value="relative">
-                            relative
-                        </SelectItem>
-                        <SelectItem key="absolute" value="absolute">
-                            absolute
-                        </SelectItem>
-                        <SelectItem key="fixed" value="fixed">
-                            fixed
-                        </SelectItem>
-                        <SelectItem key="sticky" value="sticky">
-                            sticky
-                        </SelectItem>
-                        <SelectItem key="static" value="static">
-                            static
-                        </SelectItem>
-                    </Select>
+                        propName="position"
+                        options={[
+                            "relative",
+                            "absolute",
+                            "fixed",
+                            "sticky",
+                            "static",
+                        ]}
+                    />
                     {position === "relative" ||
                     position === "absolute" ||
                     position === "fixed" ||
@@ -467,14 +522,14 @@ const TextSettings = () => {
                                 label="Left"
                             />
                             <SizeInput
-                                propName="right"
-                                value={right}
-                                label="Right"
-                            />
-                            <SizeInput
                                 propName="bottom"
                                 value={bottom}
                                 label="Bottom"
+                            />
+                            <SizeInput
+                                propName="right"
+                                value={right}
+                                label="Right"
                             />
                         </>
                     ) : null}
@@ -625,6 +680,250 @@ const TextSettings = () => {
                         options={["normal", "italic", "oblique"]}
                     />
                 </AccordionItem>
+                <AccordionItem key="6" aria-label="Border" title="Border">
+                    <p>Border Radius</p>
+                    <Tabs
+                        aria-label="Options"
+                        selectedKey={borderRadiusOption || "all"}
+                        onSelectionChange={(val) => {
+                            setProp((props: any) => {
+                                return (props.borderRadiusOption = val);
+                            }, 1000);
+                        }}
+                    >
+                        <Tab key="all" title="All">
+                            <Card>
+                                <CardBody>
+                                    <SizeInput
+                                        propName="borderRadiusAll"
+                                        label="All"
+                                    />
+                                </CardBody>
+                            </Card>
+                        </Tab>
+                        <Tab key="custom" title="Custom">
+                            <Card>
+                                <CardBody className="flex flex-col gap-4">
+                                    <SizeInput
+                                        propName="borderWidthTopLeft"
+                                        label="Top Left"
+                                    />
+                                    <SizeInput
+                                        propName="borderWidthTopRight"
+                                        label="Top Right"
+                                    />
+                                    <SizeInput
+                                        propName="borderWidthBottomLeft"
+                                        label="Bottom Left"
+                                    />
+                                    <SizeInput
+                                        propName="borderWidthBottomRight"
+                                        label="Bottom Right"
+                                    />
+                                </CardBody>
+                            </Card>
+                        </Tab>
+                    </Tabs>
+                    <p>Border Width</p>
+                    <Tabs
+                        aria-label="Options"
+                        selectedKey={borderWidthOption || "all"}
+                        onSelectionChange={(val) => {
+                            setProp((props: any) => {
+                                return (props.borderWidthOption = val);
+                            }, 1000);
+                        }}
+                    >
+                        <Tab key="all" title="All">
+                            <Card>
+                                <CardBody>
+                                    <SizeInput
+                                        propName="borderWidthAll"
+                                        label="All"
+                                    />
+                                </CardBody>
+                            </Card>
+                        </Tab>
+                        <Tab key="custom" title="Custom">
+                            <Card>
+                                <CardBody className="flex flex-col gap-4">
+                                    <SizeInput
+                                        propName="borderWidthTop"
+                                        label="Top"
+                                    />
+                                    <SizeInput
+                                        propName="borderWidthLeft"
+                                        label="Left"
+                                    />
+                                    <SizeInput
+                                        propName="borderWidthBottom"
+                                        label="Bottom"
+                                    />
+                                    <SizeInput
+                                        propName="borderWidthRight"
+                                        label="Right"
+                                    />
+                                </CardBody>
+                            </Card>
+                        </Tab>
+                    </Tabs>
+                    <p>Border Style</p>
+                    <Tabs
+                        aria-label="Options"
+                        selectedKey={borderStyleOption || "all"}
+                        onSelectionChange={(val) => {
+                            setProp((props: any) => {
+                                return (props.borderStyleOption = val);
+                            }, 1000);
+                        }}
+                    >
+                        <Tab key="all" title="All">
+                            <Card>
+                                <CardBody>
+                                    <SelectableInput
+                                        propName="borderStyleAll"
+                                        label="All"
+                                        options={[
+                                            "none",
+                                            "hidden",
+                                            "dotted",
+                                            "dashed",
+                                            "solid",
+                                            "double",
+                                            "groove",
+                                            "ridge",
+                                            "inset",
+                                            "outset",
+                                            "initial",
+                                            "inherit",
+                                        ]}
+                                    />
+                                </CardBody>
+                            </Card>
+                        </Tab>
+                        <Tab key="custom" title="Custom">
+                            <Card>
+                                <CardBody className="flex flex-col gap-4">
+                                    <SelectableInput
+                                        propName="borderStyleTop"
+                                        label="Top"
+                                        options={[
+                                            "none",
+                                            "hidden",
+                                            "dotted",
+                                            "dashed",
+                                            "solid",
+                                            "double",
+                                            "groove",
+                                            "ridge",
+                                            "inset",
+                                            "outset",
+                                            "initial",
+                                            "inherit",
+                                        ]}
+                                    />
+                                    <SelectableInput
+                                        propName="borderStyleLeft"
+                                        label="Left"
+                                        options={[
+                                            "none",
+                                            "hidden",
+                                            "dotted",
+                                            "dashed",
+                                            "solid",
+                                            "double",
+                                            "groove",
+                                            "ridge",
+                                            "inset",
+                                            "outset",
+                                            "initial",
+                                            "inherit",
+                                        ]}
+                                    />
+                                    <SelectableInput
+                                        propName="borderStyleBottom"
+                                        label="Bottom"
+                                        options={[
+                                            "none",
+                                            "hidden",
+                                            "dotted",
+                                            "dashed",
+                                            "solid",
+                                            "double",
+                                            "groove",
+                                            "ridge",
+                                            "inset",
+                                            "outset",
+                                            "initial",
+                                            "inherit",
+                                        ]}
+                                    />
+                                    <SelectableInput
+                                        propName="borderStyleRight"
+                                        label="Right"
+                                        options={[
+                                            "none",
+                                            "hidden",
+                                            "dotted",
+                                            "dashed",
+                                            "solid",
+                                            "double",
+                                            "groove",
+                                            "ridge",
+                                            "inset",
+                                            "outset",
+                                            "initial",
+                                            "inherit",
+                                        ]}
+                                    />
+                                </CardBody>
+                            </Card>
+                        </Tab>
+                    </Tabs>
+                    <p>Border Color</p>
+                    <Tabs
+                        aria-label="Options"
+                        selectedKey={borderColorOption || "all"}
+                        onSelectionChange={(val) => {
+                            setProp((props: any) => {
+                                return (props.borderColorOption = val);
+                            }, 1000);
+                        }}
+                    >
+                        <Tab key="all" title="All">
+                            <Card>
+                                <CardBody>
+                                    <ColorInput
+                                        propName="borderColorAll"
+                                        label="All"
+                                    />
+                                </CardBody>
+                            </Card>
+                        </Tab>
+                        <Tab key="custom" title="Custom">
+                            <Card>
+                                <CardBody className="flex flex-col gap-4">
+                                    <ColorInput
+                                        propName="borderColorTop"
+                                        label="Top"
+                                    />
+                                    <ColorInput
+                                        propName="borderWidthLeft"
+                                        label="Left"
+                                    />
+                                    <ColorInput
+                                        propName="borderWidthBottom"
+                                        label="Bottom"
+                                    />
+                                    <ColorInput
+                                        propName="borderWidthRight"
+                                        label="Right"
+                                    />
+                                </CardBody>
+                            </Card>
+                        </Tab>
+                    </Tabs>
+                </AccordionItem>
             </Accordion>
         </>
     );
@@ -664,6 +963,34 @@ export const TextDefaultProps = {
     textBreaking: "normal", // white space
     textDecoration: "none",
     textStyle: "normal",
+
+    borderRadiusOption: "all",
+    borderRadiusAll: "0rem",
+    borderRadiusTopLeft: "0rem",
+    borderRadiusTopRight: "0rem",
+    borderRadiusBottomRight: "0rem",
+    borderRadiusBottomLeft: "0rem",
+
+    borderWidthOption: "all",
+    borderWidthAll: "0rem",
+    borderWidthLeft: "0rem",
+    borderWidthRight: "0rem",
+    borderWidthTop: "0rem",
+    borderWidthBottom: "0rem",
+
+    borderStyleOption: "all",
+    borderStyleAll: "solid",
+    borderStyleLeft: "solid",
+    borderStyleRight: "solid",
+    borderStyleTop: "solid",
+    borderStyleBottom: "solid",
+
+    borderColorOption: "all",
+    borderColorAll: "currentColor",
+    borderColorLeft: "currentColor",
+    borderColorRight: "currentColor",
+    borderColorTop: "currentColor",
+    borderColorBottom: "currentColor",
 };
 
 Text.craft = {

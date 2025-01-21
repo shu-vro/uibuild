@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { useNode } from "@craftjs/core";
 import { Input, InputProps, Select, SelectItem } from "@heroui/react";
 import React, { useEffect, useState } from "react";
@@ -58,35 +59,40 @@ export default function SizeInput({
                 label="Padding"
                 labelPlacement="outside"
                 {...rest}
+                classNames={{
+                    inputWrapper: cn("pr-0", rest?.className),
+                }}
                 value={intVal}
                 onValueChange={(e) => {
                     setIntVal(e);
                 }}
-            />
-            <Select
-                className="w-24 shrink-0 mt-6"
-                aria-label="Unit"
-                selectedKeys={[unit]}
-                onChange={(e) => {
-                    setUnit(e.target.value);
-                }}
-            >
-                <>
-                    {customValues.map((option) => (
-                        <SelectItem key={option}>{option}</SelectItem>
-                    ))}
-                </>
+                endContent={
+                    <Select
+                        className="p-0"
+                        aria-label="Unit"
+                        selectedKeys={[unit]}
+                        onChange={(e) => {
+                            setUnit(e.target.value);
+                        }}
+                    >
+                        <>
+                            {customValues.map((option) => (
+                                <SelectItem key={option}>{option}</SelectItem>
+                            ))}
+                        </>
 
-                <SelectItem key="px">px</SelectItem>
-                <SelectItem key="rem">rem</SelectItem>
-                <SelectItem key="em">em</SelectItem>
-                <SelectItem key="in">in</SelectItem>
-                <SelectItem key="vw">vw</SelectItem>
-                <SelectItem key="vh">vh</SelectItem>
-                <SelectItem key="dvh">dvh</SelectItem>
-                <SelectItem key="svh">svh</SelectItem>
-                <SelectItem key="lvh">lvh</SelectItem>
-            </Select>
+                        <SelectItem key="px">px</SelectItem>
+                        <SelectItem key="rem">rem</SelectItem>
+                        <SelectItem key="em">em</SelectItem>
+                        <SelectItem key="in">in</SelectItem>
+                        <SelectItem key="vw">vw</SelectItem>
+                        <SelectItem key="vh">vh</SelectItem>
+                        <SelectItem key="dvh">dvh</SelectItem>
+                        <SelectItem key="svh">svh</SelectItem>
+                        <SelectItem key="lvh">lvh</SelectItem>
+                    </Select>
+                }
+            />
         </div>
     );
 }

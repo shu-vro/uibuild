@@ -22,9 +22,10 @@ export default function SelectableInput({
     return (
         <Select
             className="max-w-xs"
-            label={rest.label || "field"}
             labelPlacement="outside"
             placeholder="Select an option"
+            {...rest}
+            label={rest.label || "field"}
             aria-label={String(rest.label) || "field"}
             selectedKeys={[value]}
             onChange={(e) => {
