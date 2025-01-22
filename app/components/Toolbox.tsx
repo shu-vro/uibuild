@@ -52,8 +52,8 @@ export default function Toolbox() {
                                 <Element
                                     canvas
                                     is={Container}
-                                    padding={20}
                                     background={"#aaaaaa"}
+                                    paddingAll="1rem"
                                 />,
                             );
                         }

@@ -26,8 +26,8 @@ export default function App() {
                             canvas
                             is={Container}
                             padding={20}
-                            background={"#ffffff00"}
-                            data-cy="root-container"
+                            background={"rgba(0,0,0,0.0)"}
+                            // data-cy="root-container"
                         >
                             <Element
                                 canvas

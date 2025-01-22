@@ -9,7 +9,6 @@ const parseSizeValue = (
     value: string = "",
     customValues: string[],
 ): [string, string] => {
-    console.log(value);
     if (customValues.includes(value)) {
         return ["0", value];
     }
@@ -55,7 +54,7 @@ export default function SizeInput({
     return (
         <div className="flex gap-1 flex-row">
             <Input
-                type="string"
+                type="number"
                 label="Padding"
                 labelPlacement="outside"
                 {...rest}
