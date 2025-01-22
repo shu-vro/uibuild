@@ -1,7 +1,8 @@
-import { useNode } from "@craftjs/core";
+import { useEditor, useNode } from "@craftjs/core";
 import {
     Accordion,
     AccordionItem,
+    Button,
     Card,
     CardBody,
     Input,
@@ -49,6 +50,7 @@ type WordBreak = "normal" | "break-all" | "keep-all" | "break-word";
 
 interface TextProps {
     text?: string;
+
     display?: string;
     flexGrow?: number;
     flexShrink?: number;
@@ -302,7 +304,6 @@ const TextSettings = () => {
         justifyContent,
         alignItems,
         gapOption,
-        flexWrap,
         paddingOption,
         marginOption,
         position,
@@ -394,6 +395,27 @@ const TextSettings = () => {
         borderColorTop: node.data.props.borderColorTop,
         borderColorBottom: node.data.props.borderColorBottom,
     }));
+
+    const { actions, selected, isEnabled } = useEditor((state, query) => {
+        const currentNodeId = query.getEvent("selected").last();
+        let selected;
+
+        if (currentNodeId) {
+            selected = {
+                id: currentNodeId,
+                name: state.nodes[currentNodeId].data.name,
+                settings:
+                    state.nodes[currentNodeId].related &&
+                    state.nodes[currentNodeId].related.settings,
+                isDeletable: query.node(currentNodeId).isDeletable(),
+            };
+        }
+
+        return {
+            selected,
+            isEnabled: state.options.enabled,
+        };
+    });
 
     return (
         <>
@@ -1171,6 +1193,18 @@ const TextSettings = () => {
                     </Tabs>
                 </AccordionItem>
             </Accordion>
+            {selected && isEnabled && selected.isDeletable && (
+                <Button
+                    fullWidth
+                    size="lg"
+                    variant="flat"
+                    color="danger"
+                    className="my-2"
+                    onPress={() => actions.delete(selected.id)}
+                >
+                    Delete Element
+                </Button>
+            )}
         </>
     );
 };
