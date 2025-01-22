@@ -10,7 +10,6 @@ import {
     Input,
     Radio,
     RadioGroup,
-    Slider,
     Tab,
     Tabs,
     Tooltip,
@@ -116,6 +115,21 @@ export type GeneralSettingsProps = {
     mixBlendMode?: React.CSSProperties["mixBlendMode"];
     cursor?: React.CSSProperties["cursor"];
 
+    transformOriginOption?: string;
+    transformOriginX?: string;
+    transformOriginY?: string;
+    transformOriginZ?: string;
+    transformOriginAll?: string;
+    transformStyle?: React.CSSProperties["transformStyle"];
+    perspectiveOriginOption?: string;
+    perspectiveOriginAll?: string;
+    perspectiveOriginX?: string;
+    perspectiveOriginY?: string;
+    overflowOption?: string;
+    overflowX?: string;
+    overflowY?: string;
+    overflowAll?: string;
+
     [key: string]: any;
 } & React.CSSProperties;
 
@@ -196,6 +210,22 @@ export const generalPropsDefault: GeneralSettingsProps = {
     opacity: 1,
     mixBlendMode: "normal",
     cursor: "auto",
+    backfaceVisibility: "visible",
+    overflowOption: "all",
+    overflowX: "visible",
+    overflowY: "visible",
+    overflowAll: "visible",
+    transformOriginOption: "all",
+    transformOriginX: "50%",
+    transformOriginY: "50%",
+    transformOriginZ: "0",
+    transformOriginAll: "50%",
+    transformStyle: "flat",
+    perspective: "none",
+    perspectiveOriginOption: "all",
+    perspectiveOriginAll: "50%",
+    perspectiveOriginX: "50%",
+    perspectiveOriginY: "50%",
 };
 
 export function generalStyles({
@@ -272,6 +302,19 @@ export function generalStyles({
     borderColorRight,
     borderColorTop,
     borderColorBottom,
+    overflowOption,
+    overflowAll,
+    overflowX,
+    overflowY,
+    transformOriginOption,
+    transformOriginAll,
+    transformOriginX,
+    transformOriginY,
+    transformOriginZ,
+    perspectiveOriginOption,
+    perspectiveOriginAll,
+    perspectiveOriginX,
+    perspectiveOriginY,
     ...props
 }: GeneralSettingsProps) {
     return {
@@ -319,6 +362,18 @@ export function generalStyles({
                 ? marginAll
                 : `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}`,
         gap: gapOption === "all" ? gapAll : `${gapRow} ${gapColumn}`,
+        overflow:
+            overflowOption === "all"
+                ? overflowAll
+                : `${overflowX} ${overflowY}`,
+        transformOrigin:
+            transformOriginOption === "all"
+                ? transformOriginAll
+                : `${transformOriginX} ${transformOriginY} ${transformOriginZ}`,
+        perspectiveOrigin:
+            perspectiveOriginOption === "all"
+                ? perspectiveOriginAll
+                : `${perspectiveOriginX} ${perspectiveOriginY}`,
         ...props,
     };
 }
@@ -338,7 +393,6 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
         marginOption,
         position,
         display,
-        fontColor,
         fontLineHeight,
         fontSpacing,
         fontVerticalAlign,
@@ -346,6 +400,10 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
         borderStyleOption,
         borderRadiusOption,
         borderColorOption,
+        overflowOption,
+        transformOriginOption,
+        transformStyle,
+        perspectiveOriginOption,
     } = useNode((node) => ({
         text: node.data.props.text,
         width: node.data.props.width,
@@ -426,6 +484,19 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
         borderColorRight: node.data.props.borderColorRight,
         borderColorTop: node.data.props.borderColorTop,
         borderColorBottom: node.data.props.borderColorBottom,
+
+        opacity: node.data.props.opacity,
+        mixBlendMode: node.data.props.mixBlendMode,
+        cursor: node.data.props.cursor,
+        overflowOption: node.data.props.overflowOption,
+        overflowX: node.data.props.overflowX,
+        overflowY: node.data.props.overflowY,
+        overflowAll: node.data.props.overflowAll,
+
+        transformOriginOption: node.data.props.transformOriginOption,
+        perspective: node.data.props.perspective,
+        transformStyle: node.data.props.transformStyle,
+        perspectiveOriginOption: node.data.props.perspectiveOriginOption,
     }));
 
     const { actions, selected, isEnabled } = useEditor((state, query) => {
@@ -1281,6 +1352,186 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             "zoom-out",
                         ]}
                     />
+                    <SelectableInput
+                        propName="backfaceVisibility"
+                        label="Backface Visibility"
+                        options={["visible", "hidden"]}
+                    />
+                    <div>
+                        <p>Overflow</p>
+                        <Tabs
+                            aria-label="overflowOption"
+                            selectedKey={overflowOption}
+                            onSelectionChange={(val) => {
+                                setProp((props: any) => {
+                                    return (props.overflowOption = val);
+                                }, 1000);
+                            }}
+                        >
+                            <Tab key="all" title={"All"}>
+                                <Card>
+                                    <CardBody>
+                                        <SelectableInput
+                                            propName="overflowAll"
+                                            label="All"
+                                            options={["visible", "hidden"]}
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Tab>
+                            <Tab key="custom" title={"Custom"}>
+                                <Card>
+                                    <CardBody>
+                                        <SelectableInput
+                                            propName="overflowX"
+                                            label="X"
+                                            options={["visible", "hidden"]}
+                                        />
+                                        <SelectableInput
+                                            propName="overflowY"
+                                            label="Y"
+                                            options={["visible", "hidden"]}
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Tab>
+                        </Tabs>
+                    </div>
+                    <div>
+                        <p>Transform Origin</p>
+                        <Tabs
+                            aria-label="transformOriginOption"
+                            selectedKey={transformOriginOption}
+                            onSelectionChange={(val) => {
+                                setProp((props: any) => {
+                                    return (props.transformOriginOption = val);
+                                }, 1000);
+                            }}
+                        >
+                            <Tab key="all" title={"All"}>
+                                <Card>
+                                    <CardBody>
+                                        <SizeInput
+                                            propName="transformOriginAll"
+                                            label="All"
+                                            clearDefaultValues
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Tab>
+                            <Tab key="custom" title={"Custom"}>
+                                <Card>
+                                    <CardBody>
+                                        <SizeInput
+                                            propName="transformOriginX"
+                                            label="X"
+                                            clearDefaultValues
+                                        />
+                                        <SizeInput
+                                            propName="transformOriginX"
+                                            label="Y"
+                                            clearDefaultValues
+                                        />
+                                        <SizeInput
+                                            propName="transformOriginZ"
+                                            label="Z"
+                                            clearDefaultValues
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Tab>
+                        </Tabs>
+                    </div>
+                    <div>
+                        <h2 className="text-xl">Children Transform</h2>
+                        <div className="flex flex-row gap-4">
+                            <SizeInput
+                                propName="perspective"
+                                label="Perspective"
+                                clearDefaultValues
+                                customValues={["none"]}
+                            />
+                            <Tabs
+                                className="mt-6"
+                                selectedKey={transformStyle}
+                                onSelectionChange={(val) => {
+                                    setProp((props: any) => {
+                                        return (props.transformStyle = val);
+                                    }, 1000);
+                                }}
+                            >
+                                <Tab key="flat" title={"2d"}></Tab>
+                                <Tab key="preserve-3d" title={"3d"}></Tab>
+                            </Tabs>
+                        </div>
+                        <div>
+                            <p>Perspective Origin</p>
+                            <Tabs
+                                selectedKey={perspectiveOriginOption}
+                                onSelectionChange={(val) => {
+                                    setProp((props: any) => {
+                                        return (props.perspectiveOriginOption =
+                                            val);
+                                    }, 1000);
+                                }}
+                            >
+                                <Tab key="all" title={"All"}>
+                                    <Card>
+                                        <CardBody>
+                                            <SizeInput
+                                                propName="perspectiveOriginAll"
+                                                label="All"
+                                                clearDefaultValues
+                                                customValues={[
+                                                    "initial",
+                                                    "inherit",
+                                                    "Left",
+                                                    "Right",
+                                                    "Top",
+                                                    "Bottom",
+                                                    "Center",
+                                                ]}
+                                            />
+                                        </CardBody>
+                                    </Card>
+                                </Tab>
+                                <Tab key="custom" title={"Custom"}>
+                                    <Card>
+                                        <CardBody>
+                                            <SizeInput
+                                                propName="perspectiveOriginX"
+                                                label="X"
+                                                clearDefaultValues
+                                                customValues={[
+                                                    "initial",
+                                                    "inherit",
+                                                    "Left",
+                                                    "Right",
+                                                    "Top",
+                                                    "Bottom",
+                                                    "Center",
+                                                ]}
+                                            />
+                                            <SizeInput
+                                                propName="perspectiveOriginY"
+                                                label="Y"
+                                                clearDefaultValues
+                                                customValues={[
+                                                    "initial",
+                                                    "inherit",
+                                                    "Left",
+                                                    "Right",
+                                                    "Top",
+                                                    "Bottom",
+                                                    "Center",
+                                                ]}
+                                            />
+                                        </CardBody>
+                                    </Card>
+                                </Tab>
+                            </Tabs>
+                        </div>
+                    </div>
                 </AccordionItem>
             </Accordion>
             {children}

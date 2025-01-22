@@ -17,16 +17,18 @@ const parseSizeValue = (
         const numberValue = parseFloat(match[1]);
         return [numberValue.toFixed(1), match[2]];
     }
-    return ["0", "rem"];
+    return ["0", "%"];
 };
 
 export default function SizeInput({
     propName,
     customValues = [],
+    clearDefaultValues = false,
     ...rest
 }: InputProps & {
     propName: string;
     customValues?: string[];
+    clearDefaultValues?: boolean;
 }) {
     let {
         actions: { setProp },
@@ -35,7 +37,9 @@ export default function SizeInput({
         value: node.data.props[propName],
     }));
 
-    customValues = customValues.concat(["initial", "auto"]);
+    if (!clearDefaultValues) {
+        customValues = customValues.concat(["initial", "auto"]);
+    }
     value = parseSizeValue(value, customValues);
     const [intVal, setIntVal] = useState(value[0] || 0);
     const [unit, setUnit] = useState(value[1] || "rem");
@@ -67,7 +71,7 @@ export default function SizeInput({
                 }}
                 endContent={
                     <Select
-                        className="p-0"
+                        className="p-0 m-0"
                         aria-label="Unit"
                         selectedKeys={[unit]}
                         onChange={(e) => {
@@ -80,6 +84,7 @@ export default function SizeInput({
                             ))}
                         </>
 
+                        <SelectItem key="%">%</SelectItem>
                         <SelectItem key="px">px</SelectItem>
                         <SelectItem key="rem">rem</SelectItem>
                         <SelectItem key="em">em</SelectItem>
