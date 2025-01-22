@@ -205,7 +205,6 @@ export const Resizer = ({ propKey, children, ...props }: any) => {
             }, {})}
             className={cn([
                 {
-                    "m-auto": isRootNode,
                     flex: true,
                 },
             ])}
