@@ -39,6 +39,7 @@ import {
 } from "react-icons/pi";
 
 type TextAlign = "left" | "center" | "right";
+type FlexWrap = "nowrap" | "wrap" | "wrap-reverse";
 
 type Position = "relative" | "absolute" | "fixed" | "sticky" | "static";
 
@@ -55,7 +56,7 @@ interface TextProps {
     gapOption?: string;
     gapAll?: string;
     gapRow?: string;
-    gapColumn?: string;
+    flexWrap?: FlexWrap;
 
     width?: string;
     paddingOption?: string;
@@ -130,6 +131,7 @@ export function Text({
     gapAll,
     gapRow,
     gapColumn,
+    flexWrap,
     width,
     maxWidth,
     paddingOption,
@@ -234,6 +236,7 @@ export function Text({
                 wordBreak: textBreaking,
                 textDecoration,
                 letterSpacing: fontSpacing,
+                flexWrap,
                 borderRadius:
                     borderRadiusOption === "all"
                         ? borderRadiusAll
@@ -395,10 +398,12 @@ const TextSettings = () => {
     return (
         <>
             <Accordion
+                keepContentMounted
                 selectionMode="multiple"
                 variant="splitted"
+                className="px-0"
                 itemClasses={{
-                    content: "flex flex-col gap-4 pl-2",
+                    content: "flex flex-col gap-4 m-0",
                 }}
             >
                 <AccordionItem key="1" aria-label="Layout" title="Layout">
@@ -576,6 +581,11 @@ const TextSettings = () => {
                                     ></Tab>
                                 </Tabs>
 
+                                <SelectableInput
+                                    label="Flex Wrap"
+                                    propName="flexWrap"
+                                    options={["nowrap", "wrap", "wrap-reverse"]}
+                                />
                                 <div>
                                     <p>Gap</p>
                                     <Tabs

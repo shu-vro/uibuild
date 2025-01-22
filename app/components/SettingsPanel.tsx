@@ -25,10 +25,7 @@ export default function SettingsPanel() {
     });
     return selected && isEnabled ? (
         <div className="w-[360px] sticky top-16 max-h-[calc(100vh-4rem)] overflow-auto shrink-0">
-            <div>
-                Selected:
-                <Chip color="warning">{selected?.name}</Chip>
-            </div>
+            <Chip color="warning">{selected?.name}</Chip>
             <div data-cy="settings-panel">
                 {selected.settings && React.createElement(selected.settings)}
             </div>
