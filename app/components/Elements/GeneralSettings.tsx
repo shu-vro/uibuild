@@ -39,7 +39,9 @@ import {
     PiAlignRight,
     PiAlignCenterHorizontal,
 } from "react-icons/pi";
+import { FaPlus } from "react-icons/fa6";
 import SliderInput from "../SliderInput";
+import MultipleInputs from "../MultipleInputs";
 
 export type GeneralSettingsProps = {
     display?: string;
@@ -129,6 +131,27 @@ export type GeneralSettingsProps = {
     overflowX?: string;
     overflowY?: string;
     overflowAll?: string;
+
+    boxShadowCustom?: {
+        id: string;
+        fields: {
+            inset: string;
+            x: string;
+            y: string;
+            blur: string;
+            spread: string;
+            color: string;
+        };
+    }[];
+    textShadowCustom?: {
+        id: string;
+        fields: {
+            x: string;
+            y: string;
+            blur: string;
+            color: string;
+        };
+    }[];
 
     [key: string]: any;
 } & React.CSSProperties;
@@ -226,6 +249,8 @@ export const generalPropsDefault: GeneralSettingsProps = {
     perspectiveOriginAll: "50%",
     perspectiveOriginX: "50%",
     perspectiveOriginY: "50%",
+    boxShadowCustom: [],
+    textShadowCustom: [],
 };
 
 export function generalStyles({
@@ -315,6 +340,9 @@ export function generalStyles({
     perspectiveOriginAll,
     perspectiveOriginX,
     perspectiveOriginY,
+
+    boxShadowCustom,
+    textShadowCustom,
     ...props
 }: GeneralSettingsProps) {
     return {
@@ -322,6 +350,8 @@ export function generalStyles({
         flex: `${flexGrow} ${flexShrink} ${flexBasis}`,
         width,
         maxWidth,
+        height,
+        maxHeight,
         position,
         top,
         left,
@@ -374,6 +404,22 @@ export function generalStyles({
             perspectiveOriginOption === "all"
                 ? perspectiveOriginAll
                 : `${perspectiveOriginX} ${perspectiveOriginY}`,
+        boxShadow: boxShadowCustom
+            ?.map(({ fields }) => {
+                return (
+                    `${fields.inset === "inset" ? "inset" : ""} ${fields.x} ${fields.y} ${fields.blur} ${fields.spread} ${fields.color}` ||
+                    ("" as React.CSSProperties["boxShadow"])
+                );
+            })
+            .join(","),
+        textShadow: textShadowCustom
+            ?.map(({ fields }) => {
+                return (
+                    `${fields.x} ${fields.y} ${fields.blur} ${fields.color}` ||
+                    ("" as React.CSSProperties["textShadow"])
+                );
+            })
+            .join(","),
         ...props,
     };
 }
@@ -497,6 +543,9 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
         perspective: node.data.props.perspective,
         transformStyle: node.data.props.transformStyle,
         perspectiveOriginOption: node.data.props.perspectiveOriginOption,
+
+        boxShadowCustom: node.data.props.boxShadowCustom,
+        textShadowCustom: node.data.props.textShadowCustom,
     }));
 
     const { actions, selected, isEnabled } = useEditor((state, query) => {
@@ -1531,6 +1580,76 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 </Tab>
                             </Tabs>
                         </div>
+                        <MultipleInputs
+                            title="Box Shadow"
+                            propName="boxShadowCustom"
+                            defaultFields={{
+                                x: "0px",
+                                y: "0px",
+                                blur: "0px",
+                                spread: "0px",
+                                color: "#000000",
+                                inset: "outset",
+                            }}
+                            fields={[
+                                {
+                                    name: "inset",
+                                    label: "Inset",
+                                    options: [
+                                        {
+                                            label: "Inset",
+                                            value: "inset",
+                                        },
+                                        {
+                                            label: "Outset",
+                                            value: "outset", // doesn't exist
+                                        },
+                                    ],
+                                    type: "tabs",
+                                },
+                                { name: "x", label: "X", type: "size" },
+                                {
+                                    name: "y",
+                                    label: "Y",
+                                    type: "size",
+                                },
+                                { name: "blur", label: "Blur", type: "size" },
+                                {
+                                    name: "spread",
+                                    label: "Spread",
+                                    type: "size",
+                                },
+                                {
+                                    name: "color",
+                                    label: "Color",
+                                    type: "color",
+                                },
+                            ]}
+                        />
+                        <MultipleInputs
+                            title="Text Shadow"
+                            propName="textShadowCustom"
+                            defaultFields={{
+                                x: "0px",
+                                y: "0px",
+                                blur: "0px",
+                                color: "#000000",
+                            }}
+                            fields={[
+                                { name: "x", label: "X", type: "size" },
+                                {
+                                    name: "y",
+                                    label: "Y",
+                                    type: "size",
+                                },
+                                { name: "blur", label: "Blur", type: "size" },
+                                {
+                                    name: "color",
+                                    label: "Color",
+                                    type: "color",
+                                },
+                            ]}
+                        />
                     </div>
                 </AccordionItem>
             </Accordion>

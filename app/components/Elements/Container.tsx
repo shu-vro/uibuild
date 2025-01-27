@@ -1,5 +1,3 @@
-import { useNode } from "@craftjs/core";
-import { Input, Slider } from "@heroui/react";
 import React from "react";
 import { Resizer } from "../Resizer";
 import {

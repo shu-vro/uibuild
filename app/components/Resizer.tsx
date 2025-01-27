@@ -264,10 +264,10 @@ export const Resizer = ({ propKey, children, ...props }: any) => {
                     height = editingDimensions.current.height + d.height + "px";
                 }
 
-                setProp((prop: any) => {
-                    prop[propKey.width] = width;
-                    prop[propKey.height] = height;
-                }, 500);
+                // setProp((prop: any) => {
+                //     prop[propKey.width] = width;
+                //     prop[propKey.height] = height;
+                // }, 1000);
 
                 nodeDimensions.current = {
                     width,
@@ -276,6 +276,11 @@ export const Resizer = ({ propKey, children, ...props }: any) => {
             }}
             onResizeStop={(e) => {
                 isResizing.current = false;
+
+                setProp((prop: any) => {
+                    prop[propKey.width] = nodeDimensions.current.width;
+                    prop[propKey.height] = nodeDimensions.current.height;
+                }, 1000);
                 updateInternalDimensionsWithOriginal();
             }}
             {...props}

@@ -5,9 +5,15 @@ import { debounce } from "lodash";
 export default function ColorInput({
     propName,
     children,
+    defaultValue = "",
+    overrideOnChange = false,
+    onChangeFn,
     ...rest
 }: React.HTMLProps<HTMLInputElement> & {
     propName: string;
+    defaultValue?: string;
+    overrideOnChange?: boolean;
+    onChangeFn?: (value: string) => void;
 }) {
     let {
         actions: { setProp },
@@ -18,6 +24,10 @@ export default function ColorInput({
 
     const debouncedOnChange = useCallback(
         debounce((e) => {
+            if (onChangeFn) {
+                onChangeFn(e.target.value);
+                return;
+            }
             setProp((props: any) => {
                 return (props[propName] = e.target.value);
             }, 1000);
@@ -32,7 +42,7 @@ export default function ColorInput({
                 type="color"
                 id="color-select"
                 className="w-full h-10"
-                defaultValue={value}
+                defaultValue={defaultValue || value}
                 onChange={debouncedOnChange}
                 {...rest}
             />

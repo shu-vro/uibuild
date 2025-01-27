@@ -7,6 +7,7 @@ import {
     GeneralSettingsProps,
     generalStyles,
 } from "./GeneralSettings";
+import { Resizer } from "../Resizer";
 
 type TextProps = {
     text?: string;
@@ -33,14 +34,10 @@ export function Text({ text, ...props }: TextProps) {
     }, [selected]);
 
     return (
-        <div
+        <Resizer
+            propKey={{ width: "width", height: "height" }}
             style={{
                 ...generalStyles(props),
-            }}
-            ref={(ref) => {
-                if (ref) {
-                    connect(ref);
-                }
             }}
             onClick={() => selected && setEditable(true)}
         >
@@ -60,7 +57,7 @@ export function Text({ text, ...props }: TextProps) {
                 tagName="p"
                 style={{}}
             />
-        </div>
+        </Resizer>
     );
 }
 

@@ -12,6 +12,9 @@ import ThemeButton from "./ThemeButton";
 import { LiaUndoSolid, LiaRedoSolid } from "react-icons/lia";
 import { BsSave } from "react-icons/bs";
 import { useEditor } from "@craftjs/core";
+import lz from "lzutf8";
+import { toast } from "sonner";
+import { useEffectOnce } from "@craftjs/utils";
 
 export const AcmeLogo = () => {
     return (
@@ -34,6 +37,14 @@ export default function Header() {
             canRedo: state.options.enabled && query.history.canRedo(),
         }),
     );
+    useEffectOnce(() => {
+        const data = localStorage.getItem("craft.js");
+        if (data) {
+            const json = JSON.parse(lz.decompress(lz.decodeBase64(data)));
+            actions.deserialize(json);
+            toast.success("Loaded previous state");
+        }
+    });
     return (
         <Navbar maxWidth="full">
             <NavbarBrand>
@@ -68,6 +79,11 @@ export default function Header() {
                         onPress={() => {
                             const json = JSON.parse(query.serialize());
                             console.log(json);
+                            const saveData = lz.encodeBase64(
+                                lz.compress(JSON.stringify(json)),
+                            );
+                            localStorage.setItem("craft.js", saveData);
+                            toast.success("Saved!");
                         }}
                     >
                         <BsSave />

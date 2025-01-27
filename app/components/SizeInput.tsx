@@ -24,12 +24,26 @@ export default function SizeInput({
     propName,
     customValues = [],
     clearDefaultValues = false,
+    overrideOnChange = false,
+    defaultValue = "",
+    onChangeFn,
     ...rest
 }: InputProps & {
     propName: string;
     customValues?: string[];
+    overrideOnChange?: boolean;
     clearDefaultValues?: boolean;
-}) {
+    defaultValue?: string;
+} & (
+        | {
+              overrideOnChange?: true;
+              onChangeFn?: (value: string) => void;
+          }
+        | {
+              overrideOnChange?: false;
+              onChangeFn?: never;
+          }
+    )) {
     let {
         actions: { setProp },
         value,
@@ -37,66 +51,83 @@ export default function SizeInput({
         value: node.data.props[propName],
     }));
 
+    if (overrideOnChange) {
+        clearDefaultValues = true;
+    }
+
     if (!clearDefaultValues) {
         customValues = customValues.concat(["initial", "auto"]);
     }
-    value = parseSizeValue(value, customValues);
-    const [intVal, setIntVal] = useState(value[0] || 0);
-    const [unit, setUnit] = useState(value[1] || "rem");
+    // value = parseSizeValue(defaultValue || value, customValues);
+    const [intVal, setIntVal] = useState(
+        parseSizeValue(defaultValue || value, customValues)[0] || "0",
+    );
+    const [unit, setUnit] = useState(
+        parseSizeValue(defaultValue || value, customValues)[1] || "rem",
+    );
 
     useEffect(() => {
-        setProp((props: any) => {
-            if (customValues.includes(unit)) {
-                setIntVal("0");
-                return (props[propName] = unit);
-            }
-            const newValue = `${intVal}${unit}`;
-            return (props[propName] = newValue);
-        });
+        if (overrideOnChange) return;
+        const [numberValue, unitValue] = parseSizeValue(value, customValues);
+        setIntVal(numberValue);
+        setUnit(unitValue);
+    }, [value]);
+
+    useEffect(() => {
+        if (overrideOnChange) {
+            onChangeFn && onChangeFn(`${intVal}${unit}`);
+        } else {
+            setProp((props: any) => {
+                if (customValues.includes(unit)) {
+                    setIntVal("0");
+                    return (props[propName] = unit);
+                }
+                const newValue = `${intVal}${unit}`;
+                return (props[propName] = newValue);
+            });
+        }
     }, [intVal, unit]);
 
     return (
-        <div className="flex gap-1 flex-row">
-            <Input
-                type="number"
-                label="Padding"
-                labelPlacement="outside"
-                {...rest}
-                classNames={{
-                    inputWrapper: cn("pr-0", rest?.className),
-                }}
-                value={intVal}
-                onValueChange={(e) => {
-                    setIntVal(e);
-                }}
-                endContent={
-                    <Select
-                        className="p-0 m-0"
-                        aria-label="Unit"
-                        selectedKeys={[unit]}
-                        onChange={(e) => {
-                            setUnit(e.target.value);
-                        }}
-                    >
-                        <>
-                            {customValues.map((option) => (
-                                <SelectItem key={option}>{option}</SelectItem>
-                            ))}
-                        </>
+        <Input
+            type="number"
+            label="Padding"
+            labelPlacement="outside"
+            {...rest}
+            classNames={{
+                inputWrapper: cn("pr-0", rest?.className),
+            }}
+            value={intVal}
+            onValueChange={(e) => {
+                setIntVal(e);
+            }}
+            endContent={
+                <Select
+                    className="p-0 m-0"
+                    aria-label="Unit"
+                    selectedKeys={[unit]}
+                    onChange={(e) => {
+                        setUnit(e.target.value);
+                    }}
+                >
+                    <>
+                        {customValues.map((option) => (
+                            <SelectItem key={option}>{option}</SelectItem>
+                        ))}
+                    </>
 
-                        <SelectItem key="%">%</SelectItem>
-                        <SelectItem key="px">px</SelectItem>
-                        <SelectItem key="rem">rem</SelectItem>
-                        <SelectItem key="em">em</SelectItem>
-                        <SelectItem key="in">in</SelectItem>
-                        <SelectItem key="vw">vw</SelectItem>
-                        <SelectItem key="vh">vh</SelectItem>
-                        <SelectItem key="dvh">dvh</SelectItem>
-                        <SelectItem key="svh">svh</SelectItem>
-                        <SelectItem key="lvh">lvh</SelectItem>
-                    </Select>
-                }
-            />
-        </div>
+                    <SelectItem key="%">%</SelectItem>
+                    <SelectItem key="px">px</SelectItem>
+                    <SelectItem key="rem">rem</SelectItem>
+                    <SelectItem key="em">em</SelectItem>
+                    <SelectItem key="in">in</SelectItem>
+                    <SelectItem key="vw">vw</SelectItem>
+                    <SelectItem key="vh">vh</SelectItem>
+                    <SelectItem key="dvh">dvh</SelectItem>
+                    <SelectItem key="svh">svh</SelectItem>
+                    <SelectItem key="lvh">lvh</SelectItem>
+                </Select>
+            }
+        />
     );
 }
