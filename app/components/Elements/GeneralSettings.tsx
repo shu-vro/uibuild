@@ -353,7 +353,6 @@ export function generalStyles({
     background,
     ...props
 }: GeneralSettingsProps) {
-    console.log(background);
     return {
         display,
         flex: `${flexGrow} ${flexShrink} ${flexBasis}`,

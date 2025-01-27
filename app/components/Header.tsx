@@ -15,6 +15,7 @@ import { useEditor } from "@craftjs/core";
 import lz from "lzutf8";
 import { toast } from "sonner";
 import { useEffectOnce } from "@craftjs/utils";
+import { set, get } from "idb-keyval";
 
 export const AcmeLogo = () => {
     return (
@@ -38,12 +39,14 @@ export default function Header() {
         }),
     );
     useEffectOnce(() => {
-        const data = localStorage.getItem("craft.js");
-        if (data) {
-            const json = JSON.parse(lz.decompress(lz.decodeBase64(data)));
-            actions.deserialize(json);
-            toast.success("Loaded previous state");
-        }
+        (async () => {
+            const data = await get("craft.js");
+            if (data) {
+                const json = JSON.parse(lz.decompress(lz.decodeBase64(data)));
+                actions.deserialize(json);
+                toast.success("Loaded previous state");
+            }
+        })();
     });
     return (
         <Navbar maxWidth="full">
@@ -76,13 +79,13 @@ export default function Header() {
                         href="#"
                         variant="flat"
                         isIconOnly
-                        onPress={() => {
+                        onPress={async () => {
                             const json = JSON.parse(query.serialize());
                             console.log(json);
                             const saveData = lz.encodeBase64(
                                 lz.compress(JSON.stringify(json)),
                             );
-                            localStorage.setItem("craft.js", saveData);
+                            await set("craft.js", saveData);
                             toast.success("Saved!");
                         }}
                     >

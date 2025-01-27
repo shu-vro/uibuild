@@ -209,7 +209,7 @@ export default function MultipleInputs({
         });
     }, [nodes]);
     return (
-        <div>
+        <div className="my-3">
             <div className="flex flex-row justify-between">
                 <div>{title}</div>
                 <Button
