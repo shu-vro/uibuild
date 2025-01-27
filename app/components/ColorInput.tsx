@@ -1,6 +1,10 @@
 import { useNode } from "@craftjs/core";
 import React, { useCallback } from "react";
 import { debounce } from "lodash";
+import ColorPicker, {
+    ColorPickerProps,
+} from "react-best-gradient-color-picker";
+import { Button, Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
 
 export default function ColorInput({
     propName,
@@ -8,11 +12,16 @@ export default function ColorInput({
     defaultValue = "",
     overrideOnChange = false,
     onChangeFn,
+    label = "Color",
+    maxWidth = "100%",
     ...rest
-}: React.HTMLProps<HTMLInputElement> & {
+}: Partial<ColorPickerProps> & {
+    label?: string;
+    children?: React.ReactNode;
     propName: string;
     defaultValue?: string;
     overrideOnChange?: boolean;
+    maxWidth?: string;
     onChangeFn?: (value: string) => void;
 }) {
     let {
@@ -24,28 +33,57 @@ export default function ColorInput({
 
     const debouncedOnChange = useCallback(
         debounce((e) => {
-            if (onChangeFn) {
-                onChangeFn(e.target.value);
-                return;
+            if (overrideOnChange) {
+                return onChangeFn && onChangeFn(e);
             }
             setProp((props: any) => {
-                return (props[propName] = e.target.value);
+                return (props[propName] = e);
             }, 1000);
         }, 300),
         [],
     );
+    const [color, setColor] = React.useState(
+        defaultValue || value || "rgba(255,255,255,1)",
+    );
 
     return (
-        <label htmlFor="color-select">
-            <div>Color</div>
-            <input
+        <>
+            <div>{label}</div>
+            {/* <input
                 type="color"
                 id="color-select"
                 className="w-full h-10"
                 defaultValue={defaultValue || value}
                 onChange={debouncedOnChange}
                 {...rest}
-            />
-        </label>
+            /> */}
+            <Popover placement={"left-start"}>
+                <PopoverTrigger>
+                    <Button
+                        className="capitalize"
+                        variant="solid"
+                        fullWidth
+                        style={{
+                            background: color,
+                            maxWidth,
+                        }}
+                    >
+                        {color}
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                    <ColorPicker
+                        value={color}
+                        hideColorTypeBtns
+                        hideEyeDrop
+                        onChange={(val) => {
+                            setColor(val);
+                            debouncedOnChange(val);
+                        }}
+                        {...rest}
+                    />
+                </PopoverContent>
+            </Popover>
+        </>
     );
 }

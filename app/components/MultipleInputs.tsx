@@ -1,7 +1,14 @@
-import { Button, Tab, Tabs, Tooltip } from "@heroui/react";
+import {
+    Button,
+    Tab,
+    Tabs,
+    Tooltip,
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+} from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-import { Popover, PopoverTrigger, PopoverContent } from "@heroui/react";
 import { ReactSortable } from "react-sortablejs";
 import { MdDragIndicator } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
@@ -118,10 +125,12 @@ function BoxShadowInput({
     setNodes,
     defaultField,
     fieldsAst,
+    title,
 }: {
     node: NodeType;
     defaultField: any;
     fieldsAst: any[];
+    title: string;
     setNodes: React.Dispatch<React.SetStateAction<NodeType[]>>;
 }) {
     const [fields, setFields] = useState(defaultField);
@@ -170,7 +179,7 @@ function BoxShadowInput({
                 </div>
             </PopoverTrigger>
             <PopoverContent className="block">
-                <p>Box Shadow</p>
+                <p>{title}</p>
                 {renderField(fieldsAst, fields, setFields)}
             </PopoverContent>
         </Popover>
@@ -232,6 +241,7 @@ export default function MultipleInputs({
                     {nodes.map((node) => (
                         <BoxShadowInput
                             key={node.id}
+                            title={title}
                             node={node}
                             setNodes={setNodes}
                             defaultField={node.fields}

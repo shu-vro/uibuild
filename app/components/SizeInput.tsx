@@ -14,8 +14,8 @@ const parseSizeValue = (
     }
     const match = value.match(/^(\d*\.?\d+)(\D+)$/);
     if (match) {
-        const numberValue = parseFloat(match[1]);
-        return [numberValue.toFixed(1), match[2]];
+        const numberValue = match[1];
+        return [numberValue, match[2]];
     }
     return ["0", "%"];
 };
@@ -34,16 +34,8 @@ export default function SizeInput({
     overrideOnChange?: boolean;
     clearDefaultValues?: boolean;
     defaultValue?: string;
-} & (
-        | {
-              overrideOnChange?: true;
-              onChangeFn?: (value: string) => void;
-          }
-        | {
-              overrideOnChange?: false;
-              onChangeFn?: never;
-          }
-    )) {
+    onChangeFn?: (value: string) => void;
+}) {
     let {
         actions: { setProp },
         value,
@@ -75,6 +67,10 @@ export default function SizeInput({
 
     useEffect(() => {
         if (overrideOnChange) {
+            if (customValues.includes(unit)) {
+                setIntVal("0");
+                return onChangeFn && onChangeFn(unit);
+            }
             onChangeFn && onChangeFn(`${intVal}${unit}`);
         } else {
             setProp((props: any) => {

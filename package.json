@@ -35,6 +35,7 @@
         "prettier": "^3.4.2",
         "re-resizable": "^6.10.3",
         "react": "^19.0.0",
+        "react-best-gradient-color-picker": "^3.0.14",
         "react-contenteditable": "^3.3.7",
         "react-dom": "^19.0.0",
         "react-icons": "^5.4.0",

@@ -8,12 +8,10 @@ import {
 } from "./GeneralSettings";
 
 type ContainerProps = {
-    background: string;
     children?: React.ReactNode;
 };
 
 export function Container({
-    background,
     children,
     // width = "100px",
     // height = "100px",
@@ -102,12 +100,7 @@ export function Container({
 //     );
 // };
 
-export const ContainerDefaultProps = {
-    background: "#ffffff",
-    padding: 3,
-    width: "100%",
-    height: "auto",
-};
+export const ContainerDefaultProps = {};
 
 Container.craft = {
     displayName: "Container",

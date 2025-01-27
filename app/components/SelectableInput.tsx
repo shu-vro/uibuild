@@ -2,16 +2,22 @@
 
 import { useNode } from "@craftjs/core";
 import { Select, SelectItem, SelectProps } from "@heroui/react";
-import React from "react";
+import React, { useState } from "react";
 
 export default function SelectableInput({
     propName,
     options = [],
     children,
+    overrideOnChange = false,
+    defaultValue = "",
+    onChangeFn,
     ...rest
 }: Partial<SelectProps> & {
     propName: string;
     options?: string[];
+    overrideOnChange?: boolean;
+    defaultValue?: string;
+    onChangeFn?: (value: string) => void;
 }) {
     let {
         actions: { setProp },
@@ -19,6 +25,7 @@ export default function SelectableInput({
     } = useNode((node) => ({
         value: node.data.props[propName],
     }));
+    const [overriddenValue, setOverriddenValue] = useState(defaultValue);
     return (
         <Select
             className="max-w-xs"
@@ -27,8 +34,13 @@ export default function SelectableInput({
             {...rest}
             label={rest.label || "field"}
             aria-label={String(rest.label) || "field"}
-            selectedKeys={[value]}
+            selectedKeys={[overriddenValue || value]}
             onChange={(e) => {
+                if (overrideOnChange) {
+                    onChangeFn && onChangeFn(e.target.value);
+                    setOverriddenValue(e.target.value);
+                    return;
+                }
                 setProp((props: any) => {
                     return (props[propName] = e.target.value);
                 });

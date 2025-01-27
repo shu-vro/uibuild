@@ -42,6 +42,10 @@ import {
 import { FaPlus } from "react-icons/fa6";
 import SliderInput from "../SliderInput";
 import MultipleInputs from "../MultipleInputs";
+import BackgroundInput, {
+    BackgroundType,
+    generateBackgroundStyleFromImage,
+} from "../BackgroundInput";
 
 export type GeneralSettingsProps = {
     display?: string;
@@ -152,6 +156,7 @@ export type GeneralSettingsProps = {
             color: string;
         };
     }[];
+    background?: BackgroundType[];
 
     [key: string]: any;
 } & React.CSSProperties;
@@ -251,6 +256,8 @@ export const generalPropsDefault: GeneralSettingsProps = {
     perspectiveOriginY: "50%",
     boxShadowCustom: [],
     textShadowCustom: [],
+    //@ts-ignore
+    background: [] as BackgroundType[],
 };
 
 export function generalStyles({
@@ -343,8 +350,10 @@ export function generalStyles({
 
     boxShadowCustom,
     textShadowCustom,
+    background,
     ...props
 }: GeneralSettingsProps) {
+    console.log(background);
     return {
         display,
         flex: `${flexGrow} ${flexShrink} ${flexBasis}`,
@@ -420,6 +429,21 @@ export function generalStyles({
                 );
             })
             .join(","),
+        background: background
+            ?.map(({ fields }) => {
+                let text;
+                if (fields.type === "color") {
+                    text = fields.color.color;
+                } else if (fields.type === "gradient") {
+                    text = fields.gradient.gradient;
+                } else {
+                    text = generateBackgroundStyleFromImage(fields.image);
+                }
+                console.log(fields);
+                return text;
+            })
+            .join(","),
+
         ...props,
     };
 }
@@ -1007,7 +1031,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         onChange={(value) => {
                             setProp(
                                 (props: any) =>
-                                    (props.textAlign = value.target.value),
+                                    (props.fontVerticalAlign =
+                                        value.target.value),
                                 1000,
                             );
                         }}
@@ -1335,7 +1360,14 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         </Tab>
                     </Tabs>
                 </AccordionItem>
-                <AccordionItem key="7" aria-label="Effects" title="Effects">
+                <AccordionItem
+                    key="7"
+                    aria-label="Background"
+                    title="Background"
+                >
+                    <BackgroundInput />
+                </AccordionItem>
+                <AccordionItem key="8" aria-label="Effects" title="Effects">
                     <SliderInput propName="opacity" label="Opacity" />
                     <SelectableInput
                         propName="mixBlendMode"
