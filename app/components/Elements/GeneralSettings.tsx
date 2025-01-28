@@ -623,6 +623,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
 
     return (
         <>
+            {children}
             <Accordion
                 keepContentMounted
                 selectionMode="multiple"
@@ -1800,7 +1801,6 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                     </div>
                 </AccordionItem>
             </Accordion>
-            {children}
             {selected && isEnabled && selected.isDeletable && (
                 <Button
                     fullWidth

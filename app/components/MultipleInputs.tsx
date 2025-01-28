@@ -138,7 +138,7 @@ type NodeType = {
     fields: Record<string, any>;
 };
 
-function BoxShadowInput({
+function NodeUpdate({
     node,
     setNodes,
     defaultField,
@@ -155,19 +155,17 @@ function BoxShadowInput({
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
     useEffect(() => {
-        if (!isPopoverOpen) {
-            setNodes((prev) =>
-                prev.map((n) => {
-                    if (n.id === node.id) {
-                        return {
-                            id: node.id,
-                            fields,
-                        };
-                    }
-                    return n;
-                }),
-            );
-        }
+        setNodes((prev) =>
+            prev.map((n) => {
+                if (n.id === node.id) {
+                    return {
+                        id: node.id,
+                        fields,
+                    };
+                }
+                return n;
+            }),
+        );
     }, [fields, isPopoverOpen]);
 
     return (
@@ -258,7 +256,7 @@ export default function MultipleInputs({
                     className="w-full"
                 >
                     {nodes.map((node) => (
-                        <BoxShadowInput
+                        <NodeUpdate
                             key={node.id}
                             title={title}
                             node={node}
