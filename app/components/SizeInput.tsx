@@ -23,6 +23,7 @@ const parseSizeValue = (
 export default function SizeInput({
     propName,
     customValues = [],
+    additionalUnitValues = [],
     clearDefaultValues = false,
     overrideOnChange = false,
     defaultValue = "",
@@ -31,6 +32,7 @@ export default function SizeInput({
 }: InputProps & {
     propName: string;
     customValues?: string[];
+    additionalUnitValues?: string[];
     overrideOnChange?: boolean;
     clearDefaultValues?: boolean;
     defaultValue?: string;
@@ -108,6 +110,11 @@ export default function SizeInput({
                 >
                     <>
                         {customValues.map((option) => (
+                            <SelectItem key={option}>{option}</SelectItem>
+                        ))}
+                    </>
+                    <>
+                        {additionalUnitValues.map((option) => (
                             <SelectItem key={option}>{option}</SelectItem>
                         ))}
                     </>

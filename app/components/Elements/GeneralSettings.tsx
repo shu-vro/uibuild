@@ -156,6 +156,20 @@ export type GeneralSettingsProps = {
             color: string;
         };
     }[];
+    filterCustom?: {
+        id: string;
+        fields: {
+            name: string;
+            value: string;
+        };
+    }[];
+    backdropFilterCustom?: {
+        id: string;
+        fields: {
+            name: string;
+            value: string;
+        };
+    }[];
     background?: BackgroundType[];
 
     [key: string]: any;
@@ -258,6 +272,9 @@ export const generalPropsDefault: GeneralSettingsProps = {
     textShadowCustom: [],
     //@ts-ignore
     background: [] as BackgroundType[],
+    filterCustom: [],
+    backdropFilterCustom: [],
+    backgroundBlendMode: "normal",
 };
 
 export function generalStyles({
@@ -348,9 +365,11 @@ export function generalStyles({
     perspectiveOriginX,
     perspectiveOriginY,
 
+    background,
     boxShadowCustom,
     textShadowCustom,
-    background,
+    filterCustom,
+    backdropFilterCustom,
     ...props
 }: GeneralSettingsProps) {
     return {
@@ -438,10 +457,20 @@ export function generalStyles({
                 } else {
                     text = generateBackgroundStyleFromImage(fields.image);
                 }
-                console.log(fields);
                 return text;
             })
             .join(","),
+
+        filter: filterCustom
+            ?.map(({ fields }) => {
+                return `${fields.name}(${fields.value})`;
+            })
+            .join(" "),
+        backdropFilter: backdropFilterCustom
+            ?.map(({ fields }) => {
+                return `${fields.name}(${fields.value})`;
+            })
+            .join(" "),
 
         ...props,
     };
@@ -1365,6 +1394,27 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                     title="Background"
                 >
                     <BackgroundInput />
+                    <SelectableInput
+                        propName="backgroundBlendMode"
+                        options={[
+                            "normal",
+                            "multiply",
+                            "screen",
+                            "overlay",
+                            "darken",
+                            "lighten",
+                            "color-dodge",
+                            "color-burn",
+                            "hard-light",
+                            "soft-light",
+                            "difference",
+                            "exclusion",
+                            "hue",
+                            "saturation",
+                            "color",
+                            "luminosity",
+                        ]}
+                    />
                 </AccordionItem>
                 <AccordionItem key="8" aria-label="Effects" title="Effects">
                     <SliderInput propName="opacity" label="Opacity" />
@@ -1678,6 +1728,72 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                     name: "color",
                                     label: "Color",
                                     type: "color",
+                                },
+                            ]}
+                        />
+                        <MultipleInputs
+                            title="Filter"
+                            propName="filterCustom"
+                            defaultFields={{
+                                name: "blur",
+                                value: "0px",
+                            }}
+                            fields={[
+                                {
+                                    name: "name",
+                                    label: "Name",
+                                    type: "select",
+                                    options: [
+                                        "blur",
+                                        "brightness",
+                                        "contrast",
+                                        "drop-shadow",
+                                        "grayscale",
+                                        "hue-rotate",
+                                        "invert",
+                                        "opacity",
+                                        "saturate",
+                                        "sepia",
+                                    ],
+                                },
+                                {
+                                    name: "value",
+                                    label: "Value",
+                                    type: "size",
+                                    additionalUnitValues: [" ", "deg", "rad"],
+                                },
+                            ]}
+                        />
+                        <MultipleInputs
+                            title="Backdrop Filter"
+                            propName="backdropFilterCustom"
+                            defaultFields={{
+                                name: "blur",
+                                value: "0px",
+                            }}
+                            fields={[
+                                {
+                                    name: "name",
+                                    label: "Name",
+                                    type: "select",
+                                    options: [
+                                        "blur",
+                                        "brightness",
+                                        "contrast",
+                                        "drop-shadow",
+                                        "grayscale",
+                                        "hue-rotate",
+                                        "invert",
+                                        "opacity",
+                                        "saturate",
+                                        "sepia",
+                                    ],
+                                },
+                                {
+                                    name: "value",
+                                    label: "Value",
+                                    type: "size",
+                                    additionalUnitValues: [" ", "deg", "rad"],
                                 },
                             ]}
                         />

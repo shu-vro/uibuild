@@ -15,6 +15,7 @@ import { RxCross2 } from "react-icons/rx";
 import { useNode } from "@craftjs/core";
 import SizeInput from "./SizeInput";
 import ColorInput from "./ColorInput";
+import SelectableInput from "./SelectableInput";
 
 function renderField(fieldsAst: any[], fields: any, setFields: any) {
     return fieldsAst.map((field) => {
@@ -27,6 +28,7 @@ function renderField(fieldsAst: any[], fields: any, setFields: any) {
                         label={field.label}
                         defaultValue={fields[field.name]}
                         overrideOnChange
+                        additionalUnitValues={field.additionalUnitValues || []}
                         onChangeFn={(val) => {
                             setFields((prev: any) => {
                                 return { ...prev, [field.name]: val };
@@ -67,6 +69,21 @@ function renderField(fieldsAst: any[], fields: any, setFields: any) {
                         ))}
                     </Tabs>
                 );
+            case "select":
+                return (
+                    <SelectableInput
+                        propName=""
+                        key={field.name}
+                        overrideOnChange
+                        options={field.options}
+                        defaultValue={fields[field.name]}
+                        onChangeFn={(val) => {
+                            setFields((prev: any) => {
+                                return { ...prev, [field.name]: val };
+                            });
+                        }}
+                    />
+                );
             default:
                 return null;
         }
@@ -77,6 +94,7 @@ function renderHandle(fields: any, fieldsAst: any[]) {
     return fieldsAst.map((field) => {
         switch (field.type) {
             case "size":
+            case "select":
                 return (
                     <Tooltip key={field.name} content={field.label}>
                         <div>{fields[field.name]}</div>
@@ -204,6 +222,7 @@ export default function MultipleInputs({
     const { actions } = useNode((node) => ({}));
 
     useEffect(() => {
+        console.log(nodes);
         actions.setProp((props: any) => {
             return (props[propName] = nodes);
         });
