@@ -20,9 +20,9 @@ const font = Montserrat({
     weight: ["100", "300", "400", "500", "700", "900"],
 });
 
-const APP_NAME = "WeBuild";
-const APP_DEFAULT_TITLE = "WeBuild";
-const APP_TITLE_TEMPLATE = "%s • WeBuild";
+const APP_NAME = "UiBuild";
+const APP_DEFAULT_TITLE = "UiBuild";
+const APP_TITLE_TEMPLATE = "%s • UiBuild";
 const APP_DESCRIPTION = "Best app in the world!";
 
 export const metadata: Metadata = {

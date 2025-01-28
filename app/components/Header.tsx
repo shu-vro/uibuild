@@ -52,7 +52,7 @@ export default function Header() {
         <Navbar maxWidth="full">
             <NavbarBrand>
                 <AcmeLogo />
-                <p className="font-bold text-inherit">WeBuild</p>
+                <p className="font-bold text-inherit">UiBuild</p>
             </NavbarBrand>
             {/* <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarItem>
