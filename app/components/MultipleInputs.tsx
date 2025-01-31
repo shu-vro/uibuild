@@ -220,7 +220,6 @@ export default function MultipleInputs({
     const { actions } = useNode((node) => ({}));
 
     useEffect(() => {
-        console.log(nodes);
         actions.setProp((props: any) => {
             return (props[propName] = nodes);
         });

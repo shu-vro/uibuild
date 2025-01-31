@@ -89,19 +89,17 @@ function BackgroundTile({
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
     useEffect(() => {
-        if (!isPopoverOpen) {
-            setNodes((prev) =>
-                prev.map((n) => {
-                    if (n.id === node.id) {
-                        return {
-                            id: node.id,
-                            fields,
-                        };
-                    }
-                    return n;
-                }),
-            );
-        }
+        setNodes((prev) =>
+            prev.map((n) => {
+                if (n.id === node.id) {
+                    return {
+                        id: node.id,
+                        fields,
+                    };
+                }
+                return n;
+            }),
+        );
     }, [fields, isPopoverOpen]);
 
     return (
@@ -480,16 +478,48 @@ function BackgroundTile({
     );
 }
 
+export const defaultBackground: BackgroundType = {
+    id: Math.random(),
+    fields: {
+        type: "color", // Gradient, Image
+        color: {
+            color: "rgb(255, 0, 0)",
+        },
+        image: {
+            url: "",
+            position: {
+                type: "all", // custom
+                all: "center",
+                left: "center",
+                top: "center",
+            },
+            size: {
+                type: "all", // custom
+                all: "auto",
+                left: "auto",
+                top: "auto",
+            },
+            attachment: "scroll", // fixed
+            repeat: "repeat", // repeat-x | repeat-y | no-repeat | initial | inherit
+            origin: "padding-box", // border-box | content-box
+        },
+        gradient: {
+            gradient:
+                "linear-gradient(90deg, rgba(96,93,93,1) 0%, rgba(255,255,255,1) 100%)",
+        },
+    },
+};
+
 export default function BackgroundInput() {
     const { nodesDefault } = useNode((node) => ({
-        nodesDefault: node.data.props.background,
+        nodesDefault: node.data.props.backgrounds,
     }));
     const [nodes, setNodes] = useState<BackgroundType[]>(nodesDefault);
     const { actions } = useNode((node) => ({}));
 
     useEffect(() => {
         actions.setProp((props: any) => {
-            return (props.background = nodes);
+            return (props.backgrounds = nodes);
         });
     }, [nodes]);
     return (
@@ -501,40 +531,7 @@ export default function BackgroundInput() {
                     size="sm"
                     variant="flat"
                     onPress={() => {
-                        setNodes([
-                            ...nodes,
-                            {
-                                id: Math.random(),
-                                fields: {
-                                    type: "color", // Gradient, Image
-                                    color: {
-                                        color: "rgb(255, 0, 0)",
-                                    },
-                                    image: {
-                                        url: "",
-                                        position: {
-                                            type: "all", // custom
-                                            all: "center",
-                                            left: "center",
-                                            top: "center",
-                                        },
-                                        size: {
-                                            type: "all", // custom
-                                            all: "auto",
-                                            left: "auto",
-                                            top: "auto",
-                                        },
-                                        attachment: "scroll", // fixed
-                                        repeat: "repeat", // repeat-x | repeat-y | no-repeat | initial | inherit
-                                        origin: "padding-box", // border-box | content-box
-                                    },
-                                    gradient: {
-                                        gradient:
-                                            "linear-gradient(90deg, rgba(96,93,93,1) 0%, rgba(255,255,255,1) 100%)",
-                                    },
-                                } as BackgroundFields,
-                            },
-                        ]);
+                        setNodes([...nodes, defaultBackground]);
                     }}
                 >
                     <FaPlus />

@@ -179,14 +179,14 @@ export const Resizer = ({ propKey, children, ...props }: any) => {
         });
     }, [nodeWidth, nodeHeight]);
 
-    useEffect(() => {
-        const listener = debounce(updateInternalDimensionsWithOriginal, 1);
-        window.addEventListener("resize", listener);
+    // useEffect(() => {
+    //     const listener = debounce(updateInternalDimensionsWithOriginal, 1);
+    //     window.addEventListener("resize", listener);
 
-        return () => {
-            window.removeEventListener("resize", listener);
-        };
-    }, [updateInternalDimensionsWithOriginal]);
+    //     return () => {
+    //         window.removeEventListener("resize", listener);
+    //     };
+    // }, [updateInternalDimensionsWithOriginal]);
 
     return (
         <Resizable

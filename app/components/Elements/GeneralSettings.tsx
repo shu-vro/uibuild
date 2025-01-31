@@ -271,9 +271,10 @@ export const generalPropsDefault: GeneralSettingsProps = {
     boxShadowCustom: [],
     textShadowCustom: [],
     //@ts-ignore
-    background: [] as BackgroundType[],
+    backgrounds: [] as BackgroundType[],
     filterCustom: [],
     backdropFilterCustom: [],
+    transitionCustom: [],
     backgroundBlendMode: "normal",
 };
 
@@ -365,11 +366,12 @@ export function generalStyles({
     perspectiveOriginX,
     perspectiveOriginY,
 
-    background,
+    backgrounds,
     boxShadowCustom,
     textShadowCustom,
     filterCustom,
     backdropFilterCustom,
+    transitionCustom,
     ...props
 }: GeneralSettingsProps) {
     return {
@@ -447,7 +449,7 @@ export function generalStyles({
                 );
             })
             .join(","),
-        background: background
+        background: backgrounds
             ?.map(({ fields }) => {
                 let text;
                 if (fields.type === "color") {
@@ -471,6 +473,11 @@ export function generalStyles({
                 return `${fields.name}(${fields.value})`;
             })
             .join(" "),
+        transition: transitionCustom
+            ?.map(({ fields }) => {
+                return `${fields.property} ${fields.duration} ${fields.delay} ${fields.timingFunction}`;
+            })
+            .join(","),
 
         ...props,
     };
@@ -1795,6 +1802,93 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                     label: "Value",
                                     type: "size",
                                     additionalUnitValues: [" ", "deg", "rad"],
+                                },
+                            ]}
+                        />
+                        <MultipleInputs
+                            title="Transition"
+                            propName="transitionCustom"
+                            defaultFields={{
+                                property: "all",
+                                duration: "0s",
+                                timingFunction: "ease",
+                                delay: "0s",
+                            }}
+                            fields={[
+                                {
+                                    name: "property",
+                                    label: "Property",
+                                    type: "select",
+                                    options: [
+                                        "all",
+                                        "background-color",
+                                        "border-color",
+                                        "color",
+                                        "height",
+                                        "width",
+                                        "transform",
+                                        "opacity",
+                                        "visibility",
+                                        "border-radius",
+                                        "border-width",
+                                        "border-style",
+                                        "border",
+                                        "box-shadow",
+                                        "text-shadow",
+                                        "filter",
+                                        "backdrop-filter",
+                                        "perspective",
+                                    ],
+                                },
+                                {
+                                    name: "duration",
+                                    label: "Duration",
+                                    type: "size",
+                                    additionalUnitValues: ["s", "ms"],
+                                },
+                                {
+                                    name: "timingFunction",
+                                    label: "Timing Function",
+                                    type: "select",
+                                    options: [
+                                        "ease",
+                                        "linear",
+                                        "ease-in",
+                                        "ease-out",
+                                        "ease-in-out",
+                                        "cubic-bezier(0.47, 0, 0.745, 0.715)",
+                                        "cubic-bezier(0.55, 0.085, 0.68, 0.53)",
+                                        "cubic-bezier(0.55, 0.055, 0.675, 0.19)",
+                                        "cubic-bezier(0.895, 0.03, 0.685, 0.22)",
+                                        "cubic-bezier(0.755, 0.05, 0.855, 0.06)",
+                                        "cubic-bezier(0.95, 0.05, 0.795, 0.035)",
+                                        "cubic-bezier(0.6, 0.04, 0.98, 0.335)",
+                                        "cubic-bezier(0.36, 0, 0.66, -0.56)",
+                                        "cubic-bezier(0.39, 0.575, 0.565, 1)",
+                                        "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                                        "cubic-bezier(0.215, 0.61, 0.355, 1)",
+                                        "cubic-bezier(0.165, 0.84, 0.44, 1)",
+                                        "cubic-bezier(0.23, 1, 0.32, 1)",
+                                        "cubic-bezier(0.19, 1, 0.22, 1)",
+                                        "cubic-bezier(0.075, 0.82, 0.165, 1)",
+                                        "cubic-bezier(0.34, 1.56, 0.64, 1)",
+                                        "cubic-bezier(0.445, 0.05, 0.55, 0.95)",
+                                        "cubic-bezier(0.455, 0.03, 0.515, 0.955)",
+                                        "cubic-bezier(0.645, 0.045, 0.355, 1)",
+                                        "cubic-bezier(0.77, 0, 0.175, 1)",
+                                        "cubic-bezier(0.86, 0, 0.07, 1)",
+                                        "cubic-bezier(1, 0, 0, 1)",
+                                        "cubic-bezier(0.785, 0.135, 0.15, 0.86)",
+                                        "cubic-bezier(0.68, -0.6, 0.32, 1.6)",
+                                        "cubic-bezier(0.68, 1.55, 0.265, 1)",
+                                        "cubic-bezier(0.87, -0.41, 0.19, 1.44)",
+                                    ],
+                                },
+                                {
+                                    name: "delay",
+                                    label: "Delay",
+                                    type: "size",
+                                    additionalUnitValues: ["s", "ms"],
                                 },
                             ]}
                         />
