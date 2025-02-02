@@ -1,6 +1,6 @@
 import { useNode, useEditor } from "@craftjs/core";
 import { debounce } from "lodash";
-import { Resizable } from "re-resizable";
+import { Resizable, ResizableProps } from "re-resizable";
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { styled } from "styled-components";
 
@@ -81,7 +81,14 @@ const Indicators = styled.div<{ $bound?: "row" | "column" }>`
     }
 `;
 
-export const Resizer = ({ propKey, children, ...props }: any) => {
+export const Resizer = ({
+    propKey,
+    children,
+    ...props
+}: {
+    propKey: { width: string; height: string };
+    onClick?: () => void;
+} & ResizableProps) => {
     const {
         id,
         actions: { setProp },
