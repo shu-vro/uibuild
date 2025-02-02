@@ -175,6 +175,14 @@ export type GeneralSettingsProps = {
     [key: string]: any;
 } & React.CSSProperties;
 
+export type GeneralStatesType = {
+    type?: "normal" | "hover" | "focus" | "active";
+    normal?: GeneralSettingsProps;
+    hover?: GeneralSettingsProps;
+    focus?: GeneralSettingsProps;
+    active?: GeneralSettingsProps;
+};
+
 export const generalPropsDefault: GeneralSettingsProps = {
     width: "auto",
     maxWidth: "auto",
@@ -278,162 +286,85 @@ export const generalPropsDefault: GeneralSettingsProps = {
     backgroundBlendMode: "normal",
 };
 
+export const generalStatesDefault: GeneralStatesType = {
+    type: "normal",
+    normal: generalPropsDefault,
+    hover: generalPropsDefault,
+    focus: generalPropsDefault,
+    active: generalPropsDefault,
+};
+
 export function generalStyles({
-    display,
-    flexGrow,
-    flexBasis,
-    flexShrink,
-    gapOption,
-    gapAll,
-    gapRow,
-    gapColumn,
-    flexWrap,
-    width,
-    maxWidth,
-    height,
-    maxHeight,
-    paddingOption,
-    paddingAll,
-    paddingLeft,
-    paddingRight,
-    paddingTop,
-    paddingBottom,
-    marginOption,
-    marginAll,
-    marginLeft,
-    marginRight,
-    marginTop,
-    marginBottom,
-    position,
-    left,
-    right,
-    top,
-    bottom,
-
-    fontName,
-    fontLineHeight,
-    fontSize,
-    fontWeight,
-    textStyle,
-
-    fontColor,
-    textAlign,
-    fontSpacing,
-    fontVerticalAlign,
-    textTransform,
-    textDirection,
-    textBreaking,
-    textDecoration,
-
-    borderRadiusOption,
-    borderRadiusAll,
-    borderRadiusTopLeft,
-    borderRadiusTopRight,
-    borderRadiusBottomRight,
-    borderRadiusBottomLeft,
-
-    borderWidthOption,
-    borderWidthAll,
-    borderWidthLeft,
-    borderWidthRight,
-    borderWidthTop,
-    borderWidthBottom,
-
-    borderStyleOption,
-    borderStyleAll,
-    borderStyleLeft,
-    borderStyleRight,
-    borderStyleTop,
-    borderStyleBottom,
-
-    borderColorOption,
-    borderColorAll,
-    borderColorLeft,
-    borderColorRight,
-    borderColorTop,
-    borderColorBottom,
-    overflowOption,
-    overflowAll,
-    overflowX,
-    overflowY,
-    transformOriginOption,
-    transformOriginAll,
-    transformOriginX,
-    transformOriginY,
-    transformOriginZ,
-    perspectiveOriginOption,
-    perspectiveOriginAll,
-    perspectiveOriginX,
-    perspectiveOriginY,
-
-    backgrounds,
-    boxShadowCustom,
-    textShadowCustom,
-    filterCustom,
-    backdropFilterCustom,
-    transitionCustom,
-    ...props
-}: GeneralSettingsProps) {
+    type,
+    normal,
+    hover,
+    focus,
+    active,
+}: Required<GeneralStatesType>) {
+    let selected = normal;
     return {
-        display,
-        flex: `${flexGrow} ${flexShrink} ${flexBasis}`,
-        width,
-        maxWidth,
-        height,
-        maxHeight,
-        position,
-        top,
-        left,
-        right,
-        bottom,
-        font: `${textStyle} normal ${fontWeight} ${fontSize}/${fontLineHeight} ${fontName}`,
-        color: fontColor,
-        textAlign,
-        verticalAlign: fontVerticalAlign,
-        textTransform,
-        direction: textDirection,
-        wordBreak: textBreaking,
-        textDecoration,
-        letterSpacing: fontSpacing,
-        flexWrap,
+        display: normal.display,
+        flex: `${normal.flexGrow} ${normal.flexShrink} ${normal.flexBasis}`,
+        width: normal.width,
+        maxWidth: normal.maxWidth,
+        height: normal.height,
+        maxHeight: normal.maxHeight,
+        position: normal.position,
+        top: normal.top,
+        left: normal.left,
+        right: normal.right,
+        bottom: normal.bottom,
+        font: `${normal.textStyle} normal ${normal.fontWeight} ${normal.fontSize}/${normal.fontLineHeight} ${normal.fontName}`,
+        color: normal.fontColor,
+        textAlign: normal.textAlign,
+        verticalAlign: normal.fontVerticalAlign,
+        textTransform: normal.textTransform,
+        direction: normal.textDirection,
+        wordBreak: normal.textBreaking,
+        textDecoration: normal.textDecoration,
+        letterSpacing: normal.fontSpacing,
+        flexWrap: normal.flexWrap,
         borderRadius:
-            borderRadiusOption === "all"
-                ? borderRadiusAll
-                : `${borderRadiusTopLeft} ${borderRadiusTopRight} ${borderRadiusBottomRight} ${borderRadiusBottomLeft}`,
+            normal.borderRadiusOption === "all"
+                ? normal.borderRadiusAll
+                : `${normal.borderRadiusTopLeft} ${normal.borderRadiusTopRight} ${normal.borderRadiusBottomRight} ${normal.borderRadiusBottomLeft}`,
         borderWidth:
-            borderWidthOption === "all"
-                ? borderWidthAll
-                : `${borderWidthTop} ${borderWidthRight} ${borderWidthBottom} ${borderWidthLeft}`,
+            normal.borderWidthOption === "all"
+                ? normal.borderWidthAll
+                : `${normal.borderWidthTop} ${normal.borderWidthRight} ${normal.borderWidthBottom} ${normal.borderWidthLeft}`,
         borderStyle:
-            borderStyleOption === "all"
-                ? borderStyleAll
-                : `${borderStyleTop} ${borderStyleRight} ${borderStyleBottom} ${borderStyleLeft}`,
+            normal.borderStyleOption === "all"
+                ? normal.borderStyleAll
+                : `${normal.borderStyleTop} ${normal.borderStyleRight} ${normal.borderStyleBottom} ${normal.borderStyleLeft}`,
         borderColor:
-            borderColorOption === "all"
-                ? borderColorAll
-                : `${borderColorTop} ${borderColorRight} ${borderColorBottom} ${borderColorLeft}`,
+            normal.borderColorOption === "all"
+                ? normal.borderColorAll
+                : `${normal.borderColorTop} ${normal.borderColorRight} ${normal.borderColorBottom} ${normal.borderColorLeft}`,
         padding:
-            paddingOption === "all"
-                ? paddingAll
-                : `${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft}`,
+            normal.paddingOption === "all"
+                ? normal.paddingAll
+                : `${normal.paddingTop} ${normal.paddingRight} ${normal.paddingBottom} ${normal.paddingLeft}`,
         margin:
-            marginOption === "all"
-                ? marginAll
-                : `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}`,
-        gap: gapOption === "all" ? gapAll : `${gapRow} ${gapColumn}`,
+            normal.marginOption === "all"
+                ? normal.marginAll
+                : `${normal.marginTop} ${normal.marginRight} ${normal.marginBottom} ${normal.marginLeft}`,
+        gap:
+            normal.gapOption === "all"
+                ? normal.gapAll
+                : `${normal.gapRow} ${normal.gapColumn}`,
         overflow:
-            overflowOption === "all"
-                ? overflowAll
-                : `${overflowX} ${overflowY}`,
+            normal.overflowOption === "all"
+                ? normal.overflowAll
+                : `${normal.overflowX} ${normal.overflowY}`,
         transformOrigin:
-            transformOriginOption === "all"
-                ? transformOriginAll
-                : `${transformOriginX} ${transformOriginY} ${transformOriginZ}`,
+            normal.transformOriginOption === "all"
+                ? normal.transformOriginAll
+                : `${normal.transformOriginX} ${normal.transformOriginY} ${normal.transformOriginZ}`,
         perspectiveOrigin:
-            perspectiveOriginOption === "all"
-                ? perspectiveOriginAll
-                : `${perspectiveOriginX} ${perspectiveOriginY}`,
-        boxShadow: boxShadowCustom
+            normal.perspectiveOriginOption === "all"
+                ? normal.perspectiveOriginAll
+                : `${normal.perspectiveOriginX} ${normal.perspectiveOriginY}`,
+        boxShadow: normal.boxShadowCustom
             ?.map(({ fields }) => {
                 return (
                     `${fields.inset === "inset" ? "inset" : ""} ${fields.x} ${fields.y} ${fields.blur} ${fields.spread} ${fields.color}` ||
@@ -441,7 +372,7 @@ export function generalStyles({
                 );
             })
             .join(","),
-        textShadow: textShadowCustom
+        textShadow: normal.textShadowCustom
             ?.map(({ fields }) => {
                 return (
                     `${fields.x} ${fields.y} ${fields.blur} ${fields.color}` ||
@@ -449,7 +380,7 @@ export function generalStyles({
                 );
             })
             .join(","),
-        background: backgrounds
+        background: normal.backgrounds
             ?.map(({ fields }) => {
                 let text;
                 if (fields.type === "color") {
@@ -463,29 +394,53 @@ export function generalStyles({
             })
             .join(","),
 
-        filter: filterCustom
+        filter: normal.filterCustom
             ?.map(({ fields }) => {
                 return `${fields.name}(${fields.value})`;
             })
             .join(" "),
-        backdropFilter: backdropFilterCustom
+        backdropFilter: normal.backdropFilterCustom
             ?.map(({ fields }) => {
                 return `${fields.name}(${fields.value})`;
             })
             .join(" "),
-        transition: transitionCustom
+        transition: normal.transitionCustom
             ?.map(({ fields }) => {
                 return `${fields.property} ${fields.duration} ${fields.delay} ${fields.timingFunction}`;
             })
             .join(","),
 
-        ...props,
+        ...normal.props,
     };
+}
+
+export function getState(
+    type: GeneralStatesType["type"],
+    rest: Record<string, GeneralSettingsProps>,
+) {
+    return rest[type!];
 }
 
 export function GeneralSettings({ children }: { children?: React.ReactNode }) {
     const {
         actions: { setProp },
+        type,
+        ...rest
+    } = useNode((node) => ({
+        text: node.data.props.text,
+        type: node.data.props.type as GeneralStatesType["type"],
+        normal: node.data.props.normal,
+        active: node.data.props.active,
+        focus: node.data.props.focus,
+        hover: node.data.props.hover,
+    }));
+
+    let currState = getState(
+        type,
+        rest as unknown as Record<string, GeneralSettingsProps>,
+    );
+
+    const {
         fontSize,
         textAlign,
         flexGrow,
@@ -509,103 +464,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
         transformOriginOption,
         transformStyle,
         perspectiveOriginOption,
-    } = useNode((node) => ({
-        text: node.data.props.text,
-        width: node.data.props.width,
-        maxWidth: node.data.props.maxWidth,
-        height: node.data.props.height,
-        maxHeight: node.data.props.maxHeight,
-
-        display: node.data.props.display,
-        flexGrow: node.data.props.flexGrow,
-        flexShrink: node.data.props.flexShrink,
-        flexBasis: node.data.props.flexBasis,
-        flexDirection: node.data.props.flexDirection,
-        justifyContent: node.data.props.justifyContent,
-        alignItems: node.data.props.alignItems,
-        flexWrap: node.data.props.flexWrap,
-        gapOption: node.data.props.gap,
-        gapRow: node.data.props.gapRow,
-        gapColumn: node.data.props.gapColumn,
-
-        paddingOption: node.data.props.paddingOption,
-        paddingAll: node.data.props.paddingAll,
-        paddingLeft: node.data.props.paddingLeft,
-        paddingRight: node.data.props.paddingRight,
-        paddingTop: node.data.props.paddingTop,
-        paddingBottom: node.data.props.paddingBottom,
-
-        marginOption: node.data.props.marginOption,
-        marginAll: node.data.props.marginAll,
-        marginLeft: node.data.props.marginLeft,
-        marginRight: node.data.props.marginRight,
-        marginTop: node.data.props.marginTop,
-        marginBottom: node.data.props.marginBottom,
-
-        position: node.data.props.position,
-        top: node.data.props.top,
-        left: node.data.props.left,
-        right: node.data.props.right,
-        bottom: node.data.props.bottom,
-
-        fontName: node.data.props.fontName,
-        fontColor: node.data.props.fontColor,
-        fontSize: node.data.props.fontSize,
-        fontWeight: node.data.props.fontWeight,
-        fontLineHeight: node.data.props.fontLineHeight,
-        fontSpacing: node.data.props.fontSpacing,
-        textAlign: node.data.props.textAlign,
-        fontVerticalAlign: node.data.props.fontVerticalAlign,
-        textTransform: node.data.props.textTransform,
-        textDirection: node.data.props.textDirection,
-        textBreaking: node.data.props.textBreaking,
-        textDecoration: node.data.props.textDecoration,
-        textStyle: node.data.props.textStyle,
-
-        borderRadiusOption: node.data.props.borderRadiusOption,
-        borderRadiusAll: node.data.props.borderRadiusAll,
-        borderRadiusTopLeft: node.data.props.borderRadiusTopLeft,
-        borderRadiusTopRight: node.data.props.borderRadiusTopRight,
-        borderRadiusBottomRight: node.data.props.borderRadiusBottomRight,
-        borderRadiusBottomLeft: node.data.props.borderRadiusBottomLeft,
-
-        borderWidthOption: node.data.props.borderWidthOption,
-        borderWidthAll: node.data.props.borderWidthAll,
-        borderWidthLeft: node.data.props.borderWidthLeft,
-        borderWidthRight: node.data.props.borderWidthRight,
-        borderWidthTop: node.data.props.borderWidthTop,
-        borderWidthBottom: node.data.props.borderWidthBottom,
-
-        borderStyleOption: node.data.props.borderStyleOption,
-        borderStyleAll: node.data.props.borderStyleAll,
-        borderStyleLeft: node.data.props.borderStyleLeft,
-        borderStyleRight: node.data.props.borderStyleRight,
-        borderStyleTop: node.data.props.borderStyleTop,
-        borderStyleBottom: node.data.props.borderStyleBottom,
-
-        borderColorOption: node.data.props.borderColorOption,
-        borderColorAll: node.data.props.borderColorAll,
-        borderColorLeft: node.data.props.borderColorLeft,
-        borderColorRight: node.data.props.borderColorRight,
-        borderColorTop: node.data.props.borderColorTop,
-        borderColorBottom: node.data.props.borderColorBottom,
-
-        opacity: node.data.props.opacity,
-        mixBlendMode: node.data.props.mixBlendMode,
-        cursor: node.data.props.cursor,
-        overflowOption: node.data.props.overflowOption,
-        overflowX: node.data.props.overflowX,
-        overflowY: node.data.props.overflowY,
-        overflowAll: node.data.props.overflowAll,
-
-        transformOriginOption: node.data.props.transformOriginOption,
-        perspective: node.data.props.perspective,
-        transformStyle: node.data.props.transformStyle,
-        perspectiveOriginOption: node.data.props.perspectiveOriginOption,
-
-        boxShadowCustom: node.data.props.boxShadowCustom,
-        textShadowCustom: node.data.props.textShadowCustom,
-    }));
+    } = currState;
 
     const { actions, selected, isEnabled } = useEditor((state, query) => {
         const currentNodeId = query.getEvent("selected").last();
@@ -866,7 +725,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         <Input
                             type="number"
                             label="Grow"
-                            value={flexGrow}
+                            value={flexGrow as unknown as string}
                             onChange={(e) => {
                                 setProp(
                                     (props: any) =>
@@ -878,7 +737,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         <Input
                             type="number"
                             label="Shrink"
-                            value={flexShrink}
+                            value={flexShrink as unknown as string}
                             onChange={(e) => {
                                 setProp(
                                     (props: any) =>
