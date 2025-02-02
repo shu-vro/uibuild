@@ -2,17 +2,17 @@ import { useNode } from "@craftjs/core";
 import React, { useState, useEffect, useCallback } from "react";
 import ContentEditable from "react-contenteditable";
 import {
-    generalPropsDefault,
+    generalStatesDefault,
     GeneralSettings,
-    GeneralSettingsProps,
     generalStyles,
+    GeneralStatesType,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
 import { debounce } from "lodash";
 
 type TextProps = {
     text?: string;
-} & GeneralSettingsProps;
+} & GeneralStatesType;
 
 export function Text({ text, ...props }: TextProps) {
     const {
@@ -49,7 +49,13 @@ export function Text({ text, ...props }: TextProps) {
         <Resizer
             propKey={{ width: "width", height: "height" }}
             style={{
-                ...generalStyles(props),
+                ...generalStyles({
+                    type: props.type || "normal",
+                    normal: props.normal || {},
+                    hover: props.hover || {},
+                    focus: props.focus || {},
+                    active: props.active || {},
+                }),
             }}
             onClick={() => selected && setEditable(true)}
         >
@@ -61,7 +67,6 @@ export function Text({ text, ...props }: TextProps) {
                     debouncedSetProp(e.target.value);
                 }}
                 tagName="p"
-                style={{}}
             />
         </Resizer>
     );
@@ -69,7 +74,7 @@ export function Text({ text, ...props }: TextProps) {
 
 export const TextDefaultProps = {
     text: "Hi",
-    ...generalPropsDefault,
+    ...generalStatesDefault,
 };
 
 Text.craft = {

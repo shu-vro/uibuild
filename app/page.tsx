@@ -7,6 +7,7 @@ import SettingsPanel from "./components/SettingsPanel";
 import Toolbox from "./components/Toolbox";
 import { Container } from "./components/Elements/Container";
 import RenderNode from "./components/RenderNode";
+import { generalPropsDefault } from "./components/Elements/GeneralSettings";
 
 export default function App() {
     return (
@@ -25,7 +26,10 @@ export default function App() {
                         <Element
                             canvas
                             is={Container}
-                            padding={20}
+                            normal={{
+                                ...generalPropsDefault,
+                                paddingAll: "20",
+                            }}
                             // data-cy="root-container"
                         >
                             <Element

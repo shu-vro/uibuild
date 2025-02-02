@@ -2,8 +2,10 @@ import React from "react";
 import { Resizer } from "../Resizer";
 import {
     generalPropsDefault,
-    GeneralSettings,
-    GeneralSettingsProps,
+    // GeneralSettings,
+    // GeneralSettingsProps,
+    generalStatesDefault,
+    GeneralStatesType,
     generalStyles,
 } from "./GeneralSettings";
 
@@ -16,13 +18,21 @@ export function Container({
     // width = "100px",
     // height = "100px",
     ...props
-}: GeneralSettingsProps & ContainerProps) {
+}: GeneralStatesType & ContainerProps) {
     return (
         <>
             <Resizer
                 propKey={{ width: "width", height: "height" }}
                 style={{
-                    ...generalStyles(props),
+                    ...generalStyles({
+                        ...generalStyles({
+                            type: props.type || "normal",
+                            normal: props.normal || {},
+                            hover: props.hover || {},
+                            focus: props.focus || {},
+                            active: props.active || {},
+                        }),
+                    }),
                     // justifyContent: "flex-start",
                     // flexDirection: "column",
                     // alignItems: "flex-start",
@@ -106,7 +116,7 @@ Container.craft = {
     displayName: "Container",
     props: generalPropsDefault,
     related: {
-        settings: GeneralSettings,
+        settings: generalStatesDefault,
     },
     rules: {
         canDrag: () => true,
