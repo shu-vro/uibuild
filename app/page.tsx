@@ -28,7 +28,7 @@ export default function App() {
                             is={Container}
                             normal={{
                                 ...generalPropsDefault,
-                                paddingAll: "20",
+                                paddingAll: "20px",
                             }}
                             // data-cy="root-container"
                         >

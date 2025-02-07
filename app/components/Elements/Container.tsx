@@ -32,18 +32,6 @@ export function Container({
                         focus: props.focus || {},
                         active: props.active || {},
                     }),
-                    // justifyContent: "flex-start",
-                    // flexDirection: "column",
-                    // alignItems: "flex-start",
-                    // background,
-                    // // color: `rgba(${Object.values(color)})`,
-                    // margin: `${margin[0]}px ${margin[1]}px ${margin[2]}px ${margin[3]}px`,
-                    // boxShadow:
-                    //     shadow === 0
-                    //         ? "none"
-                    //         : `0px 3px 100px ${shadow}px rgba(0, 0, 0, 0.13)`,
-                    // borderRadius: `${radius}px`,
-                    // flex: fillSpace === "yes" ? 1 : "unset",
                 }}
             >
                 {children}
