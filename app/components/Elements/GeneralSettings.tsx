@@ -303,68 +303,68 @@ export function generalStyles({
 }: Required<GeneralStatesType>) {
     let selected = normal;
     return {
-        display: normal.display,
-        flex: `${normal.flexGrow} ${normal.flexShrink} ${normal.flexBasis}`,
-        width: normal.width,
-        maxWidth: normal.maxWidth,
-        height: normal.height,
-        maxHeight: normal.maxHeight,
-        position: normal.position,
-        top: normal.top,
-        left: normal.left,
-        right: normal.right,
-        bottom: normal.bottom,
-        font: `${normal.textStyle} normal ${normal.fontWeight} ${normal.fontSize}/${normal.fontLineHeight} ${normal.fontName}`,
-        color: normal.fontColor,
-        textAlign: normal.textAlign,
-        verticalAlign: normal.fontVerticalAlign,
-        textTransform: normal.textTransform,
-        direction: normal.textDirection,
-        wordBreak: normal.textBreaking,
-        textDecoration: normal.textDecoration,
-        letterSpacing: normal.fontSpacing,
-        flexWrap: normal.flexWrap,
+        display: selected.display,
+        flex: `${selected.flexGrow} ${selected.flexShrink} ${selected.flexBasis}`,
+        width: selected.width,
+        maxWidth: selected.maxWidth,
+        height: selected.height,
+        maxHeight: selected.maxHeight,
+        position: selected.position,
+        top: selected.top,
+        left: selected.left,
+        right: selected.right,
+        bottom: selected.bottom,
+        font: `${selected.textStyle} normal ${selected.fontWeight} ${selected.fontSize}/${selected.fontLineHeight} ${selected.fontName}`,
+        color: selected.fontColor,
+        textAlign: selected.textAlign,
+        verticalAlign: selected.fontVerticalAlign,
+        textTransform: selected.textTransform,
+        direction: selected.textDirection,
+        wordBreak: selected.textBreaking,
+        textDecoration: selected.textDecoration,
+        letterSpacing: selected.fontSpacing,
+        flexWrap: selected.flexWrap,
         borderRadius:
-            normal.borderRadiusOption === "all"
-                ? normal.borderRadiusAll
-                : `${normal.borderRadiusTopLeft} ${normal.borderRadiusTopRight} ${normal.borderRadiusBottomRight} ${normal.borderRadiusBottomLeft}`,
+            selected.borderRadiusOption === "all"
+                ? selected.borderRadiusAll
+                : `${selected.borderRadiusTopLeft} ${selected.borderRadiusTopRight} ${selected.borderRadiusBottomRight} ${selected.borderRadiusBottomLeft}`,
         borderWidth:
-            normal.borderWidthOption === "all"
-                ? normal.borderWidthAll
-                : `${normal.borderWidthTop} ${normal.borderWidthRight} ${normal.borderWidthBottom} ${normal.borderWidthLeft}`,
+            selected.borderWidthOption === "all"
+                ? selected.borderWidthAll
+                : `${selected.borderWidthTop} ${selected.borderWidthRight} ${selected.borderWidthBottom} ${selected.borderWidthLeft}`,
         borderStyle:
-            normal.borderStyleOption === "all"
-                ? normal.borderStyleAll
-                : `${normal.borderStyleTop} ${normal.borderStyleRight} ${normal.borderStyleBottom} ${normal.borderStyleLeft}`,
+            selected.borderStyleOption === "all"
+                ? selected.borderStyleAll
+                : `${selected.borderStyleTop} ${selected.borderStyleRight} ${selected.borderStyleBottom} ${selected.borderStyleLeft}`,
         borderColor:
-            normal.borderColorOption === "all"
-                ? normal.borderColorAll
-                : `${normal.borderColorTop} ${normal.borderColorRight} ${normal.borderColorBottom} ${normal.borderColorLeft}`,
+            selected.borderColorOption === "all"
+                ? selected.borderColorAll
+                : `${selected.borderColorTop} ${selected.borderColorRight} ${selected.borderColorBottom} ${selected.borderColorLeft}`,
         padding:
-            normal.paddingOption === "all"
-                ? normal.paddingAll
-                : `${normal.paddingTop} ${normal.paddingRight} ${normal.paddingBottom} ${normal.paddingLeft}`,
+            selected.paddingOption === "all"
+                ? selected.paddingAll
+                : `${selected.paddingTop} ${selected.paddingRight} ${selected.paddingBottom} ${selected.paddingLeft}`,
         margin:
-            normal.marginOption === "all"
-                ? normal.marginAll
-                : `${normal.marginTop} ${normal.marginRight} ${normal.marginBottom} ${normal.marginLeft}`,
+            selected.marginOption === "all"
+                ? selected.marginAll
+                : `${selected.marginTop} ${selected.marginRight} ${selected.marginBottom} ${selected.marginLeft}`,
         gap:
-            normal.gapOption === "all"
-                ? normal.gapAll
-                : `${normal.gapRow} ${normal.gapColumn}`,
+            selected.gapOption === "all"
+                ? selected.gapAll
+                : `${selected.gapRow} ${selected.gapColumn}`,
         overflow:
-            normal.overflowOption === "all"
-                ? normal.overflowAll
-                : `${normal.overflowX} ${normal.overflowY}`,
+            selected.overflowOption === "all"
+                ? selected.overflowAll
+                : `${selected.overflowX} ${selected.overflowY}`,
         transformOrigin:
-            normal.transformOriginOption === "all"
-                ? normal.transformOriginAll
-                : `${normal.transformOriginX} ${normal.transformOriginY} ${normal.transformOriginZ}`,
+            selected.transformOriginOption === "all"
+                ? selected.transformOriginAll
+                : `${selected.transformOriginX} ${selected.transformOriginY} ${selected.transformOriginZ}`,
         perspectiveOrigin:
-            normal.perspectiveOriginOption === "all"
-                ? normal.perspectiveOriginAll
-                : `${normal.perspectiveOriginX} ${normal.perspectiveOriginY}`,
-        boxShadow: normal.boxShadowCustom
+            selected.perspectiveOriginOption === "all"
+                ? selected.perspectiveOriginAll
+                : `${selected.perspectiveOriginX} ${selected.perspectiveOriginY}`,
+        boxShadow: selected.boxShadowCustom
             ?.map(({ fields }) => {
                 return (
                     `${fields.inset === "inset" ? "inset" : ""} ${fields.x} ${fields.y} ${fields.blur} ${fields.spread} ${fields.color}` ||
@@ -372,7 +372,7 @@ export function generalStyles({
                 );
             })
             .join(","),
-        textShadow: normal.textShadowCustom
+        textShadow: selected.textShadowCustom
             ?.map(({ fields }) => {
                 return (
                     `${fields.x} ${fields.y} ${fields.blur} ${fields.color}` ||
@@ -380,7 +380,7 @@ export function generalStyles({
                 );
             })
             .join(","),
-        background: normal.backgrounds
+        background: selected.backgrounds
             ?.map(({ fields }) => {
                 let text;
                 if (fields.type === "color") {
@@ -394,28 +394,28 @@ export function generalStyles({
             })
             .join(","),
 
-        filter: normal.filterCustom
+        filter: selected.filterCustom
             ?.map(({ fields }) => {
                 return `${fields.name}(${fields.value})`;
             })
             .join(" "),
-        backdropFilter: normal.backdropFilterCustom
+        backdropFilter: selected.backdropFilterCustom
             ?.map(({ fields }) => {
                 return `${fields.name}(${fields.value})`;
             })
             .join(" "),
-        transition: normal.transitionCustom
+        transition: selected.transitionCustom
             ?.map(({ fields }) => {
                 return `${fields.property} ${fields.duration} ${fields.delay} ${fields.timingFunction}`;
             })
             .join(","),
 
-        ...normal.props,
+        ...selected,
     };
 }
 
 export function getState(
-    type: GeneralStatesType["type"],
+    type: NonNullable<GeneralStatesType["type"]>,
     rest: Record<string, GeneralSettingsProps>,
 ) {
     return rest[type!];
@@ -428,7 +428,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
         ...rest
     } = useNode((node) => ({
         text: node.data.props.text,
-        type: node.data.props.type as GeneralStatesType["type"],
+        type: node.data.props.type as NonNullable<GeneralStatesType["type"]>,
         normal: node.data.props.normal,
         active: node.data.props.active,
         focus: node.data.props.focus,
@@ -490,6 +490,10 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
     return (
         <>
             {children}
+            <SelectableInput
+                propName="type"
+                options={["normal", "hover", "focus", "active"]}
+            />
             <Accordion
                 keepContentMounted
                 selectionMode="multiple"
@@ -501,6 +505,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
             >
                 <AccordionItem key="1" aria-label="Layout" title="Layout">
                     <SelectableInput
+                        type={type}
                         label="Display"
                         propName="display"
                         options={[
@@ -520,8 +525,10 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                     aria-label="Options"
                                     selectedKey={flexDirection}
                                     onSelectionChange={(val) => {
-                                        setProp((props: any) => {
-                                            return (props.flexDirection = val);
+                                        setProp((props) => {
+                                            return (props[
+                                                props.type
+                                            ].flexDirection = val);
                                         }, 1000);
                                     }}
                                 >
@@ -566,7 +573,9 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                     selectedKey={justifyContent}
                                     onSelectionChange={(val) => {
                                         setProp((props: any) => {
-                                            return (props.justifyContent = val);
+                                            return (props[
+                                                props.type
+                                            ].justifyContent = val);
                                         }, 1000);
                                     }}
                                 >
@@ -628,7 +637,9 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                     selectedKey={alignItems}
                                     onSelectionChange={(val) => {
                                         setProp((props: any) => {
-                                            return (props.alignItems = val);
+                                            return (props[
+                                                props.type
+                                            ].alignItems = val);
                                         }, 1000);
                                     }}
                                 >
@@ -675,6 +686,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 </Tabs>
 
                                 <SelectableInput
+                                    type={type}
                                     label="Flex Wrap"
                                     propName="flexWrap"
                                     options={["nowrap", "wrap", "wrap-reverse"]}
@@ -686,7 +698,9 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                         selectedKey={gapOption}
                                         onSelectionChange={(val) => {
                                             setProp((props: any) => {
-                                                return (props.gapOption = val);
+                                                return (props[
+                                                    props.type
+                                                ].gapOption = val);
                                             }, 1000);
                                         }}
                                     >
@@ -694,6 +708,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                             <Card>
                                                 <CardBody>
                                                     <SizeInput
+                                                        type={type}
                                                         propName="gapAll"
                                                         label="All"
                                                     />
@@ -704,10 +719,12 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                             <Card>
                                                 <CardBody className="flex flex-col gap-4">
                                                     <SizeInput
+                                                        type={type}
                                                         propName="gapRow"
                                                         label="Row"
                                                     />
                                                     <SizeInput
+                                                        type={type}
                                                         propName="gapColumn"
                                                         label="Column"
                                                     />
@@ -729,7 +746,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             onChange={(e) => {
                                 setProp(
                                     (props: any) =>
-                                        (props.flexGrow = e.target.value),
+                                        (props[props.type].flexGrow =
+                                            e.target.value),
                                     1000,
                                 );
                             }}
@@ -741,12 +759,14 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             onChange={(e) => {
                                 setProp(
                                     (props: any) =>
-                                        (props.flexShrink = e.target.value),
+                                        (props[props.type].flexShrink =
+                                            e.target.value),
                                     1000,
                                 );
                             }}
                         />
                         <SelectableInput
+                            type={type}
                             label="Flex basis"
                             propName="flexBasis"
                             options={["auto", "inherit"]}
@@ -754,10 +774,18 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                     </div>
                 </AccordionItem>
                 <AccordionItem key="2" aria-label="Size" title="Size">
-                    <SizeInput propName="width" label="Width" />
-                    <SizeInput propName="maxWidth" label="Max Width" />
-                    <SizeInput propName="height" label="Height" />
-                    <SizeInput propName="maxHeight" label="Max Height" />
+                    <SizeInput type={type} propName="width" label="Width" />
+                    <SizeInput
+                        type={type}
+                        propName="maxWidth"
+                        label="Max Width"
+                    />
+                    <SizeInput type={type} propName="height" label="Height" />
+                    <SizeInput
+                        type={type}
+                        propName="maxHeight"
+                        label="Max Height"
+                    />
                 </AccordionItem>
                 <AccordionItem key="3" aria-label="Space" title="Space">
                     <div>
@@ -767,7 +795,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             selectedKey={paddingOption || "all"}
                             onSelectionChange={(val) => {
                                 setProp((props: any) => {
-                                    return (props.paddingOption = val);
+                                    return (props[props.type].paddingOption =
+                                        val);
                                 }, 1000);
                             }}
                         >
@@ -775,6 +804,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 <Card>
                                     <CardBody>
                                         <SizeInput
+                                            type={type}
                                             propName="paddingAll"
                                             label="Padding All"
                                         />
@@ -785,18 +815,22 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 <Card>
                                     <CardBody className="flex flex-col gap-8">
                                         <SizeInput
+                                            type={type}
                                             propName="paddingTop"
                                             label="Padding Top"
                                         />
                                         <SizeInput
+                                            type={type}
                                             propName="paddingLeft"
                                             label="Padding Left"
                                         />
                                         <SizeInput
+                                            type={type}
                                             propName="paddingBottom"
                                             label="Padding Bottom"
                                         />
                                         <SizeInput
+                                            type={type}
                                             propName="paddingRight"
                                             label="Padding Right"
                                         />
@@ -812,7 +846,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             selectedKey={marginOption || "all"}
                             onSelectionChange={(val) => {
                                 setProp((props: any) => {
-                                    return (props.marginOption = val);
+                                    return (props[props.type].marginOption =
+                                        val);
                                 }, 1000);
                             }}
                         >
@@ -820,6 +855,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 <Card>
                                     <CardBody>
                                         <SizeInput
+                                            type={type}
                                             propName="marginAll"
                                             label="Margin All"
                                         />
@@ -830,18 +866,22 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 <Card>
                                     <CardBody className="flex flex-col gap-8">
                                         <SizeInput
+                                            type={type}
                                             propName="marginTop"
                                             label="Margin Top"
                                         />
                                         <SizeInput
+                                            type={type}
                                             propName="marginLeft"
                                             label="Margin Left"
                                         />
                                         <SizeInput
+                                            type={type}
                                             propName="marginBottom"
                                             label="Margin Bottom"
                                         />
                                         <SizeInput
+                                            type={type}
                                             propName="marginRight"
                                             label="Margin Right"
                                         />
@@ -853,6 +893,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                 </AccordionItem>
                 <AccordionItem key="4" aria-label="Position" title="Position">
                     <SelectableInput
+                        type={type}
                         label="Position"
                         propName="position"
                         options={[
@@ -868,10 +909,22 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                     position === "fixed" ||
                     position === "sticky" ? (
                         <>
-                            <SizeInput propName="top" label="Top" />
-                            <SizeInput propName="left" label="Left" />
-                            <SizeInput propName="bottom" label="Bottom" />
-                            <SizeInput propName="right" label="Right" />
+                            <SizeInput type={type} propName="top" label="Top" />
+                            <SizeInput
+                                type={type}
+                                propName="left"
+                                label="Left"
+                            />
+                            <SizeInput
+                                type={type}
+                                propName="bottom"
+                                label="Bottom"
+                            />
+                            <SizeInput
+                                type={type}
+                                propName="right"
+                                label="Right"
+                            />
                         </>
                     ) : null}
                 </AccordionItem>
@@ -881,6 +934,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                     title="Typography"
                 >
                     <SelectableInput
+                        type={type}
                         label="Font Name"
                         propName="fontName"
                         options={[
@@ -897,8 +951,13 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             "Lucida Sans Unicode",
                         ]}
                     />
-                    <ColorInput propName="fontColor" label="Font Color" />
+                    <ColorInput
+                        type={type}
+                        propName="fontColor"
+                        label="Font Color"
+                    />
                     <SizeInput
+                        type={type}
                         propName="fontSize"
                         value={fontSize}
                         label="Font size"
@@ -910,7 +969,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         onChange={(value) => {
                             setProp(
                                 (props: any) =>
-                                    (props.textAlign = value.target.value),
+                                    (props[props.type].textAlign =
+                                        value.target.value),
                                 1000,
                             );
                         }}
@@ -926,7 +986,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         onChange={(value) => {
                             setProp(
                                 (props: any) =>
-                                    (props.fontVerticalAlign =
+                                    (props[props.type].fontVerticalAlign =
                                         value.target.value),
                                 1000,
                             );
@@ -939,6 +999,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                     </RadioGroup>
 
                     <SelectableInput
+                        type={type}
                         propName="fontWeight"
                         label="Font Weight"
                         options={[
@@ -960,17 +1021,20 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         ]}
                     />
                     <SizeInput
+                        type={type}
                         propName="fontLineHeight"
                         value={fontLineHeight}
                         label="Line Height"
                         customValues={["normal"]}
                     />
                     <SizeInput
+                        type={type}
                         value={fontSpacing}
                         propName="fontSpacing"
                         label="Text Spacing"
                     />
                     <SelectableInput
+                        type={type}
                         propName="textTransform"
                         label="Text Transform"
                         options={[
@@ -981,11 +1045,13 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         ]}
                     />
                     <SelectableInput
+                        type={type}
                         propName="textDirection"
                         label="Text Direction"
                         options={["ltr", "rtl"]}
                     />
                     <SelectableInput
+                        type={type}
                         propName="textBreaking"
                         label="Text Breaking"
                         options={[
@@ -996,6 +1062,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         ]}
                     />
                     <SelectableInput
+                        type={type}
                         propName="textDecoration"
                         label="Text Decoration"
                         options={[
@@ -1006,6 +1073,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         ]}
                     />
                     <SelectableInput
+                        type={type}
                         propName="textStyle"
                         label="Text Style"
                         options={["normal", "italic", "oblique"]}
@@ -1018,7 +1086,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         selectedKey={borderRadiusOption || "all"}
                         onSelectionChange={(val) => {
                             setProp((props: any) => {
-                                return (props.borderRadiusOption = val);
+                                return (props[props.type].borderRadiusOption =
+                                    val);
                             }, 1000);
                         }}
                     >
@@ -1026,6 +1095,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             <Card>
                                 <CardBody>
                                     <SizeInput
+                                        type={type}
                                         propName="borderRadiusAll"
                                         label="All"
                                     />
@@ -1036,18 +1106,22 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             <Card>
                                 <CardBody className="flex flex-col gap-4">
                                     <SizeInput
+                                        type={type}
                                         propName="borderWidthTopLeft"
                                         label="Top Left"
                                     />
                                     <SizeInput
+                                        type={type}
                                         propName="borderWidthTopRight"
                                         label="Top Right"
                                     />
                                     <SizeInput
+                                        type={type}
                                         propName="borderWidthBottomLeft"
                                         label="Bottom Left"
                                     />
                                     <SizeInput
+                                        type={type}
                                         propName="borderWidthBottomRight"
                                         label="Bottom Right"
                                     />
@@ -1061,7 +1135,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         selectedKey={borderWidthOption || "all"}
                         onSelectionChange={(val) => {
                             setProp((props: any) => {
-                                return (props.borderWidthOption = val);
+                                return (props[props.type].borderWidthOption =
+                                    val);
                             }, 1000);
                         }}
                     >
@@ -1069,6 +1144,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             <Card>
                                 <CardBody>
                                     <SizeInput
+                                        type={type}
                                         propName="borderWidthAll"
                                         label="All"
                                     />
@@ -1079,18 +1155,22 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             <Card>
                                 <CardBody className="flex flex-col gap-4">
                                     <SizeInput
+                                        type={type}
                                         propName="borderWidthTop"
                                         label="Top"
                                     />
                                     <SizeInput
+                                        type={type}
                                         propName="borderWidthLeft"
                                         label="Left"
                                     />
                                     <SizeInput
+                                        type={type}
                                         propName="borderWidthBottom"
                                         label="Bottom"
                                     />
                                     <SizeInput
+                                        type={type}
                                         propName="borderWidthRight"
                                         label="Right"
                                     />
@@ -1104,7 +1184,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         selectedKey={borderStyleOption || "all"}
                         onSelectionChange={(val) => {
                             setProp((props: any) => {
-                                return (props.borderStyleOption = val);
+                                return (props[props.type].borderStyleOption =
+                                    val);
                             }, 1000);
                         }}
                     >
@@ -1112,6 +1193,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             <Card>
                                 <CardBody>
                                     <SelectableInput
+                                        type={type}
                                         propName="borderStyleAll"
                                         label="All"
                                         options={[
@@ -1136,6 +1218,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             <Card>
                                 <CardBody className="flex flex-col gap-4">
                                     <SelectableInput
+                                        type={type}
                                         propName="borderStyleTop"
                                         label="Top"
                                         options={[
@@ -1154,6 +1237,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                         ]}
                                     />
                                     <SelectableInput
+                                        type={type}
                                         propName="borderStyleLeft"
                                         label="Left"
                                         options={[
@@ -1172,6 +1256,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                         ]}
                                     />
                                     <SelectableInput
+                                        type={type}
                                         propName="borderStyleBottom"
                                         label="Bottom"
                                         options={[
@@ -1190,6 +1275,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                         ]}
                                     />
                                     <SelectableInput
+                                        type={type}
                                         propName="borderStyleRight"
                                         label="Right"
                                         options={[
@@ -1217,7 +1303,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         selectedKey={borderColorOption || "all"}
                         onSelectionChange={(val) => {
                             setProp((props: any) => {
-                                return (props.borderColorOption = val);
+                                return (props[props.type].borderColorOption =
+                                    val);
                             }, 1000);
                         }}
                     >
@@ -1225,6 +1312,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             <Card>
                                 <CardBody>
                                     <ColorInput
+                                        type={type}
                                         propName="borderColorAll"
                                         label="All"
                                     />
@@ -1235,18 +1323,22 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             <Card>
                                 <CardBody className="flex flex-col gap-4">
                                     <ColorInput
+                                        type={type}
                                         propName="borderColorTop"
                                         label="Top"
                                     />
                                     <ColorInput
+                                        type={type}
                                         propName="borderWidthLeft"
                                         label="Left"
                                     />
                                     <ColorInput
+                                        type={type}
                                         propName="borderWidthBottom"
                                         label="Bottom"
                                     />
                                     <ColorInput
+                                        type={type}
                                         propName="borderWidthRight"
                                         label="Right"
                                     />
@@ -1262,7 +1354,9 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                 >
                     <BackgroundInput />
                     <SelectableInput
+                        type={type}
                         propName="backgroundBlendMode"
+                        label="Background Blend Mode"
                         options={[
                             "normal",
                             "multiply",
@@ -1284,8 +1378,13 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                     />
                 </AccordionItem>
                 <AccordionItem key="8" aria-label="Effects" title="Effects">
-                    <SliderInput propName="opacity" label="Opacity" />
+                    <SliderInput
+                        type={type}
+                        propName="opacity"
+                        label="Opacity"
+                    />
                     <SelectableInput
+                        type={type}
                         propName="mixBlendMode"
                         label="Mix Blend Mode"
                         options={[
@@ -1308,6 +1407,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         ]}
                     />
                     <SelectableInput
+                        type={type}
                         propName="cursor"
                         label="Cursor"
                         options={[
@@ -1350,6 +1450,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         ]}
                     />
                     <SelectableInput
+                        type={type}
                         propName="backfaceVisibility"
                         label="Backface Visibility"
                         options={["visible", "hidden"]}
@@ -1361,7 +1462,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             selectedKey={overflowOption}
                             onSelectionChange={(val) => {
                                 setProp((props: any) => {
-                                    return (props.overflowOption = val);
+                                    return (props[props.type].overflowOption =
+                                        val);
                                 }, 1000);
                             }}
                         >
@@ -1369,6 +1471,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 <Card>
                                     <CardBody>
                                         <SelectableInput
+                                            type={type}
                                             propName="overflowAll"
                                             label="All"
                                             options={["visible", "hidden"]}
@@ -1380,11 +1483,13 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 <Card>
                                     <CardBody>
                                         <SelectableInput
+                                            type={type}
                                             propName="overflowX"
                                             label="X"
                                             options={["visible", "hidden"]}
                                         />
                                         <SelectableInput
+                                            type={type}
                                             propName="overflowY"
                                             label="Y"
                                             options={["visible", "hidden"]}
@@ -1401,7 +1506,9 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             selectedKey={transformOriginOption}
                             onSelectionChange={(val) => {
                                 setProp((props: any) => {
-                                    return (props.transformOriginOption = val);
+                                    return (props[
+                                        props.type
+                                    ].transformOriginOption = val);
                                 }, 1000);
                             }}
                         >
@@ -1409,6 +1516,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 <Card>
                                     <CardBody>
                                         <SizeInput
+                                            type={type}
                                             propName="transformOriginAll"
                                             label="All"
                                             clearDefaultValues
@@ -1420,16 +1528,19 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 <Card>
                                     <CardBody>
                                         <SizeInput
+                                            type={type}
                                             propName="transformOriginX"
                                             label="X"
                                             clearDefaultValues
                                         />
                                         <SizeInput
+                                            type={type}
                                             propName="transformOriginX"
                                             label="Y"
                                             clearDefaultValues
                                         />
                                         <SizeInput
+                                            type={type}
                                             propName="transformOriginZ"
                                             label="Z"
                                             clearDefaultValues
@@ -1443,6 +1554,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         <h2 className="text-xl">Children Transform</h2>
                         <div className="flex flex-row gap-4">
                             <SizeInput
+                                type={type}
                                 propName="perspective"
                                 label="Perspective"
                                 clearDefaultValues
@@ -1453,7 +1565,9 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 selectedKey={transformStyle}
                                 onSelectionChange={(val) => {
                                     setProp((props: any) => {
-                                        return (props.transformStyle = val);
+                                        return (props[
+                                            props.type
+                                        ].transformStyle = val);
                                     }, 1000);
                                 }}
                             >
@@ -1467,8 +1581,9 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 selectedKey={perspectiveOriginOption}
                                 onSelectionChange={(val) => {
                                     setProp((props: any) => {
-                                        return (props.perspectiveOriginOption =
-                                            val);
+                                        return (props[
+                                            type
+                                        ].perspectiveOriginOption = val);
                                     }, 1000);
                                 }}
                             >
@@ -1476,6 +1591,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                     <Card>
                                         <CardBody>
                                             <SizeInput
+                                                type={type}
                                                 propName="perspectiveOriginAll"
                                                 label="All"
                                                 clearDefaultValues
@@ -1496,6 +1612,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                     <Card>
                                         <CardBody>
                                             <SizeInput
+                                                type={type}
                                                 propName="perspectiveOriginX"
                                                 label="X"
                                                 clearDefaultValues
@@ -1510,6 +1627,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                                 ]}
                                             />
                                             <SizeInput
+                                                type={type}
                                                 propName="perspectiveOriginY"
                                                 label="Y"
                                                 clearDefaultValues
@@ -1531,6 +1649,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         <MultipleInputs
                             title="Box Shadow"
                             propName="boxShadowCustom"
+                            type={type}
                             defaultFields={{
                                 x: "0px",
                                 y: "0px",
@@ -1576,6 +1695,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                         />
                         <MultipleInputs
                             title="Text Shadow"
+                            type={type}
                             propName="textShadowCustom"
                             defaultFields={{
                                 x: "0px",
@@ -1599,6 +1719,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             ]}
                         />
                         <MultipleInputs
+                            type={type}
                             title="Filter"
                             propName="filterCustom"
                             defaultFields={{
@@ -1632,6 +1753,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             ]}
                         />
                         <MultipleInputs
+                            type={type}
                             title="Backdrop Filter"
                             propName="backdropFilterCustom"
                             defaultFields={{
@@ -1665,6 +1787,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                             ]}
                         />
                         <MultipleInputs
+                            type={type}
                             title="Transition"
                             propName="transitionCustom"
                             defaultFields={{

@@ -2,6 +2,7 @@ import React from "react";
 import { Resizer } from "../Resizer";
 import {
     generalPropsDefault,
+    GeneralSettings,
     // GeneralSettings,
     // GeneralSettingsProps,
     generalStatesDefault,
@@ -25,13 +26,11 @@ export function Container({
                 propKey={{ width: "width", height: "height" }}
                 style={{
                     ...generalStyles({
-                        ...generalStyles({
-                            type: props.type || "normal",
-                            normal: props.normal || {},
-                            hover: props.hover || {},
-                            focus: props.focus || {},
-                            active: props.active || {},
-                        }),
+                        type: props.type || "normal",
+                        normal: props.normal || {},
+                        hover: props.hover || {},
+                        focus: props.focus || {},
+                        active: props.active || {},
                     }),
                     // justifyContent: "flex-start",
                     // flexDirection: "column",
@@ -114,9 +113,9 @@ export const ContainerDefaultProps = {};
 
 Container.craft = {
     displayName: "Container",
-    props: generalPropsDefault,
+    props: generalStatesDefault,
     related: {
-        settings: generalStatesDefault,
+        settings: GeneralSettings,
     },
     rules: {
         canDrag: () => true,

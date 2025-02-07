@@ -98,12 +98,14 @@ export const Resizer = ({
         nodeHeight,
         parent,
         active,
+        type,
         inNodeContext,
     } = useNode((node) => ({
         parent: node.data.parent,
         active: node.events.selected,
-        nodeWidth: node.data.props[propKey.width],
-        nodeHeight: node.data.props[propKey.height],
+        type: node.data.props.type,
+        nodeWidth: node.data.props[node.data.props.type][propKey.width],
+        nodeHeight: node.data.props[node.data.props.type][propKey.height],
         fillSpace: node.data.props.fillSpace,
     }));
 
@@ -271,11 +273,6 @@ export const Resizer = ({
                     height = editingDimensions.current.height + d.height + "px";
                 }
 
-                // setProp((prop: any) => {
-                //     prop[propKey.width] = width;
-                //     prop[propKey.height] = height;
-                // }, 1000);
-
                 nodeDimensions.current = {
                     width,
                     height,
@@ -285,8 +282,8 @@ export const Resizer = ({
                 isResizing.current = false;
 
                 setProp((prop: any) => {
-                    prop[propKey.width] = nodeDimensions.current.width;
-                    prop[propKey.height] = nodeDimensions.current.height;
+                    prop[prop][propKey.width] = nodeDimensions.current.width;
+                    prop[prop][propKey.height] = nodeDimensions.current.height;
                 }, 1000);
                 updateInternalDimensionsWithOriginal();
             }}

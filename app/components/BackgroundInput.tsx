@@ -512,14 +512,14 @@ export const defaultBackground: BackgroundType = {
 
 export default function BackgroundInput() {
     const { nodesDefault } = useNode((node) => ({
-        nodesDefault: node.data.props.backgrounds,
+        nodesDefault: node.data.props[node.data.props.type].backgrounds,
     }));
     const [nodes, setNodes] = useState<BackgroundType[]>(nodesDefault);
     const { actions } = useNode((node) => ({}));
 
     useEffect(() => {
         actions.setProp((props: any) => {
-            return (props.backgrounds = nodes);
+            return (props[props.type].backgrounds = nodes);
         });
     }, [nodes]);
     return (
