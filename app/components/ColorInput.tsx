@@ -53,6 +53,7 @@ export default function ColorInput({
     );
 
     useEffect(() => {
+        if (!value) return;
         setColor(value);
     }, [value]);
 

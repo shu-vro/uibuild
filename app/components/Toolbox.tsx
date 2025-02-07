@@ -7,7 +7,7 @@ import { Container } from "./Elements/Container";
 
 import { Layers } from "@craftjs/layers";
 import { BackgroundType, defaultBackground } from "./BackgroundInput";
-import { generalStatesDefault } from "./Elements/GeneralSettings";
+import { generalPropsDefault } from "./Elements/GeneralSettings";
 
 function CustomButton({
     Icon,
@@ -55,10 +55,11 @@ export default function Toolbox() {
                                     canvas
                                     is={Container}
                                     normal={{
-                                        ...generalStatesDefault,
+                                        ...generalPropsDefault,
                                         backgrounds: [
                                             defaultBackground as BackgroundType,
                                         ],
+                                        paddingAll: "20px",
                                     }}
                                 />,
                             );

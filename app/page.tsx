@@ -28,11 +28,27 @@ export default function App() {
                             is={Container}
                             normal={{
                                 ...generalPropsDefault,
+                                // paddingOption: "all",
                                 paddingAll: "20px",
+                                // backgrounds: [
+                                //     {
+                                //         id: -1,
+                                //         fields: {
+                                //             type: "color",
+                                //             color: {
+                                //                 color: "rgba(255,0,0,1)",
+                                //             },
+                                //             gradient: {
+                                //                 gradient:
+                                //                     "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(0,255,0,1) 100%)",
+                                //             },
+                                //         },
+                                //     },
+                                // ],
                             }}
                             // data-cy="root-container"
                         >
-                            <Element
+                            {/* <Element
                                 canvas
                                 id="1"
                                 is={Text}
@@ -49,7 +65,7 @@ export default function App() {
                                 id="1"
                                 is={Text}
                                 text="Hello world"
-                            />
+                            /> */}
                         </Element>
                     </Frame>
                 </div>
