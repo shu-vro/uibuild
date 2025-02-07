@@ -250,7 +250,6 @@ export const Resizer = ({
                             getElementDimensions(dom.parentElement).width,
                         ) + "%";
                 else width = `${width}px`;
-
                 if (isPercentage(nodeHeight))
                     height =
                         pxToPercent(
@@ -258,21 +257,18 @@ export const Resizer = ({
                             getElementDimensions(dom.parentElement).height,
                         ) + "%";
                 else height = `${height}px`;
-
                 if (
                     isPercentage(width) &&
                     dom.parentElement.style.width === "auto"
                 ) {
                     width = editingDimensions.current.width + d.width + "px";
                 }
-
                 if (
                     isPercentage(height) &&
                     dom.parentElement.style.height === "auto"
                 ) {
                     height = editingDimensions.current.height + d.height + "px";
                 }
-
                 nodeDimensions.current = {
                     width,
                     height,
@@ -282,8 +278,8 @@ export const Resizer = ({
                 isResizing.current = false;
 
                 setProp((prop: any) => {
-                    prop[prop][propKey.width] = nodeDimensions.current.width;
-                    prop[prop][propKey.height] = nodeDimensions.current.height;
+                    prop[type][propKey.width] = nodeDimensions.current.width;
+                    prop[type][propKey.height] = nodeDimensions.current.height;
                 }, 1000);
                 updateInternalDimensionsWithOriginal();
             }}
