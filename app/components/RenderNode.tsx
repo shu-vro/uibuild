@@ -71,8 +71,6 @@ export default function RenderNode({ render }) {
         };
     }, [scroll]);
 
-    console.log(isHover, isActive);
-
     return (
         <>
             {isHover || isActive

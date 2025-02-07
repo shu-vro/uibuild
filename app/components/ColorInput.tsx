@@ -1,5 +1,5 @@
 import { useNode } from "@craftjs/core";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { debounce } from "lodash";
 import ColorPicker, {
     ColorPickerProps,
@@ -32,7 +32,7 @@ export default function ColorInput({
         value,
     } = useNode((node) => ({
         value: type
-            ? node.data.props[node.data.props.type][propName]
+            ? node.data.props[type][propName]
             : node.data.props[propName],
     }));
 
@@ -46,23 +46,19 @@ export default function ColorInput({
                 else return (props[type][propName] = e);
             }, 1000);
         }, 300),
-        [],
+        [value],
     );
     const [color, setColor] = React.useState(
         defaultValue || value || "rgba(255,255,255,1)",
     );
 
+    useEffect(() => {
+        setColor(value);
+    }, [value]);
+
     return (
         <>
             <div>{label}</div>
-            {/* <input
-                type="color"
-                id="color-select"
-                className="w-full h-10"
-                defaultValue={defaultValue || value}
-                onChange={debouncedOnChange}
-                {...rest}
-            /> */}
             <Popover placement={"left-start"}>
                 <PopoverTrigger>
                     <Button
