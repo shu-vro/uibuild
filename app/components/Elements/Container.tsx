@@ -40,68 +40,11 @@ export function Container({
     );
 }
 
-// export const ContainerSettings = () => {
-//     const {
-//         background,
-//         padding,
-//         width,
-//         height,
-//         actions: { setProp },
-//     } = useNode((node) => ({
-//         background: node.data.props.background,
-//         padding: node.data.props.padding,
-//         width: node.data.props.width,
-//         height: node.data.props.height,
-//     }));
-
-//     return (
-//         <div>
-//             <div>
-//                 <Input
-//                     label="Width"
-//                     value={width}
-//                     onValueChange={(e) => {
-//                         setProp((props) => (props.width = e), 500);
-//                     }}
-//                 />
-//                 <Input
-//                     label="Height"
-//                     value={height}
-//                     onValueChange={(e) => {
-//                         setProp((props) => (props.height = e), 500);
-//                     }}
-//                 />
-//             </div>
-//             <div>
-//                 <label htmlFor="choose-color">Background</label>
-//                 <input
-//                     id="choose-color"
-//                     type="color"
-//                     value={background}
-//                     onChange={(e) => {
-//                         setProp(
-//                             (props) => (props.background = e.target.value),
-//                             500,
-//                         );
-//                     }}
-//                 />
-//             </div>
-//             <Slider
-//                 defaultValue={padding}
-//                 label="Padding"
-//                 onChange={(value) =>
-//                     setProp((props) => (props.padding = value), 500)
-//                 }
-//             />
-//         </div>
-//     );
-// };
-
 export const ContainerDefaultProps = {};
 
 Container.craft = {
     displayName: "Container",
-    props: generalStatesDefault,
+    props: { ...generalStatesDefault },
     related: {
         settings: GeneralSettings,
     },

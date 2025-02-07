@@ -170,7 +170,7 @@ export type GeneralSettingsProps = {
             value: string;
         };
     }[];
-    background?: BackgroundType[];
+    backgrounds?: BackgroundType[];
 
     [key: string]: any;
 } & React.CSSProperties;
@@ -300,9 +300,9 @@ export function generalStyles({
     hover,
     focus,
     active,
-}: Required<GeneralStatesType>) {
+}: Required<GeneralStatesType>): React.CSSProperties {
     let selected = normal;
-    console.log(selected?.paddingOption, selected?.paddingAll);
+    console.log(selected.fontName);
     return {
         display: selected.display,
         flex: `${selected.flexGrow} ${selected.flexShrink} ${selected.flexBasis}`,
@@ -315,7 +315,12 @@ export function generalStyles({
         left: selected.left,
         right: selected.right,
         bottom: selected.bottom,
-        font: `${selected.textStyle} normal ${selected.fontWeight} ${selected.fontSize}/${selected.fontLineHeight} ${selected.fontName}`,
+        // font: `${selected.textStyle} normal ${selected.fontWeight} ${selected.fontSize}/${selected.fontLineHeight} ${selected.fontName}`,
+        fontFamily: selected.fontName,
+        fontSize: selected.fontSize,
+        fontWeight: selected.fontWeight,
+        lineHeight: selected.fontLineHeight,
+        fontStyle: selected.textStyle,
         color: selected.fontColor,
         textAlign: selected.textAlign,
         verticalAlign: selected.fontVerticalAlign,
@@ -325,6 +330,10 @@ export function generalStyles({
         textDecoration: selected.textDecoration,
         letterSpacing: selected.fontSpacing,
         flexWrap: selected.flexWrap,
+        opacity: selected.opacity,
+        mixBlendMode: selected.mixBlendMode,
+        cursor: selected.cursor,
+        backfaceVisibility: selected.backfaceVisibility,
         borderRadius:
             selected.borderRadiusOption === "all"
                 ? selected.borderRadiusAll
@@ -360,7 +369,7 @@ export function generalStyles({
         transformOrigin:
             selected.transformOriginOption === "all"
                 ? selected.transformOriginAll
-                : `${selected.transformOriginX} ${selected.transformOriginY} ${selected.transformOriginZ}`,
+                : `${selected.transformOriginX} ${selected.transformOriginY} ${!selected.transformOriginZ?.match(/^0/) ? selected.transformOriginZ : ""}`,
         perspectiveOrigin:
             selected.perspectiveOriginOption === "all"
                 ? selected.perspectiveOriginAll
@@ -411,7 +420,7 @@ export function generalStyles({
             })
             .join(","),
 
-        ...selected,
+        // ...selected,
     };
 }
 
@@ -1522,6 +1531,13 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                             type={type}
                                             propName="transformOriginAll"
                                             label="All"
+                                            customValues={[
+                                                "left",
+                                                "right",
+                                                "top",
+                                                "bottom",
+                                                "center",
+                                            ]}
                                             clearDefaultValues
                                         />
                                     </CardBody>
@@ -1534,12 +1550,22 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                             type={type}
                                             propName="transformOriginX"
                                             label="X"
+                                            customValues={[
+                                                "left",
+                                                "center",
+                                                "right",
+                                            ]}
                                             clearDefaultValues
                                         />
                                         <SizeInput
                                             type={type}
-                                            propName="transformOriginX"
+                                            propName="transformOriginY"
                                             label="Y"
+                                            customValues={[
+                                                "top",
+                                                "center",
+                                                "bottom",
+                                            ]}
                                             clearDefaultValues
                                         />
                                         <SizeInput
