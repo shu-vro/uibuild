@@ -218,7 +218,13 @@ export default function MultipleInputs({
     propName: string;
     fields: any[];
 }) {
-    const { nodesDefault } = useNode((node) => ({
+    const {
+        nodesDefault,
+        props,
+        // type: nodeType,
+    } = useNode((node) => ({
+        props: node.data.props,
+        // type: node.data.props.type,
         nodesDefault: type
             ? node.data.props[type][propName] || []
             : node.data.props[propName] || [],
@@ -232,6 +238,13 @@ export default function MultipleInputs({
             else return (props[type][propName] = nodes);
         });
     }, [nodes]);
+
+    useEffect(() => {
+        if (!propName) return;
+        if (!type) setNodes(props[propName] || []);
+        else setNodes(props[type][propName] || []);
+    }, [type]);
+
     return (
         <div className="my-3">
             <div className="flex flex-row justify-between">

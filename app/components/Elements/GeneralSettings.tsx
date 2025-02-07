@@ -492,6 +492,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
             {children}
             <SelectableInput
                 propName="type"
+                className="my-4"
+                labelPlacement="inside"
                 options={["normal", "hover", "focus", "active"]}
             />
             <Accordion

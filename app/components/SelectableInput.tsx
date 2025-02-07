@@ -37,6 +37,7 @@ export default function SelectableInput({
             className="max-w-xs"
             labelPlacement="outside"
             placeholder="Select an option"
+            disallowEmptySelection
             {...rest}
             label={rest.label || "field"}
             aria-label={String(rest.label) || "field"}

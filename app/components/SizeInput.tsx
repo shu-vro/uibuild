@@ -111,6 +111,7 @@ export default function SizeInput({
                     className="p-0 m-0"
                     aria-label="Unit"
                     selectedKeys={[unit]}
+                    disallowEmptySelection
                     onChange={(e) => {
                         setUnit(e.target.value);
                     }}
