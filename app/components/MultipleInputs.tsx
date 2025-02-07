@@ -16,6 +16,7 @@ import { useNode } from "@craftjs/core";
 import SizeInput from "./SizeInput";
 import ColorInput from "./ColorInput";
 import SelectableInput from "./SelectableInput";
+import { GeneralStatesType } from "./Elements/GeneralSettings";
 
 function renderField(fieldsAst: any[], fields: any, setFields: any) {
     return fieldsAst.map((field) => {
@@ -144,11 +145,13 @@ function NodeUpdate({
     defaultField,
     fieldsAst,
     title,
+    type,
 }: {
     node: NodeType;
     defaultField: any;
     fieldsAst: any[];
     title: string;
+    type: GeneralStatesType["type"];
     setNodes: React.Dispatch<React.SetStateAction<NodeType[]>>;
 }) {
     const [fields, setFields] = useState(defaultField);
@@ -204,24 +207,29 @@ function NodeUpdate({
 
 export default function MultipleInputs({
     title,
+    type,
     defaultFields,
     fields,
     propName,
 }: {
     title: string;
+    type: GeneralStatesType["type"];
     defaultFields: Record<string, any>;
     propName: string;
     fields: any[];
 }) {
     const { nodesDefault } = useNode((node) => ({
-        nodesDefault: node.data.props[propName] || [],
+        nodesDefault: type
+            ? node.data.props[type][propName] || []
+            : node.data.props[propName] || [],
     }));
     const [nodes, setNodes] = useState<NodeType[]>(nodesDefault);
-    const { actions } = useNode((node) => ({}));
+    const { actions } = useNode();
 
     useEffect(() => {
         actions.setProp((props: any) => {
-            return (props[propName] = nodes);
+            if (!type) return (props[propName] = nodes);
+            else return (props[type][propName] = nodes);
         });
     }, [nodes]);
     return (
@@ -262,6 +270,7 @@ export default function MultipleInputs({
                             setNodes={setNodes}
                             defaultField={node.fields}
                             fieldsAst={fields}
+                            type={type}
                         />
                     ))}
                 </ReactSortable>

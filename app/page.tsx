@@ -19,7 +19,7 @@ export default function App() {
             onRender={RenderNode}
         >
             <Header />
-            <div className="flex flex-row gap-4 justify-between page-container relative">
+            <div className="flex flex-row gap-4 justify-between page-container relative max-h-screen">
                 <Toolbox />
                 <div className="grow border-x-2">
                     <Frame>

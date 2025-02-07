@@ -5,10 +5,12 @@ import ColorPicker, {
     ColorPickerProps,
 } from "react-best-gradient-color-picker";
 import { Button, Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
+import { GeneralStatesType } from "./Elements/GeneralSettings";
 
 export default function ColorInput({
     propName,
     children,
+    type,
     defaultValue = "",
     overrideOnChange = false,
     onChangeFn,
@@ -18,6 +20,7 @@ export default function ColorInput({
 }: Partial<ColorPickerProps> & {
     label?: string;
     children?: React.ReactNode;
+    type?: GeneralStatesType["type"];
     propName: string;
     defaultValue?: string;
     overrideOnChange?: boolean;
@@ -28,7 +31,9 @@ export default function ColorInput({
         actions: { setProp },
         value,
     } = useNode((node) => ({
-        value: node.data.props[propName],
+        value: type
+            ? node.data.props[node.data.props.type][propName]
+            : node.data.props[propName],
     }));
 
     const debouncedOnChange = useCallback(
@@ -37,7 +42,8 @@ export default function ColorInput({
                 return onChangeFn && onChangeFn(e);
             }
             setProp((props: any) => {
-                return (props[propName] = e);
+                if (!type) return (props[propName] = e);
+                else return (props[type][propName] = e);
             }, 1000);
         }, 300),
         [],

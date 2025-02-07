@@ -71,13 +71,15 @@ export default function RenderNode({ render }) {
         };
     }, [scroll]);
 
+    console.log(isHover, isActive);
+
     return (
         <>
             {isHover || isActive
                 ? ReactDOM.createPortal(
                       <div
                           ref={currentRef}
-                          className="p-2 text-white text-xs bg-primary fixed flex items-center"
+                          className="p-1 text-white text-sm bg-primary/80 fixed flex items-center"
                           style={{
                               zIndex: 9999,
                               left: getPos(dom!).left,

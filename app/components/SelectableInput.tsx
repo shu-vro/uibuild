@@ -3,9 +3,11 @@
 import { useNode } from "@craftjs/core";
 import { Select, SelectItem, SelectProps } from "@heroui/react";
 import React, { useState } from "react";
+import { GeneralStatesType } from "./Elements/GeneralSettings";
 
 export default function SelectableInput({
     propName,
+    type,
     options = [],
     children,
     overrideOnChange = false,
@@ -14,6 +16,7 @@ export default function SelectableInput({
     ...rest
 }: Partial<SelectProps> & {
     propName: string;
+    type?: GeneralStatesType["type"];
     options?: string[];
     overrideOnChange?: boolean;
     defaultValue?: string;
@@ -23,8 +26,11 @@ export default function SelectableInput({
         actions: { setProp },
         value,
     } = useNode((node) => ({
-        value: node.data.props[propName],
+        value: type
+            ? node.data.props[node.data.props.type][propName]
+            : node.data.props[propName],
     }));
+
     const [overriddenValue, setOverriddenValue] = useState(defaultValue);
     return (
         <Select
@@ -42,7 +48,8 @@ export default function SelectableInput({
                     return;
                 }
                 setProp((props: any) => {
-                    return (props[propName] = e.target.value);
+                    if (!type) return (props[propName] = e.target.value);
+                    else return (props[type][propName] = e.target.value);
                 });
             }}
         >
