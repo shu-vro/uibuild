@@ -5,6 +5,7 @@ import ReactDOM from "react-dom";
 import { MdOutlineArrowUpward } from "react-icons/md";
 import { AiOutlineDelete } from "react-icons/ai";
 import { ROOT_NODE } from "@craftjs/utils";
+import { cn } from "@/lib/utils";
 
 export default function RenderNode({ render }) {
     const { id } = useNode();
@@ -77,7 +78,13 @@ export default function RenderNode({ render }) {
                 ? ReactDOM.createPortal(
                       <div
                           ref={currentRef}
-                          className="p-1 text-white text-sm bg-primary/80 fixed flex items-center"
+                          className={cn(
+                              "p-1 text-white text-sm fixed flex items-center",
+                              {
+                                  "bg-primary/80": isActive,
+                                  "bg-secondary/80": isHover,
+                              },
+                          )}
                           style={{
                               zIndex: 9999,
                               left: getPos(dom!).left,

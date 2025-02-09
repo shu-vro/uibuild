@@ -44,7 +44,10 @@ export const ContainerDefaultProps = {};
 
 Container.craft = {
     displayName: "Container",
-    props: { ...generalStatesDefault },
+    props: {
+        ...generalStatesDefault,
+        normal: { ...generalPropsDefault, paddingAll: "20px" },
+    },
     related: {
         settings: GeneralSettings,
     },
