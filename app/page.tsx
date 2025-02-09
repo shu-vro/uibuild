@@ -8,6 +8,8 @@ import Toolbox from "./components/Toolbox";
 import { Container } from "./components/Elements/Container";
 import RenderNode from "./components/RenderNode";
 import { generalPropsDefault } from "./components/Elements/GeneralSettings";
+import { defaultBackground } from "./components/BackgroundInput";
+import Viewport from "./components/Viewport";
 
 export default function App() {
     return (
@@ -21,32 +23,26 @@ export default function App() {
             <Header />
             <div className="flex flex-row gap-4 justify-between page-container relative max-h-screen">
                 <Toolbox />
-                <div className="grow border-x-2">
+                <Viewport>
                     <Frame>
                         <Element
                             canvas
                             is={Container}
                             normal={{
                                 ...generalPropsDefault,
-                                // paddingOption: "all",
-                                paddingAll: "20px",
-                                // backgrounds: [
-                                //     {
-                                //         id: -1,
-                                //         fields: {
-                                //             type: "color",
-                                //             color: {
-                                //                 color: "rgba(255,0,0,1)",
-                                //             },
-                                //             gradient: {
-                                //                 gradient:
-                                //                     "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(0,255,0,1) 100%)",
-                                //             },
-                                //         },
-                                //     },
-                                // ],
+                                backgrounds: [
+                                    {
+                                        id: -1,
+                                        fields: {
+                                            ...defaultBackground.fields,
+                                            type: "color",
+                                            color: {
+                                                color: "rgba(255,0,0,1)",
+                                            },
+                                        },
+                                    },
+                                ],
                             }}
-                            // data-cy="root-container"
                         >
                             {/* <Element
                                 canvas
@@ -68,8 +64,7 @@ export default function App() {
                             /> */}
                         </Element>
                     </Frame>
-                </div>
-
+                </Viewport>
                 <SettingsPanel />
             </div>
         </Editor>
