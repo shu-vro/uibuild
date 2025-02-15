@@ -46,6 +46,8 @@ import BackgroundInput, {
     generateBackgroundStyleFromImage,
 } from "../BackgroundInput";
 import styled from "styled-components";
+import { objectDiff } from "@/lib/utils";
+import _ from "lodash";
 
 export type GeneralSettingsProps = {
     display?: string;
@@ -448,20 +450,19 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
     const {
         actions: { setProp },
         type,
-        ...rest
+        rest,
     } = useNode((node) => ({
         text: node.data.props.text,
         type: node.data.props.type as NonNullable<GeneralStatesType["type"]>,
-        normal: node.data.props.normal,
-        active: node.data.props.active,
-        focus: node.data.props.focus,
-        hover: node.data.props.hover,
+        rest: {
+            normal: node.data.props.normal,
+            active: node.data.props.active,
+            focus: node.data.props.focus,
+            hover: node.data.props.hover,
+        } as Record<GeneralStatesType["type"], GeneralSettingsProps>,
     }));
 
-    let currState = getState(
-        type,
-        rest as unknown as Record<string, GeneralSettingsProps>,
-    );
+    let currState = getState(type, rest);
 
     const {
         fontSize,
@@ -519,11 +520,33 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                 labelPlacement="inside"
                 options={["normal", "hover", "focus", "active"]}
                 overrideOnChange
-                onChangeFn={(val) => {
+                onChangeFn={(val: GeneralStatesType["type"]) => {
+                    let selectedState = _.cloneDeep(getState(val, rest));
+                    let d_minus_h = objectDiff(
+                        generalPropsDefault,
+                        selectedState,
+                    );
+                    d_minus_h = {
+                        ..._.cloneDeep(generalPropsDefault),
+                        ..._.cloneDeep(d_minus_h),
+                    };
+                    for (let key in d_minus_h) {
+                        if (_.isEqual(d_minus_h[key], selectedState[key])) {
+                            // console.log(key)
+                            console.log(
+                                key,
+                                selectedState[key],
+                                rest.normal[key],
+                                Object.isFrozen(selectedState[key]),
+                            );
+                            selectedState[key] = rest.normal[key];
+                        }
+                    }
+                    // console.log(objectDiff(generalPropsDefault, selectedState));
                     setProp((props: any) => {
-                        return (props.type = val);
+                        props.type = val;
+                        props[val] = selectedState;
                     }, 1000);
-                    console.log(val);
                 }}
             />
             <Accordion
