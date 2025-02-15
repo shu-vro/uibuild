@@ -20,7 +20,7 @@ export default function SelectableInput({
     options?: string[];
     overrideOnChange?: boolean;
     defaultValue?: string;
-    onChangeFn?: (value: string) => void;
+    onChangeFn?: (value: any) => void;
 }) {
     let {
         actions: { setProp },
