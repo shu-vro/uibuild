@@ -39,13 +39,13 @@ import {
     PiAlignRight,
     PiAlignCenterHorizontal,
 } from "react-icons/pi";
-import { FaPlus } from "react-icons/fa6";
 import SliderInput from "../SliderInput";
 import MultipleInputs from "../MultipleInputs";
 import BackgroundInput, {
     BackgroundType,
     generateBackgroundStyleFromImage,
 } from "../BackgroundInput";
+import styled from "styled-components";
 
 export type GeneralSettingsProps = {
     display?: string;
@@ -294,6 +294,8 @@ export const generalStatesDefault: GeneralStatesType = {
     active: generalPropsDefault,
 };
 
+export const StyledComponent = styled.div``;
+
 export function generalStyles({
     type,
     normal,
@@ -301,8 +303,19 @@ export function generalStyles({
     focus,
     active,
 }: Required<GeneralStatesType>): React.CSSProperties {
+    // let selected: GeneralSettingsProps = normal;
+    // switch (type) {
+    //     case "hover":
+    //         selected = hover;
+    //         break;
+    //     case "focus":
+    //         selected = focus;
+    //         break;
+    //     case "active":
+    //         selected = active;
+    //         break;
+    // }
     let selected = normal;
-    console.log(selected.fontName);
     return {
         display: selected.display,
         flex: `${selected.flexGrow} ${selected.flexShrink} ${selected.flexBasis}`,
@@ -505,6 +518,13 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                 className="my-4"
                 labelPlacement="inside"
                 options={["normal", "hover", "focus", "active"]}
+                overrideOnChange
+                onChangeFn={(val) => {
+                    setProp((props: any) => {
+                        return (props.type = val);
+                    }, 1000);
+                    console.log(val);
+                }}
             />
             <Accordion
                 keepContentMounted

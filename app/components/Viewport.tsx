@@ -2,11 +2,7 @@ import { useEditor } from "@craftjs/core";
 import React from "react";
 
 export default function Viewport({ children }: { children: React.ReactNode }) {
-    const {
-        enabled,
-        connectors,
-        actions: { setOptions },
-    } = useEditor((state) => ({
+    const { enabled, connectors } = useEditor((state) => ({
         enabled: state.options.enabled,
     }));
     return (
