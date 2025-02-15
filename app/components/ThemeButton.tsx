@@ -34,8 +34,8 @@ export default function ThemeButton({ ...props }: ButtonProps) {
                     className="text-xl"
                     {...props}
                 >
-                    {theme === "dark" && <RxSun />}
-                    {theme === "light" && <PiMoonThin />}
+                    {theme === "light" && <RxSun />}
+                    {theme === "dark" && <PiMoonThin />}
                     {theme === "system" && <PiDeviceMobileCamera />}
                 </Button>
             </DropdownTrigger>

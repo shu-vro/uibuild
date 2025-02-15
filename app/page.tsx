@@ -25,26 +25,8 @@ export default function App() {
                 <Toolbox />
                 <Viewport>
                     <Frame>
-                        <Element
-                            canvas
-                            is={Container}
-                            normal={{
-                                ...generalPropsDefault,
-                                backgrounds: [
-                                    {
-                                        id: -1,
-                                        fields: {
-                                            ...defaultBackground.fields,
-                                            type: "color",
-                                            color: {
-                                                color: "rgba(255,0,0,1)",
-                                            },
-                                        },
-                                    },
-                                ],
-                            }}
-                        >
-                            {/* <Element
+                        <Element canvas is={Container}>
+                            <Element
                                 canvas
                                 id="1"
                                 is={Text}
@@ -61,7 +43,7 @@ export default function App() {
                                 id="1"
                                 is={Text}
                                 text="Hello world"
-                            /> */}
+                            />
                         </Element>
                     </Frame>
                 </Viewport>
