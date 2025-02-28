@@ -7,16 +7,18 @@ import SettingsPanel from "./components/SettingsPanel";
 import Toolbox from "./components/Toolbox";
 import { Container } from "./components/Elements/Container";
 import RenderNode from "./components/RenderNode";
-import { generalPropsDefault } from "./components/Elements/GeneralSettings";
-import { defaultBackground } from "./components/BackgroundInput";
 import Viewport from "./components/Viewport";
+import { Heading } from "./components/Elements/Heading";
+import { LinkComponent } from "./components/Elements/Link";
 
 export default function App() {
     return (
         <Editor
             resolver={{
                 Text,
+                Heading,
                 Container,
+                LinkComponent,
             }}
             onRender={RenderNode}
         >

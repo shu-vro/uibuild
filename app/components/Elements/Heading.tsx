@@ -7,15 +7,16 @@ import {
     generalStyles,
     GeneralStatesType,
     StyledComponent,
+    generalPropsDefault,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
 import { debounce } from "lodash";
 
-type TextProps = {
+type HeadingProps = {
     text?: string;
 } & GeneralStatesType;
 
-export function Text({ text, ...props }: TextProps) {
+export function Heading({ text, ...props }: HeadingProps) {
     const {
         selected,
         actions: { setProp },
@@ -68,7 +69,7 @@ export function Text({ text, ...props }: TextProps) {
                         setValue(e.target.value);
                         debouncedSetProp(e.target.value);
                     }}
-                    tagName="p"
+                    tagName="h1"
                 />
             </Resizer>
             {/* <StyledComponent
@@ -80,7 +81,7 @@ export function Text({ text, ...props }: TextProps) {
                 normal={props.normal || {}}
                 hover={props.hover || {}}
                 focus={props.focus || {}}
-                active={props.active || {}}
+                active={props.active || {}}normal
                 onClick={() => selected && setEditable(true)}
             >
                 <ContentEditable
@@ -97,12 +98,17 @@ export function Text({ text, ...props }: TextProps) {
     );
 }
 
-export const TextDefaultProps = {
-    text: "Hi",
+export const TextDefaultProps: HeadingProps & GeneralStatesType = {
+    text: "Type your header here!",
     ...generalStatesDefault,
+    normal: {
+        ...generalPropsDefault,
+        fontSize: "2rem",
+        fontWeight: "bold",
+    },
 };
 
-Text.craft = {
+Heading.craft = {
     props: TextDefaultProps,
     related: {
         settings: GeneralSettings,

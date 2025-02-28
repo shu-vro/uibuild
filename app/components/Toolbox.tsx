@@ -8,6 +8,10 @@ import { Container } from "./Elements/Container";
 import { Layers } from "@craftjs/layers";
 import { BackgroundType, defaultBackground } from "./BackgroundInput";
 import { generalPropsDefault } from "./Elements/GeneralSettings";
+import { Heading } from "./Elements/Heading";
+import { LuHeading } from "react-icons/lu";
+import { IoLinkOutline } from "react-icons/io5";
+import { LinkComponent } from "./Elements/Link";
 
 function CustomButton({
     Icon,
@@ -44,6 +48,26 @@ export default function Toolbox() {
                     }}
                 >
                     Text
+                </CustomButton>
+                <CustomButton
+                    Icon={LuHeading}
+                    ref={(ref) => {
+                        if (ref) {
+                            connectors.create(ref, <Heading />);
+                        }
+                    }}
+                >
+                    Heading
+                </CustomButton>
+                <CustomButton
+                    Icon={IoLinkOutline}
+                    ref={(ref) => {
+                        if (ref) {
+                            connectors.create(ref, <LinkComponent />);
+                        }
+                    }}
+                >
+                    Link
                 </CustomButton>
                 <CustomButton
                     Icon={PiAppWindowBold}
