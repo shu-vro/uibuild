@@ -16,7 +16,7 @@ import { useNode } from "@craftjs/core";
 import SizeInput from "./SizeInput";
 import ColorInput from "./ColorInput";
 import SelectableInput from "./SelectableInput";
-import { GeneralStatesType } from "./Elements/GeneralSettings";
+import { GeneralStatesType } from "../Elements/GeneralSettings";
 
 function renderField(fieldsAst: any[], fields: any, setFields: any) {
     return fieldsAst.map((field) => {

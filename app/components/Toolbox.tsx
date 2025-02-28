@@ -6,12 +6,16 @@ import { Text } from "./Elements/Text";
 import { Container } from "./Elements/Container";
 
 import { Layers } from "@craftjs/layers";
-import { BackgroundType, defaultBackground } from "./BackgroundInput";
+import {
+    BackgroundType,
+    defaultBackground,
+} from "./input-components/BackgroundInput";
 import { generalPropsDefault } from "./Elements/GeneralSettings";
 import { Heading } from "./Elements/Heading";
 import { LuHeading } from "react-icons/lu";
-import { IoLinkOutline } from "react-icons/io5";
+import { IoLinkOutline, IoImageOutline } from "react-icons/io5";
 import { LinkComponent } from "./Elements/Link";
+import { ImageComponent } from "./Elements/ImageComponent";
 
 function CustomButton({
     Icon,
@@ -75,22 +79,23 @@ export default function Toolbox() {
                         if (ref) {
                             connectors.create(
                                 ref,
-                                <Element
-                                    canvas
-                                    is={Container}
-                                    normal={{
-                                        ...generalPropsDefault,
-                                        backgrounds: [
-                                            defaultBackground as BackgroundType,
-                                        ],
-                                        paddingAll: "20px",
-                                    }}
-                                />,
+                                <Element canvas is={Container} />,
                             );
                         }
                     }}
                 >
                     Container
+                </CustomButton>
+
+                <CustomButton
+                    Icon={IoImageOutline}
+                    ref={(ref) => {
+                        if (ref) {
+                            connectors.create(ref, <ImageComponent />);
+                        }
+                    }}
+                >
+                    Image
                 </CustomButton>
             </div>
             <div className="max-h-[50vh] overflow-auto">

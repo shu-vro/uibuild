@@ -11,12 +11,15 @@ import {
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
 import { debounce } from "lodash";
+import { Accordion, AccordionItem } from "@heroui/react";
+import SelectableInput from "../input-components/SelectableInput";
 
 type HeadingProps = {
     text?: string;
+    heading?: string;
 } & GeneralStatesType;
 
-export function Heading({ text, ...props }: HeadingProps) {
+export function Heading({ text, heading, ...props }: HeadingProps) {
     const {
         selected,
         actions: { setProp },
@@ -69,7 +72,7 @@ export function Heading({ text, ...props }: HeadingProps) {
                         setValue(e.target.value);
                         debouncedSetProp(e.target.value);
                     }}
-                    tagName="h1"
+                    tagName={heading}
                 />
             </Resizer>
             {/* <StyledComponent
@@ -98,8 +101,33 @@ export function Heading({ text, ...props }: HeadingProps) {
     );
 }
 
+function HeadingSettings() {
+    return (
+        <GeneralSettings>
+            <Accordion
+                defaultSelectedKeys={["1"]}
+                selectionMode="multiple"
+                variant="splitted"
+                className="px-0"
+                itemClasses={{
+                    content: "flex flex-col gap-4 m-0",
+                }}
+            >
+                <AccordionItem key="1" aria-label="Link" title="Link">
+                    <SelectableInput
+                        propName="heading"
+                        label="Heading"
+                        options={["h1", "h2", "h3", "h4", "h5", "h6"]}
+                    />
+                </AccordionItem>
+            </Accordion>
+        </GeneralSettings>
+    );
+}
+
 export const TextDefaultProps: HeadingProps & GeneralStatesType = {
     text: "Type your header here!",
+    heading: "h1",
     ...generalStatesDefault,
     normal: {
         ...generalPropsDefault,
@@ -111,6 +139,6 @@ export const TextDefaultProps: HeadingProps & GeneralStatesType = {
 Heading.craft = {
     props: TextDefaultProps,
     related: {
-        settings: GeneralSettings,
+        settings: HeadingSettings,
     },
 };

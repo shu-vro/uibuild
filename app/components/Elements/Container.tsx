@@ -10,6 +10,10 @@ import {
     generalStyles,
     StyledComponent,
 } from "./GeneralSettings";
+import {
+    BackgroundType,
+    defaultBackground,
+} from "../input-components/BackgroundInput";
 
 type ContainerProps = {
     children?: React.ReactNode;
@@ -56,7 +60,11 @@ Container.craft = {
     displayName: "Container",
     props: {
         ...generalStatesDefault,
-        normal: { ...generalPropsDefault, paddingAll: "20px" },
+        normal: {
+            ...generalPropsDefault,
+            backgrounds: [defaultBackground as BackgroundType],
+            paddingAll: "20px",
+        },
     },
     related: {
         settings: GeneralSettings,

@@ -3,7 +3,7 @@
 import { useNode } from "@craftjs/core";
 import { Select, SelectItem, SelectProps } from "@heroui/react";
 import React, { useState } from "react";
-import { GeneralStatesType } from "./Elements/GeneralSettings";
+import { GeneralStatesType } from "../Elements/GeneralSettings";
 
 export default function SelectableInput({
     propName,

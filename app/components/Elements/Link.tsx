@@ -12,8 +12,8 @@ import {
 import { Resizer } from "../Resizer";
 import { debounce } from "lodash";
 import { Accordion, AccordionItem, Input } from "@heroui/react";
-import TextInput from "../TextInput";
-import SelectableInput from "../SelectableInput";
+import TextInput from "../input-components/TextInput";
+import SelectableInput from "../input-components/SelectableInput";
 
 type LinkProps = {
     text?: string;
@@ -77,6 +77,7 @@ export function LinkComponent({ text, ...props }: LinkProps) {
                     tagName="a"
                     href={props.href}
                     target={props.target}
+                    rel="noopener noreferrer"
                 />
             </Resizer>
             {/* <StyledComponent
@@ -118,18 +119,10 @@ export const LinkDefaultProps: LinkProps & GeneralStatesType = {
 };
 
 function LinkSettings() {
-    const {
-        actions: { setProp },
-        href,
-        target,
-    } = useNode((node) => ({
-        href: node.data.props.href,
-        target: node.data.props.target,
-    }));
     return (
         <GeneralSettings>
             <Accordion
-                keepContentMounted
+                defaultSelectedKeys={["1"]}
                 selectionMode="multiple"
                 variant="splitted"
                 className="px-0"
