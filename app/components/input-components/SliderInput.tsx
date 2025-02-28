@@ -1,7 +1,7 @@
 import { useNode } from "@craftjs/core";
 import { Slider, SliderProps } from "@heroui/react";
 import React, { useCallback, useEffect, useState } from "react";
-import { GeneralStatesType } from "./Elements/GeneralSettings";
+import { GeneralStatesType } from "../Elements/GeneralSettings";
 import { debounce } from "lodash";
 
 export default function SliderInput({

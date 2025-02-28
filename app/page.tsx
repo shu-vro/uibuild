@@ -10,6 +10,8 @@ import RenderNode from "./components/RenderNode";
 import Viewport from "./components/Viewport";
 import { Heading } from "./components/Elements/Heading";
 import { LinkComponent } from "./components/Elements/Link";
+import { ImageComponent } from "./components/Elements/ImageComponent";
+import { generalPropsDefault } from "./components/Elements/GeneralSettings";
 
 export default function App() {
     return (
@@ -19,6 +21,7 @@ export default function App() {
                 Heading,
                 Container,
                 LinkComponent,
+                ImageComponent,
             }}
             onRender={RenderNode}
         >
@@ -27,7 +30,15 @@ export default function App() {
                 <Toolbox />
                 <Viewport>
                     <Frame>
-                        <Element canvas is={Container}>
+                        <Element
+                            canvas
+                            is={Container}
+                            normal={{
+                                ...generalPropsDefault,
+                                paddingAll: "20px",
+                                backgrounds: [],
+                            }}
+                        >
                             <Element
                                 canvas
                                 id="1"

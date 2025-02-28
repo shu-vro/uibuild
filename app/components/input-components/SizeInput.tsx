@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { useNode } from "@craftjs/core";
 import { Input, InputProps, Select, SelectItem } from "@heroui/react";
 import React, { useEffect, useState } from "react";
-import { GeneralStatesType } from "./Elements/GeneralSettings";
+import { GeneralStatesType } from "../Elements/GeneralSettings";
 
 const parseSizeValue = (
     value: string = "",
@@ -83,7 +83,9 @@ export default function SizeInput({
             setProp((props: any) => {
                 if (customValues.includes(unit)) {
                     setIntVal("0");
-                    return (props[propName] = unit);
+                    // return (props[propName] = unit);
+                    if (!type) return (props[propName] = unit);
+                    else return (props[type][propName] = unit);
                 }
                 const newValue = `${intVal}${unit}`;
 

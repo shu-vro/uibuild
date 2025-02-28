@@ -5,7 +5,7 @@ import ColorPicker, {
     ColorPickerProps,
 } from "react-best-gradient-color-picker";
 import { Button, Popover, PopoverContent, PopoverTrigger } from "@heroui/react";
-import { GeneralStatesType } from "./Elements/GeneralSettings";
+import { GeneralStatesType } from "../Elements/GeneralSettings";
 
 export default function ColorInput({
     propName,

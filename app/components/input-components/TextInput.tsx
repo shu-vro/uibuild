@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { useNode } from "@craftjs/core";
 import { Input, InputProps, Select, SelectItem } from "@heroui/react";
 import React, { useEffect, useState, useCallback } from "react";
-import { GeneralStatesType } from "./Elements/GeneralSettings";
+import { GeneralStatesType } from "../Elements/GeneralSettings";
 import { debounce } from "lodash";
 
 export default function TextInput({
@@ -59,13 +59,13 @@ export default function TextInput({
     return (
         <Input
             type="text"
-            label="Padding"
+            label="Label here"
             labelPlacement="outside"
             {...rest}
             classNames={{
                 inputWrapper: cn("pr-0", rest?.className),
             }}
-            defaultValue={strVal}
+            value={strVal}
             onValueChange={(e) => {
                 setStrVal(e);
             }}
