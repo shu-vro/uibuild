@@ -114,12 +114,6 @@ body {
     }
 }
 
-.swiper-slide {
-    text-align: center;
-    font-size: 18px;
-    width: fit-content !important;
-}
-
 .component-selected {
     @apply relative;
 }
@@ -128,16 +122,6 @@ body {
     @apply border-primary border border-dashed w-full h-full absolute left-0 top-0 pointer-events-none block;
 }
 
-.gGWxJj {
+.gMHLVz {
     @apply !bg-default-300;
 }
-
-/* .gGWxJj,
-.sc-jqVXSH {
-    @apply bg-background text-foreground;
-}
-
-.sc-jqVXSH:hover,
-.gGWxJj:hover {
-    @apply bg-primary text-primary-foreground;
-} */

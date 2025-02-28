@@ -8,6 +8,7 @@ import {
     generalStatesDefault,
     GeneralStatesType,
     generalStyles,
+    StyledComponent,
 } from "./GeneralSettings";
 
 type ContainerProps = {
@@ -16,8 +17,6 @@ type ContainerProps = {
 
 export function Container({
     children,
-    // width = "100px",
-    // height = "100px",
     ...props
 }: GeneralStatesType & ContainerProps) {
     return (
@@ -36,6 +35,17 @@ export function Container({
             >
                 {children}
             </Resizer>
+            {/* <StyledComponent
+                as={Resizer}
+                propKey={{
+                    width: "width",
+                    height: "height",
+                }}
+                normal={props.normal || {}}
+                hover={props.hover || {}}
+                focus={props.focus || {}}
+                active={props.active || {}}
+            /> */}
         </>
     );
 }

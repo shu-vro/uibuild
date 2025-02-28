@@ -45,7 +45,7 @@ import BackgroundInput, {
     BackgroundType,
     generateBackgroundStyleFromImage,
 } from "../BackgroundInput";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { objectDiff } from "@/lib/utils";
 import _ from "lodash";
 
@@ -296,7 +296,59 @@ export const generalStatesDefault: GeneralStatesType = {
     active: generalPropsDefault,
 };
 
-export const StyledComponent = styled.div``;
+export const StyledComponent = styled.div<{
+    normal: GeneralSettingsProps;
+    hover: GeneralSettingsProps;
+    focus: GeneralSettingsProps;
+    active: GeneralSettingsProps;
+}>`
+    ${(props: Omit<GeneralStatesType, "type">) =>
+        css({
+            ...generalStyles({
+                type: "normal",
+                normal: props.normal,
+                hover: props.hover,
+                focus: props.focus,
+                active: props.active,
+            }),
+        })}
+    &:hover {
+        ${(props: Omit<GeneralStatesType, "type">) =>
+            css({
+                ...generalStyles({
+                    type: "hover",
+                    normal: props.normal,
+                    hover: props.hover,
+                    focus: props.focus,
+                    active: props.active,
+                }),
+            })}
+    }
+    &:focus {
+        ${(props: Omit<GeneralStatesType, "type">) =>
+            css({
+                ...generalStyles({
+                    type: "focus",
+                    normal: props.normal,
+                    hover: props.hover,
+                    focus: props.focus,
+                    active: props.active,
+                }),
+            })}
+    }
+    &:active {
+        ${(props: Omit<GeneralStatesType, "type">) =>
+            css({
+                ...generalStyles({
+                    type: "active",
+                    normal: props.normal,
+                    hover: props.hover,
+                    focus: props.focus,
+                    active: props.active,
+                }),
+            })}
+    }
+`;
 
 export function generalStyles({
     type,
@@ -305,19 +357,19 @@ export function generalStyles({
     focus,
     active,
 }: Required<GeneralStatesType>): React.CSSProperties {
-    // let selected: GeneralSettingsProps = normal;
-    // switch (type) {
-    //     case "hover":
-    //         selected = hover;
-    //         break;
-    //     case "focus":
-    //         selected = focus;
-    //         break;
-    //     case "active":
-    //         selected = active;
-    //         break;
-    // }
-    let selected = normal;
+    let selected: GeneralSettingsProps = normal;
+    switch (type) {
+        case "hover":
+            selected = hover;
+            break;
+        case "focus":
+            selected = focus;
+            break;
+        case "active":
+            selected = active;
+            break;
+    }
+    // let selected = normal;
     return {
         display: selected.display,
         flex: `${selected.flexGrow} ${selected.flexShrink} ${selected.flexBasis}`,
@@ -513,7 +565,6 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
 
     return (
         <>
-            {children}
             <SelectableInput
                 propName="type"
                 className="my-4"
@@ -549,11 +600,12 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                     }, 1000);
                 }}
             />
+            {children}
             <Accordion
                 keepContentMounted
                 selectionMode="multiple"
                 variant="splitted"
-                className="px-0"
+                className="px-0 mt-2"
                 itemClasses={{
                     content: "flex flex-col gap-4 m-0",
                 }}
@@ -1135,272 +1187,284 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                     />
                 </AccordionItem>
                 <AccordionItem key="6" aria-label="Border" title="Border">
-                    <p>Border Radius</p>
-                    <Tabs
-                        aria-label="Options"
-                        selectedKey={borderRadiusOption || "all"}
-                        onSelectionChange={(val) => {
-                            setProp((props: any) => {
-                                return (props[props.type].borderRadiusOption =
-                                    val);
-                            }, 1000);
-                        }}
-                    >
-                        <Tab key="all" title="All">
-                            <Card>
-                                <CardBody>
-                                    <SizeInput
-                                        type={type}
-                                        propName="borderRadiusAll"
-                                        label="All"
-                                    />
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                        <Tab key="custom" title="Custom">
-                            <Card>
-                                <CardBody className="flex flex-col gap-4">
-                                    <SizeInput
-                                        type={type}
-                                        propName="borderWidthTopLeft"
-                                        label="Top Left"
-                                    />
-                                    <SizeInput
-                                        type={type}
-                                        propName="borderWidthTopRight"
-                                        label="Top Right"
-                                    />
-                                    <SizeInput
-                                        type={type}
-                                        propName="borderWidthBottomLeft"
-                                        label="Bottom Left"
-                                    />
-                                    <SizeInput
-                                        type={type}
-                                        propName="borderWidthBottomRight"
-                                        label="Bottom Right"
-                                    />
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                    </Tabs>
-                    <p>Border Width</p>
-                    <Tabs
-                        aria-label="Options"
-                        selectedKey={borderWidthOption || "all"}
-                        onSelectionChange={(val) => {
-                            setProp((props: any) => {
-                                return (props[props.type].borderWidthOption =
-                                    val);
-                            }, 1000);
-                        }}
-                    >
-                        <Tab key="all" title="All">
-                            <Card>
-                                <CardBody>
-                                    <SizeInput
-                                        type={type}
-                                        propName="borderWidthAll"
-                                        label="All"
-                                    />
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                        <Tab key="custom" title="Custom">
-                            <Card>
-                                <CardBody className="flex flex-col gap-4">
-                                    <SizeInput
-                                        type={type}
-                                        propName="borderWidthTop"
-                                        label="Top"
-                                    />
-                                    <SizeInput
-                                        type={type}
-                                        propName="borderWidthLeft"
-                                        label="Left"
-                                    />
-                                    <SizeInput
-                                        type={type}
-                                        propName="borderWidthBottom"
-                                        label="Bottom"
-                                    />
-                                    <SizeInput
-                                        type={type}
-                                        propName="borderWidthRight"
-                                        label="Right"
-                                    />
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                    </Tabs>
-                    <p>Border Style</p>
-                    <Tabs
-                        aria-label="Options"
-                        selectedKey={borderStyleOption || "all"}
-                        onSelectionChange={(val) => {
-                            setProp((props: any) => {
-                                return (props[props.type].borderStyleOption =
-                                    val);
-                            }, 1000);
-                        }}
-                    >
-                        <Tab key="all" title="All">
-                            <Card>
-                                <CardBody>
-                                    <SelectableInput
-                                        type={type}
-                                        propName="borderStyleAll"
-                                        label="All"
-                                        options={[
-                                            "none",
-                                            "hidden",
-                                            "dotted",
-                                            "dashed",
-                                            "solid",
-                                            "double",
-                                            "groove",
-                                            "ridge",
-                                            "inset",
-                                            "outset",
-                                            "initial",
-                                            "inherit",
-                                        ]}
-                                    />
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                        <Tab key="custom" title="Custom">
-                            <Card>
-                                <CardBody className="flex flex-col gap-4">
-                                    <SelectableInput
-                                        type={type}
-                                        propName="borderStyleTop"
-                                        label="Top"
-                                        options={[
-                                            "none",
-                                            "hidden",
-                                            "dotted",
-                                            "dashed",
-                                            "solid",
-                                            "double",
-                                            "groove",
-                                            "ridge",
-                                            "inset",
-                                            "outset",
-                                            "initial",
-                                            "inherit",
-                                        ]}
-                                    />
-                                    <SelectableInput
-                                        type={type}
-                                        propName="borderStyleLeft"
-                                        label="Left"
-                                        options={[
-                                            "none",
-                                            "hidden",
-                                            "dotted",
-                                            "dashed",
-                                            "solid",
-                                            "double",
-                                            "groove",
-                                            "ridge",
-                                            "inset",
-                                            "outset",
-                                            "initial",
-                                            "inherit",
-                                        ]}
-                                    />
-                                    <SelectableInput
-                                        type={type}
-                                        propName="borderStyleBottom"
-                                        label="Bottom"
-                                        options={[
-                                            "none",
-                                            "hidden",
-                                            "dotted",
-                                            "dashed",
-                                            "solid",
-                                            "double",
-                                            "groove",
-                                            "ridge",
-                                            "inset",
-                                            "outset",
-                                            "initial",
-                                            "inherit",
-                                        ]}
-                                    />
-                                    <SelectableInput
-                                        type={type}
-                                        propName="borderStyleRight"
-                                        label="Right"
-                                        options={[
-                                            "none",
-                                            "hidden",
-                                            "dotted",
-                                            "dashed",
-                                            "solid",
-                                            "double",
-                                            "groove",
-                                            "ridge",
-                                            "inset",
-                                            "outset",
-                                            "initial",
-                                            "inherit",
-                                        ]}
-                                    />
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                    </Tabs>
-                    <p>Border Color</p>
-                    <Tabs
-                        aria-label="Options"
-                        selectedKey={borderColorOption || "all"}
-                        onSelectionChange={(val) => {
-                            setProp((props: any) => {
-                                return (props[props.type].borderColorOption =
-                                    val);
-                            }, 1000);
-                        }}
-                    >
-                        <Tab key="all" title="All">
-                            <Card>
-                                <CardBody>
-                                    <ColorInput
-                                        type={type}
-                                        propName="borderColorAll"
-                                        label="All"
-                                    />
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                        <Tab key="custom" title="Custom">
-                            <Card>
-                                <CardBody className="flex flex-col gap-4">
-                                    <ColorInput
-                                        type={type}
-                                        propName="borderColorTop"
-                                        label="Top"
-                                    />
-                                    <ColorInput
-                                        type={type}
-                                        propName="borderWidthLeft"
-                                        label="Left"
-                                    />
-                                    <ColorInput
-                                        type={type}
-                                        propName="borderWidthBottom"
-                                        label="Bottom"
-                                    />
-                                    <ColorInput
-                                        type={type}
-                                        propName="borderWidthRight"
-                                        label="Right"
-                                    />
-                                </CardBody>
-                            </Card>
-                        </Tab>
-                    </Tabs>
+                    <div>
+                        <p>Border Radius</p>
+                        <Tabs
+                            aria-label="Options"
+                            selectedKey={borderRadiusOption || "all"}
+                            onSelectionChange={(val) => {
+                                setProp((props: any) => {
+                                    return (props[
+                                        props.type
+                                    ].borderRadiusOption = val);
+                                }, 1000);
+                            }}
+                        >
+                            <Tab key="all" title="All">
+                                <Card>
+                                    <CardBody>
+                                        <SizeInput
+                                            type={type}
+                                            propName="borderRadiusAll"
+                                            label="All"
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Tab>
+                            <Tab key="custom" title="Custom">
+                                <Card>
+                                    <CardBody className="flex flex-col gap-4">
+                                        <SizeInput
+                                            type={type}
+                                            propName="borderWidthTopLeft"
+                                            label="Top Left"
+                                        />
+                                        <SizeInput
+                                            type={type}
+                                            propName="borderWidthTopRight"
+                                            label="Top Right"
+                                        />
+                                        <SizeInput
+                                            type={type}
+                                            propName="borderWidthBottomLeft"
+                                            label="Bottom Left"
+                                        />
+                                        <SizeInput
+                                            type={type}
+                                            propName="borderWidthBottomRight"
+                                            label="Bottom Right"
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Tab>
+                        </Tabs>
+                    </div>
+                    <div>
+                        <p>Border Width</p>
+                        <Tabs
+                            aria-label="Options"
+                            selectedKey={borderWidthOption || "all"}
+                            onSelectionChange={(val) => {
+                                setProp((props: any) => {
+                                    return (props[
+                                        props.type
+                                    ].borderWidthOption = val);
+                                }, 1000);
+                            }}
+                        >
+                            <Tab key="all" title="All">
+                                <Card>
+                                    <CardBody>
+                                        <SizeInput
+                                            type={type}
+                                            propName="borderWidthAll"
+                                            label="All"
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Tab>
+                            <Tab key="custom" title="Custom">
+                                <Card>
+                                    <CardBody className="flex flex-col gap-4">
+                                        <SizeInput
+                                            type={type}
+                                            propName="borderWidthTop"
+                                            label="Top"
+                                        />
+                                        <SizeInput
+                                            type={type}
+                                            propName="borderWidthLeft"
+                                            label="Left"
+                                        />
+                                        <SizeInput
+                                            type={type}
+                                            propName="borderWidthBottom"
+                                            label="Bottom"
+                                        />
+                                        <SizeInput
+                                            type={type}
+                                            propName="borderWidthRight"
+                                            label="Right"
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Tab>
+                        </Tabs>
+                    </div>
+                    <div>
+                        <p>Border Style</p>
+                        <Tabs
+                            aria-label="Options"
+                            selectedKey={borderStyleOption || "all"}
+                            onSelectionChange={(val) => {
+                                setProp((props: any) => {
+                                    return (props[
+                                        props.type
+                                    ].borderStyleOption = val);
+                                }, 1000);
+                            }}
+                        >
+                            <Tab key="all" title="All">
+                                <Card>
+                                    <CardBody>
+                                        <SelectableInput
+                                            type={type}
+                                            propName="borderStyleAll"
+                                            label="All"
+                                            options={[
+                                                "none",
+                                                "hidden",
+                                                "dotted",
+                                                "dashed",
+                                                "solid",
+                                                "double",
+                                                "groove",
+                                                "ridge",
+                                                "inset",
+                                                "outset",
+                                                "initial",
+                                                "inherit",
+                                            ]}
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Tab>
+                            <Tab key="custom" title="Custom">
+                                <Card>
+                                    <CardBody className="flex flex-col gap-4">
+                                        <SelectableInput
+                                            type={type}
+                                            propName="borderStyleTop"
+                                            label="Top"
+                                            options={[
+                                                "none",
+                                                "hidden",
+                                                "dotted",
+                                                "dashed",
+                                                "solid",
+                                                "double",
+                                                "groove",
+                                                "ridge",
+                                                "inset",
+                                                "outset",
+                                                "initial",
+                                                "inherit",
+                                            ]}
+                                        />
+                                        <SelectableInput
+                                            type={type}
+                                            propName="borderStyleLeft"
+                                            label="Left"
+                                            options={[
+                                                "none",
+                                                "hidden",
+                                                "dotted",
+                                                "dashed",
+                                                "solid",
+                                                "double",
+                                                "groove",
+                                                "ridge",
+                                                "inset",
+                                                "outset",
+                                                "initial",
+                                                "inherit",
+                                            ]}
+                                        />
+                                        <SelectableInput
+                                            type={type}
+                                            propName="borderStyleBottom"
+                                            label="Bottom"
+                                            options={[
+                                                "none",
+                                                "hidden",
+                                                "dotted",
+                                                "dashed",
+                                                "solid",
+                                                "double",
+                                                "groove",
+                                                "ridge",
+                                                "inset",
+                                                "outset",
+                                                "initial",
+                                                "inherit",
+                                            ]}
+                                        />
+                                        <SelectableInput
+                                            type={type}
+                                            propName="borderStyleRight"
+                                            label="Right"
+                                            options={[
+                                                "none",
+                                                "hidden",
+                                                "dotted",
+                                                "dashed",
+                                                "solid",
+                                                "double",
+                                                "groove",
+                                                "ridge",
+                                                "inset",
+                                                "outset",
+                                                "initial",
+                                                "inherit",
+                                            ]}
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Tab>
+                        </Tabs>
+                    </div>
+                    <div>
+                        <p>Border Color</p>
+                        <Tabs
+                            aria-label="Options"
+                            selectedKey={borderColorOption || "all"}
+                            onSelectionChange={(val) => {
+                                setProp((props: any) => {
+                                    return (props[
+                                        props.type
+                                    ].borderColorOption = val);
+                                }, 1000);
+                            }}
+                        >
+                            <Tab key="all" title="All">
+                                <Card>
+                                    <CardBody>
+                                        <ColorInput
+                                            type={type}
+                                            propName="borderColorAll"
+                                            label="All"
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Tab>
+                            <Tab key="custom" title="Custom">
+                                <Card>
+                                    <CardBody className="flex flex-col gap-4">
+                                        <ColorInput
+                                            type={type}
+                                            propName="borderColorTop"
+                                            label="Top"
+                                        />
+                                        <ColorInput
+                                            type={type}
+                                            propName="borderWidthLeft"
+                                            label="Left"
+                                        />
+                                        <ColorInput
+                                            type={type}
+                                            propName="borderWidthBottom"
+                                            label="Bottom"
+                                        />
+                                        <ColorInput
+                                            type={type}
+                                            propName="borderWidthRight"
+                                            label="Right"
+                                        />
+                                    </CardBody>
+                                </Card>
+                            </Tab>
+                        </Tabs>
+                    </div>
                 </AccordionItem>
                 <AccordionItem
                     key="7"

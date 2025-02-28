@@ -7,15 +7,21 @@ import {
     generalStyles,
     GeneralStatesType,
     StyledComponent,
+    generalPropsDefault,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
 import { debounce } from "lodash";
+import { Accordion, AccordionItem, Input } from "@heroui/react";
+import TextInput from "../TextInput";
+import SelectableInput from "../SelectableInput";
 
-type TextProps = {
+type LinkProps = {
     text?: string;
+    href?: string;
+    target?: string;
 } & GeneralStatesType;
 
-export function Text({ text, ...props }: TextProps) {
+export function LinkComponent({ text, ...props }: LinkProps) {
     const {
         selected,
         actions: { setProp },
@@ -68,7 +74,9 @@ export function Text({ text, ...props }: TextProps) {
                         setValue(e.target.value);
                         debouncedSetProp(e.target.value);
                     }}
-                    tagName="p"
+                    tagName="a"
+                    href={props.href}
+                    target={props.target}
                 />
             </Resizer>
             {/* <StyledComponent
@@ -80,7 +88,7 @@ export function Text({ text, ...props }: TextProps) {
                 normal={props.normal || {}}
                 hover={props.hover || {}}
                 focus={props.focus || {}}
-                active={props.active || {}}
+                active={props.active || {}}normal
                 onClick={() => selected && setEditable(true)}
             >
                 <ContentEditable
@@ -97,14 +105,55 @@ export function Text({ text, ...props }: TextProps) {
     );
 }
 
-export const TextDefaultProps = {
-    text: "Hi",
+export const LinkDefaultProps: LinkProps & GeneralStatesType = {
+    text: "Your Link here!",
+    href: "#",
+    target: "_blank",
     ...generalStatesDefault,
+    normal: {
+        ...generalPropsDefault,
+        fontSize: "2rem",
+        fontWeight: "bold",
+    },
 };
 
-Text.craft = {
-    props: TextDefaultProps,
+function LinkSettings() {
+    const {
+        actions: { setProp },
+        href,
+        target,
+    } = useNode((node) => ({
+        href: node.data.props.href,
+        target: node.data.props.target,
+    }));
+    return (
+        <GeneralSettings>
+            <Accordion
+                keepContentMounted
+                selectionMode="multiple"
+                variant="splitted"
+                className="px-0"
+                itemClasses={{
+                    content: "flex flex-col gap-4 m-0",
+                }}
+            >
+                <AccordionItem key="1" aria-label="Link" title="Link">
+                    <TextInput propName="href" label="Link" />
+                    <SelectableInput
+                        propName="target"
+                        label="Target"
+                        options={["_blank", "_self", "_parent", "_top"]}
+                    />
+                </AccordionItem>
+            </Accordion>
+        </GeneralSettings>
+    );
+}
+
+LinkComponent.craft = {
+    name: "Link",
+    props: LinkDefaultProps,
     related: {
-        settings: GeneralSettings,
+        settings: LinkSettings,
     },
 };
