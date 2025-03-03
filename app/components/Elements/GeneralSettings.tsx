@@ -405,6 +405,9 @@ export function generalStyles({
         mixBlendMode: selected.mixBlendMode,
         cursor: selected.cursor,
         backfaceVisibility: selected.backfaceVisibility,
+        justifyContent: selected.justifyContent,
+        alignItems: selected.alignItems,
+        flexDirection: selected.flexDirection,
         borderRadius:
             selected.borderRadiusOption === "all"
                 ? selected.borderRadiusAll
