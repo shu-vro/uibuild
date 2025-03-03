@@ -32,7 +32,7 @@ export default function ImageInput({
             : node.data.props[propName],
     }));
     const [overriddenValue, setOverriddenValue] = useState(
-        defaultValue || value || null,
+        defaultValue || value || "",
     );
     return (
         <div>
@@ -48,6 +48,7 @@ export default function ImageInput({
                     id="file-input"
                     className="sr-only"
                     title="Upload Image"
+                    accept="image/*"
                     onChange={(e) => {
                         const files = e.target.files;
                         if (!files) return;
