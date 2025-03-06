@@ -575,6 +575,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
             <SelectableInput
                 propName="type"
                 className="my-4"
+                label="State"
                 labelPlacement="inside"
                 options={["normal", "hover", "focus", "active"]}
                 overrideOnChange

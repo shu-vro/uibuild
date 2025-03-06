@@ -12,6 +12,7 @@ import { Heading } from "./components/Elements/Heading";
 import { LinkComponent } from "./components/Elements/Link";
 import { ImageComponent } from "./components/Elements/ImageComponent";
 import { generalPropsDefault } from "./components/Elements/GeneralSettings";
+import { ButtonComponent } from "./components/Elements/ButtonComponent";
 
 export default function App() {
     return (
@@ -22,6 +23,7 @@ export default function App() {
                 Container,
                 LinkComponent,
                 ImageComponent,
+                ButtonComponent,
             }}
             onRender={RenderNode}
         >

@@ -22,11 +22,11 @@ type ImageProps = {
     alt?: string;
     objectFit?: React.CSSProperties["objectFit"];
 
-    isBlurred: boolean;
-    isZoomed: boolean;
-    removeWrapper: boolean;
-    disableSkeleton: boolean;
-    loading: "lazy" | "eager";
+    isBlurred?: boolean;
+    isZoomed?: boolean;
+    removeWrapper?: boolean;
+    disableSkeleton?: boolean;
+    loading?: "lazy" | "eager";
 } & GeneralStatesType;
 
 export function ImageComponent({
@@ -83,28 +83,6 @@ export function ImageComponent({
                     loading={loading}
                 />
             </Resizer>
-            {/* <StyledComponent
-                as={Resizer}
-                propKey={{
-                    width: "width",
-                    height: "height",
-                }}
-                normal={props.normal || {}}
-                hover={props.hover || {}}
-                focus={props.focus || {}}
-                active={props.active || {}}normal
-                onClick={() => selected && setEditable(true)}
-            >
-                <ContentEditable
-                    html={value as string}
-                    disabled={!editable}
-                    onChange={(e) => {
-                        setValue(e.target.value);
-                        debouncedSetProp(e.target.value);
-                    }}
-                    tagName="p"
-                />
-            </StyledComponent> */}
         </>
     );
 }
