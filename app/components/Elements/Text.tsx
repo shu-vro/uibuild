@@ -71,28 +71,6 @@ export function Text({ text, ...props }: TextProps) {
                     tagName="p"
                 />
             </Resizer>
-            {/* <StyledComponent
-                as={Resizer}
-                propKey={{
-                    width: "width",
-                    height: "height",
-                }}
-                normal={props.normal || {}}
-                hover={props.hover || {}}
-                focus={props.focus || {}}
-                active={props.active || {}}
-                onClick={() => selected && setEditable(true)}
-            >
-                <ContentEditable
-                    html={value as string}
-                    disabled={!editable}
-                    onChange={(e) => {
-                        setValue(e.target.value);
-                        debouncedSetProp(e.target.value);
-                    }}
-                    tagName="p"
-                />
-            </StyledComponent> */}
         </>
     );
 }

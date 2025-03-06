@@ -1,21 +1,19 @@
 import { useEditor, Element } from "@craftjs/core";
-import { Button, Listbox, ListboxItem } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { RiText } from "react-icons/ri";
-import { PiAppWindowBold } from "react-icons/pi";
+import { BsBox } from "react-icons/bs";
 import { Text } from "./Elements/Text";
 import { Container } from "./Elements/Container";
 
 import { Layers } from "@craftjs/layers";
-import {
-    BackgroundType,
-    defaultBackground,
-} from "./input-components/BackgroundInput";
-import { generalPropsDefault } from "./Elements/GeneralSettings";
 import { Heading } from "./Elements/Heading";
 import { LuHeading } from "react-icons/lu";
-import { IoLinkOutline, IoImageOutline } from "react-icons/io5";
+import { IoImageOutline } from "react-icons/io5";
+import { HiOutlineLink } from "react-icons/hi2";
 import { LinkComponent } from "./Elements/Link";
 import { ImageComponent } from "./Elements/ImageComponent";
+import { ButtonComponent } from "./Elements/ButtonComponent";
+import { PiCursorClick } from "react-icons/pi";
 
 function CustomButton({
     Icon,
@@ -64,7 +62,7 @@ export default function Toolbox() {
                     Heading
                 </CustomButton>
                 <CustomButton
-                    Icon={IoLinkOutline}
+                    Icon={HiOutlineLink}
                     ref={(ref) => {
                         if (ref) {
                             connectors.create(ref, <LinkComponent />);
@@ -74,7 +72,7 @@ export default function Toolbox() {
                     Link
                 </CustomButton>
                 <CustomButton
-                    Icon={PiAppWindowBold}
+                    Icon={BsBox}
                     ref={(ref) => {
                         if (ref) {
                             connectors.create(
@@ -96,6 +94,16 @@ export default function Toolbox() {
                     }}
                 >
                     Image
+                </CustomButton>
+                <CustomButton
+                    Icon={PiCursorClick}
+                    ref={(ref) => {
+                        if (ref) {
+                            connectors.create(ref, <ButtonComponent />);
+                        }
+                    }}
+                >
+                    Button
                 </CustomButton>
             </div>
             <div className="max-h-[50vh] overflow-auto">
