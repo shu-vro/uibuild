@@ -47,7 +47,7 @@ export default function App() {
                                 is={Text}
                                 text="Hello world"
                             />
-                            <Element
+                            {/* <Element
                                 canvas
                                 id="1"
                                 is={Text}
@@ -58,7 +58,7 @@ export default function App() {
                                 id="1"
                                 is={Text}
                                 text="Hello world"
-                            />
+                            /> */}
                         </Element>
                     </Frame>
                 </Viewport>
