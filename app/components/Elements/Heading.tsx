@@ -54,20 +54,20 @@ export function Heading({ text, heading, ...props }: HeadingProps) {
         <>
             <Resizer
                 propKey={{ width: "width", height: "height" }}
-                style={{
-                    ...generalStyles({
-                        type: props.type || "normal",
-                        normal: props.normal || {},
-                        hover: props.hover || {},
-                        focus: props.focus || {},
-                        active: props.active || {},
-                    }),
-                }}
                 onClick={() => selected && setEditable(true)}
             >
                 <ContentEditable
                     html={value as string}
                     disabled={!editable}
+                    style={{
+                        ...generalStyles({
+                            type: props.type || "normal",
+                            normal: props.normal || {},
+                            hover: props.hover || {},
+                            focus: props.focus || {},
+                            active: props.active || {},
+                        }),
+                    }}
                     onChange={(e) => {
                         setValue(e.target.value);
                         debouncedSetProp(e.target.value);

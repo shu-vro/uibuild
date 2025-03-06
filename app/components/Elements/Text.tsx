@@ -10,6 +10,8 @@ import {
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
 import { debounce } from "lodash";
+import { Accordion, AccordionItem } from "@heroui/react";
+import TextInput from "../input-components/TextInput";
 
 type TextProps = {
     text?: string;
@@ -19,9 +21,12 @@ export function Text({ text, ...props }: TextProps) {
     const {
         selected,
         actions: { setProp },
+        textValue,
     } = useNode((state) => ({
         selected: state.events.selected,
         dragged: state.events.dragged,
+
+        textValue: state.data.props.text,
     }));
 
     const [editable, setEditable] = useState(false);
@@ -34,6 +39,14 @@ export function Text({ text, ...props }: TextProps) {
 
         setEditable(false);
     }, [selected]);
+
+    useEffect(() => {
+        if (textValue === value) {
+            return;
+        }
+
+        setValue(textValue);
+    }, [textValue]);
 
     const debouncedSetProp = useCallback(
         debounce((value) => {
@@ -50,18 +63,18 @@ export function Text({ text, ...props }: TextProps) {
         <>
             <Resizer
                 propKey={{ width: "width", height: "height" }}
-                style={{
-                    ...generalStyles({
-                        type: props.type || "normal",
-                        normal: props.normal || {},
-                        hover: props.hover || {},
-                        focus: props.focus || {},
-                        active: props.active || {},
-                    }),
-                }}
                 onClick={() => selected && setEditable(true)}
             >
                 <ContentEditable
+                    style={{
+                        ...generalStyles({
+                            type: props.type || "normal",
+                            normal: props.normal || {},
+                            hover: props.hover || {},
+                            focus: props.focus || {},
+                            active: props.active || {},
+                        }),
+                    }}
                     html={value as string}
                     disabled={!editable}
                     onChange={(e) => {
@@ -80,9 +93,29 @@ export const TextDefaultProps = {
     ...generalStatesDefault,
 };
 
+function TextSettings() {
+    return (
+        <GeneralSettings>
+            <Accordion
+                defaultSelectedKeys={["1"]}
+                selectionMode="multiple"
+                variant="splitted"
+                className="px-0"
+                itemClasses={{
+                    content: "flex flex-col gap-4 m-0",
+                }}
+            >
+                <AccordionItem key="1" aria-label="Text" title="Text Props">
+                    <TextInput propName="text" label="Text Content" />
+                </AccordionItem>
+            </Accordion>
+        </GeneralSettings>
+    );
+}
+
 Text.craft = {
     props: TextDefaultProps,
     related: {
-        settings: GeneralSettings,
+        settings: TextSettings,
     },
 };

@@ -56,7 +56,6 @@ export function ButtonComponent({
     ...props
 }: ButtonProps) {
     const {
-        selected,
         hovered,
         id,
         actions: { setProp },
@@ -67,18 +66,7 @@ export function ButtonComponent({
         id: state.id,
     }));
 
-    const { actions, query } = useEditor((_, query) => ({}));
-
-    const [editable, setEditable] = useState(false);
-    const [value, setValue] = useState(text);
-
-    useEffect(() => {
-        if (selected) {
-            return;
-        }
-
-        setEditable(false);
-    }, [selected]);
+    const { actions } = useEditor((_, query) => ({}));
 
     const debouncedSetProp = useCallback(
         debounce((value) => {
@@ -93,19 +81,7 @@ export function ButtonComponent({
 
     return (
         <>
-            <Resizer
-                propKey={{ width: "width", height: "height" }}
-                // style={{
-                //     ...generalStyles({
-                //         type: props.type || "normal",
-                //         normal: props.normal || {},
-                //         hover: props.hover || {},
-                //         focus: props.focus || {},
-                //         active: props.active || {},
-                //     }),
-                // }}
-                onClick={() => selected && setEditable(true)}
-            >
+            <Resizer propKey={{ width: "width", height: "height" }}>
                 <Button
                     onPress={() => {
                         if (hovered) {
@@ -138,12 +114,6 @@ export function ButtonComponent({
 }
 
 function ButtonSettings() {
-    const {
-        actions: { setProp },
-        loading,
-    } = useNode((node) => ({
-        loading: node.data.props.loading,
-    }));
     return (
         <GeneralSettings>
             <Accordion

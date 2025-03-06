@@ -66,8 +66,6 @@ export default function SizeInput({
         parseSizeValue(defaultValue || value, customValues)[1] || "rem",
     );
 
-    console.log("fun", propName);
-
     useEffect(() => {
         if (overrideOnChange) return;
         const [numberValue, unitValue] = parseSizeValue(value, customValues);
