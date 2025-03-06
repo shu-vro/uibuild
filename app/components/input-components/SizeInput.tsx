@@ -3,8 +3,9 @@
 import { cn } from "@/lib/utils";
 import { useNode } from "@craftjs/core";
 import { Input, InputProps, Select, SelectItem } from "@heroui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { GeneralStatesType } from "../Elements/GeneralSettings";
+import { debounce } from "lodash";
 
 const parseSizeValue = (
     value: string = "",
@@ -65,6 +66,8 @@ export default function SizeInput({
         parseSizeValue(defaultValue || value, customValues)[1] || "rem",
     );
 
+    console.log("fun", propName);
+
     useEffect(() => {
         if (overrideOnChange) return;
         const [numberValue, unitValue] = parseSizeValue(value, customValues);
@@ -72,27 +75,50 @@ export default function SizeInput({
         setUnit(unitValue);
     }, [value]);
 
-    useEffect(() => {
-        if (overrideOnChange) {
-            if (customValues.includes(unit)) {
-                setIntVal("0");
-                return onChangeFn && onChangeFn(unit);
-            }
-            onChangeFn && onChangeFn(`${intVal}${unit}`);
-        } else {
-            setProp((props: any) => {
-                if (customValues.includes(unit)) {
-                    setIntVal("0");
-                    // return (props[propName] = unit);
-                    if (!type) return (props[propName] = unit);
-                    else return (props[type][propName] = unit);
+    const debouncedChangeVal = useMemo(
+        () =>
+            debounce((newIntVal: string, newUnit: string) => {
+                if (overrideOnChange) {
+                    if (customValues.includes(newUnit)) {
+                        setIntVal("0");
+                        return onChangeFn && onChangeFn(newUnit);
+                    }
+                    onChangeFn && onChangeFn(`${newIntVal}${newUnit}`);
+                } else {
+                    let newVal = "";
+                    if (customValues.includes(newUnit)) {
+                        setIntVal("0");
+                        newVal = newUnit;
+                    } else {
+                        newVal = `${newIntVal}${newUnit}`;
+                    }
+                    if (newVal === value) return;
+                    if (!type) {
+                        setProp((props: any) => (props[propName] = newVal));
+                    } else {
+                        setProp(
+                            (props: any) => (props[type][propName] = newVal),
+                        );
+                    }
                 }
-                const newValue = `${intVal}${unit}`;
+            }, 500),
+        [
+            overrideOnChange,
+            customValues,
+            type,
+            propName,
+            value,
+            setProp,
+            onChangeFn,
+        ],
+    );
 
-                if (!type) return (props[propName] = newValue);
-                else return (props[type][propName] = newValue);
-            });
-        }
+    useEffect(() => {
+        debouncedChangeVal(intVal, unit);
+        return () => {
+            // Cancel pending calls on unmount or re-render
+            debouncedChangeVal.cancel();
+        };
     }, [intVal, unit]);
 
     return (
