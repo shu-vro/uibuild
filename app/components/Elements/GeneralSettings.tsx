@@ -372,6 +372,7 @@ export function generalStyles({
             break;
     }
     // let selected = normal;
+    console.log(selected.minWidth, selected.maxWidth);
     return {
         display: selected.display,
         flex: `${selected.flexGrow} ${selected.flexShrink} ${selected.flexBasis}`,
@@ -592,12 +593,12 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                     for (let key in d_minus_h) {
                         if (_.isEqual(d_minus_h[key], selectedState[key])) {
                             // console.log(key)
-                            console.log(
-                                key,
-                                selectedState[key],
-                                rest.normal[key],
-                                Object.isFrozen(selectedState[key]),
-                            );
+                            // console.log(
+                            //     key,
+                            //     selectedState[key],
+                            //     rest.normal[key],
+                            //     Object.isFrozen(selectedState[key]),
+                            // );
                             selectedState[key] = rest.normal[key];
                         }
                     }
