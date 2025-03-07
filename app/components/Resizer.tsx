@@ -124,8 +124,6 @@ export const Resizer = ({
     const editingDimensions = useRef<any>(null);
     const nodeDimensions = useRef({ width: nodeWidth, height: nodeHeight });
 
-    // console.log(nodeWidth, nodeHeight);
-
     /**
      * Using an internal value to ensure the width/height set in the node is converted to px
      * because for some reason the <re-resizable /> library does not work well with percentages.
@@ -225,7 +223,10 @@ export const Resizer = ({
                     connect(resizable.current.resizable!);
                 }
             }}
-            size={internalDimensions}
+            size={{
+                width: "fit-content",
+                height: "fit-content",
+            }}
             onResizeStart={(e) => {
                 updateInternalDimensionsInPx();
                 e.preventDefault();

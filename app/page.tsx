@@ -38,6 +38,7 @@ export default function App() {
                             normal={{
                                 ...generalPropsDefault,
                                 paddingAll: "20px",
+                                width: "100%",
                                 backgrounds: [],
                             }}
                         >
