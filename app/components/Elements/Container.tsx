@@ -25,19 +25,20 @@ export function Container({
 }: GeneralStatesType & ContainerProps) {
     return (
         <>
-            <Resizer
-                propKey={{ width: "width", height: "height" }}
-                style={{
-                    ...generalStyles({
-                        type: props.type || "normal",
-                        normal: props.normal || {},
-                        hover: props.hover || {},
-                        focus: props.focus || {},
-                        active: props.active || {},
-                    }),
-                }}
-            >
-                {children}
+            <Resizer propKey={{ width: "width", height: "height" }}>
+                <div
+                    style={{
+                        ...generalStyles({
+                            type: props.type || "normal",
+                            normal: props.normal || {},
+                            hover: props.hover || {},
+                            focus: props.focus || {},
+                            active: props.active || {},
+                        }),
+                    }}
+                >
+                    {children}
+                </div>
             </Resizer>
             {/* <StyledComponent
                 as={Resizer}
@@ -64,6 +65,7 @@ Container.craft = {
             ...generalPropsDefault,
             backgrounds: [defaultBackground as BackgroundType],
             paddingAll: "20px",
+            width: "100%",
         },
     },
     related: {
