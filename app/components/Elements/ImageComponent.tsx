@@ -55,8 +55,11 @@ export function ImageComponent({
             <Resizer
                 propKey={{ width: "width", height: "height" }}
                 style={{
-                    width: rest[rest.type].width,
-                    height: rest[rest.type].height,
+                    // width: rest[rest.type].width,
+                    // height: rest[rest.type].height,
+
+                    width: "100%",
+                    height: "100%",
                 }}
             >
                 <Image
@@ -71,10 +74,14 @@ export function ImageComponent({
                             active: props.active || {},
                         }),
                         objectFit,
+
+                        width: "100%",
+                        height: "100%",
                     }}
                     // className="!absolute"
                     classNames={{
                         blurredImg: "!absolute",
+                        wrapper: "!max-w-full w-full",
                     }}
                     isBlurred={isBlurred}
                     isZoomed={isZoomed}
