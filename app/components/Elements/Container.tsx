@@ -35,6 +35,8 @@ export function Container({
                             focus: props.focus || {},
                             active: props.active || {},
                         }),
+                        width: "100%",
+                        height: "100%",
                     }}
                 >
                     {children}
@@ -55,19 +57,19 @@ export function Container({
     );
 }
 
-export const ContainerDefaultProps = {};
+export const ContainerDefaultProps = {
+    ...generalStatesDefault,
+    normal: {
+        ...generalPropsDefault,
+        backgrounds: [defaultBackground as BackgroundType],
+        paddingAll: "20px",
+        width: "100%",
+    },
+};
 
 Container.craft = {
     displayName: "Container",
-    props: {
-        ...generalStatesDefault,
-        normal: {
-            ...generalPropsDefault,
-            backgrounds: [defaultBackground as BackgroundType],
-            paddingAll: "20px",
-            width: "100%",
-        },
-    },
+    props: ContainerDefaultProps,
     related: {
         settings: GeneralSettings,
     },

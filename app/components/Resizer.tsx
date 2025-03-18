@@ -223,10 +223,7 @@ export const Resizer = ({
                     connect(resizable.current.resizable!);
                 }
             }}
-            size={{
-                width: "fit-content",
-                height: "fit-content",
-            }}
+            size={internalDimensions}
             onResizeStart={(e) => {
                 updateInternalDimensionsInPx();
                 e.preventDefault();
