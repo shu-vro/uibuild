@@ -113,7 +113,7 @@ export const LinkDefaultProps: LinkProps & GeneralStatesType = {
     ...generalStatesDefault,
     normal: {
         ...generalPropsDefault,
-        fontSize: "2rem",
+        fontSize: "1rem",
         fontWeight: "bold",
     },
 };

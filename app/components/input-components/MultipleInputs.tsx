@@ -35,6 +35,7 @@ function renderField(fieldsAst: any[], fields: any, setFields: any) {
                                 return { ...prev, [field.name]: val };
                             });
                         }}
+                        {...field.componentProps}
                     />
                 );
             case "color":

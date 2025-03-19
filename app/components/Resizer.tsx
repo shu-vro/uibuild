@@ -282,6 +282,12 @@ export const Resizer = ({
                 }, 1000);
                 updateInternalDimensionsWithOriginal();
             }}
+            handleClasses={{
+                left: "z-9999999",
+                right: "z-9999999",
+                top: "z-9999999",
+                bottom: "z-9999999",
+            }}
             {...props}
         >
             {children}

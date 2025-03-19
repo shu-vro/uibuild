@@ -137,6 +137,7 @@ export type GeneralSettingsProps = {
     overflowX?: string;
     overflowY?: string;
     overflowAll?: string;
+    zIndex?: string;
 
     boxShadowCustom?: {
         id: string;
@@ -288,6 +289,7 @@ export const generalPropsDefault: GeneralSettingsProps = {
     backdropFilterCustom: [],
     transitionCustom: [],
     backgroundBlendMode: "normal",
+    zIndex: "auto",
 };
 
 export const generalStatesDefault: GeneralStatesType = {
@@ -297,58 +299,96 @@ export const generalStatesDefault: GeneralStatesType = {
     focus: generalPropsDefault,
     active: generalPropsDefault,
 };
-
 export const StyledComponent = styled.div<{
-    normal: GeneralSettingsProps;
-    hover: GeneralSettingsProps;
-    focus: GeneralSettingsProps;
-    active: GeneralSettingsProps;
+    $normal: GeneralSettingsProps;
+    $hover: GeneralSettingsProps;
+    $focus: GeneralSettingsProps;
+    $active: GeneralSettingsProps;
 }>`
-    ${(props: Omit<GeneralStatesType, "type">) =>
+    ${({ $normal, $hover, $focus, $active }) =>
         css({
             ...generalStyles({
                 type: "normal",
-                normal: props.normal,
-                hover: props.hover,
-                focus: props.focus,
-                active: props.active,
+                normal: $normal,
+                hover: $hover,
+                focus: $focus,
+                active: $active,
             }),
         })}
+
     &:hover {
-        ${(props: Omit<GeneralStatesType, "type">) =>
-            css({
+        ${({ $normal, $hover, $focus, $active }) => {
+            let newHoverState = _.cloneDeep($hover);
+            let d_minus_h = objectDiff(generalPropsDefault, newHoverState);
+            d_minus_h = {
+                ..._.cloneDeep(generalPropsDefault),
+                ..._.cloneDeep(d_minus_h),
+            };
+            for (let key in d_minus_h) {
+                if (_.isEqual(d_minus_h[key], newHoverState[key])) {
+                    newHoverState[key] = $normal[key];
+                }
+            }
+            return css({
                 ...generalStyles({
                     type: "hover",
-                    normal: props.normal,
-                    hover: props.hover,
-                    focus: props.focus,
-                    active: props.active,
+                    normal: $normal,
+                    hover: newHoverState,
+                    focus: $focus,
+                    active: $active,
                 }),
-            })}
+            });
+        }}
     }
+
     &:focus {
-        ${(props: Omit<GeneralStatesType, "type">) =>
-            css({
+        ${({ $normal, $hover, $focus, $active }) => {
+            let newFocusState = _.cloneDeep($focus);
+            let d_minus_h = objectDiff(generalPropsDefault, newFocusState);
+            d_minus_h = {
+                ..._.cloneDeep(generalPropsDefault),
+                ..._.cloneDeep(d_minus_h),
+            };
+            for (let key in d_minus_h) {
+                if (_.isEqual(d_minus_h[key], newFocusState[key])) {
+                    newFocusState[key] = $normal[key];
+                }
+            }
+            return css({
                 ...generalStyles({
                     type: "focus",
-                    normal: props.normal,
-                    hover: props.hover,
-                    focus: props.focus,
-                    active: props.active,
+                    normal: $normal,
+                    hover: $hover,
+                    focus: newFocusState,
+                    active: $active,
                 }),
-            })}
+            });
+        }}
     }
+
     &:active {
-        ${(props: Omit<GeneralStatesType, "type">) =>
-            css({
+        ${({ $normal, $hover, $focus, $active }) => {
+            let newActiveState = _.cloneDeep($active);
+            let d_minus_h = objectDiff(generalPropsDefault, newActiveState);
+            d_minus_h = {
+                ..._.cloneDeep(generalPropsDefault),
+                ..._.cloneDeep(d_minus_h),
+            };
+            for (let key in d_minus_h) {
+                if (_.isEqual(d_minus_h[key], newActiveState[key])) {
+                    newActiveState[key] = $normal[key];
+                }
+            }
+            return css({
                 ...generalStyles({
                     type: "active",
-                    normal: props.normal,
-                    hover: props.hover,
-                    focus: props.focus,
-                    active: props.active,
+                    normal: $normal,
+                    hover: $hover,
+                    focus: $focus,
+                    active: newActiveState,
                 }),
-            })}
+            });
+        }}
     }
 `;
 
@@ -409,6 +449,7 @@ export function generalStyles({
         justifyContent: selected.justifyContent,
         alignItems: selected.alignItems,
         flexDirection: selected.flexDirection,
+        zIndex: selected.zIndex,
         borderRadius:
             selected.borderRadiusOption === "all"
                 ? selected.borderRadiusAll
@@ -1087,7 +1128,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 options={[
                                     "relative",
                                     "absolute",
-                                    "fixed",
+                                    // "fixed",
                                     "sticky",
                                     "static",
                                 ]}
@@ -1597,6 +1638,15 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                 propName="opacity"
                                 label="Opacity"
                             />
+                            <SizeInput
+                                type={type}
+                                propName="zIndex"
+                                label="Z Index"
+                                clearDefaultValues
+                                clearAllUnits
+                                customValues={["auto"]}
+                                additionalUnitValues={[" "]}
+                            />
                             <SelectableInput
                                 type={type}
                                 propName="mixBlendMode"
@@ -1692,6 +1742,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                                     options={[
                                                         "visible",
                                                         "hidden",
+                                                        "scroll",
+                                                        "auto",
                                                     ]}
                                                 />
                                             </CardBody>
@@ -1707,6 +1759,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                                     options={[
                                                         "visible",
                                                         "hidden",
+                                                        "scroll",
+                                                        "auto",
                                                     ]}
                                                 />
                                                 <SelectableInput
@@ -1716,6 +1770,8 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                                     options={[
                                                         "visible",
                                                         "hidden",
+                                                        "scroll",
+                                                        "auto",
                                                     ]}
                                                 />
                                             </CardBody>
@@ -2088,6 +2144,9 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                             label: "Duration",
                                             type: "size",
                                             additionalUnitValues: ["s", "ms"],
+                                            componentProps: {
+                                                clearAllUnits: true,
+                                            },
                                         },
                                         {
                                             name: "timingFunction",
@@ -2132,6 +2191,9 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                             label: "Delay",
                                             type: "size",
                                             additionalUnitValues: ["s", "ms"],
+                                            componentProps: {
+                                                clearAllUnits: true,
+                                            },
                                         },
                                     ]}
                                 />
