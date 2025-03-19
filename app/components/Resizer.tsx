@@ -1,5 +1,4 @@
 import { useNode, useEditor } from "@craftjs/core";
-import { debounce } from "lodash";
 import { Resizable, ResizableProps } from "re-resizable";
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { styled } from "styled-components";

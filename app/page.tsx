@@ -28,7 +28,7 @@ export default function App() {
             onRender={RenderNode}
         >
             <Header />
-            <div className="flex flex-row gap-4 justify-between page-container relative max-h-screen">
+            <div className="flex flex-row gap-4 justify-between page-container relative max-h-screen overflow-y-auto overflow-x-visible">
                 <Toolbox />
                 <Viewport>
                     <Frame>
