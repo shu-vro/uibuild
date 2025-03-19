@@ -8,6 +8,7 @@ import {
     GeneralStatesType,
     StyledComponent,
     generalPropsDefault,
+    GeneralSettingsProps,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
 import { cloneDeep, debounce } from "lodash";
@@ -21,17 +22,19 @@ type LinkProps = {
     target?: string;
 } & GeneralStatesType;
 
-const LinkNormalProps = {
+const LinkNormalProps: GeneralSettingsProps = {
     ...cloneDeep(generalPropsDefault),
     fontSize: "1rem",
     fontWeight: "bold",
     textDecoration: "underline",
+    cursor: "pointer",
 };
 
 export const LinkDefaultProps: LinkProps & GeneralStatesType = {
     text: "Your Link here!",
     href: "#",
     target: "_blank",
+    type: "normal",
     normal: LinkNormalProps,
     hover: cloneDeep(LinkNormalProps),
     focus: cloneDeep(LinkNormalProps),
@@ -76,20 +79,20 @@ export function LinkComponent({ text, ...props }: LinkProps) {
         <>
             <Resizer
                 propKey={{ width: "width", height: "height" }}
-                style={{
-                    ...generalStyles({
-                        type: props.type || "normal",
-                        normal: props.normal || {},
-                        hover: props.hover || {},
-                        focus: props.focus || {},
-                        active: props.active || {},
-                    }),
-                }}
                 onClick={() => selected && setEditable(true)}
             >
                 <ContentEditable
                     html={value as string}
                     disabled={!editable}
+                    style={{
+                        ...generalStyles({
+                            type: props.type || "normal",
+                            normal: props.normal || {},
+                            hover: props.hover || {},
+                            focus: props.focus || {},
+                            active: props.active || {},
+                        }),
+                    }}
                     onChange={(e) => {
                         setValue(e.target.value);
                         debouncedSetProp(e.target.value);
@@ -100,28 +103,6 @@ export function LinkComponent({ text, ...props }: LinkProps) {
                     rel="noopener noreferrer"
                 />
             </Resizer>
-            {/* <StyledComponent
-                as={Resizer}
-                propKey={{
-                    width: "width",
-                    height: "height",
-                }}
-                normal={props.normal || {}}
-                hover={props.hover || {}}
-                focus={props.focus || {}}
-                active={props.active || {}}normal
-                onClick={() => selected && setEditable(true)}
-            >
-                <ContentEditable
-                    html={value as string}
-                    disabled={!editable}
-                    onChange={(e) => {
-                        setValue(e.target.value);
-                        debouncedSetProp(e.target.value);
-                    }}
-                    tagName="p"
-                />
-            </StyledComponent> */}
         </>
     ) : (
         <StyledComponent

@@ -45,7 +45,6 @@ export function Container({
         enabled: state.options.enabled,
     }));
 
-    console.log(props);
     return enabled ? (
         <>
             <Resizer propKey={{ width: "width", height: "height" }}>

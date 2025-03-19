@@ -176,7 +176,6 @@ function ImageSettings() {
         type: node.data.props.type,
         objectPositionOption: node.data.props.objectPositionOption,
     }));
-    console.log("objectPositionOption", objectPositionOption);
     return (
         <GeneralSettings>
             <Accordion
