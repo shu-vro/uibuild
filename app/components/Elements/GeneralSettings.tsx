@@ -300,10 +300,11 @@ export const generalStatesDefault: GeneralStatesType = {
     active: generalPropsDefault,
 };
 export const StyledComponent = styled.div<{
-    $normal: GeneralSettingsProps;
-    $hover: GeneralSettingsProps;
-    $focus: GeneralSettingsProps;
-    $active: GeneralSettingsProps;
+    $normal: Record<any, any>;
+    $hover: Record<any, any>;
+    $focus: Record<any, any>;
+    $active: Record<any, any>;
+    $default: Record<any, any>;
 }>`
     ${({ $normal, $hover, $focus, $active }) =>
         css({
@@ -317,23 +318,15 @@ export const StyledComponent = styled.div<{
         })}
 
     &:hover {
-        ${({ $normal, $hover, $focus, $active }) => {
-            let newHoverState = _.cloneDeep($hover);
-            let d_minus_h = objectDiff(generalPropsDefault, newHoverState);
-            d_minus_h = {
-                ..._.cloneDeep(generalPropsDefault),
-                ..._.cloneDeep(d_minus_h),
-            };
-            for (let key in d_minus_h) {
-                if (_.isEqual(d_minus_h[key], newHoverState[key])) {
-                    newHoverState[key] = $normal[key];
-                }
-            }
+        ${({ $normal, $hover, $focus, $active, $default }) => {
+            let h_n = objectDiff($hover, $normal);
+            let d_hn = objectDiff(h_n, $default);
+            console.log(d_hn);
             return css({
                 ...generalStyles({
                     type: "hover",
                     normal: $normal,
-                    hover: newHoverState,
+                    hover: d_hn,
                     focus: $focus,
                     active: $active,
                 }),
@@ -342,24 +335,16 @@ export const StyledComponent = styled.div<{
     }
 
     &:focus {
-        ${({ $normal, $hover, $focus, $active }) => {
-            let newFocusState = _.cloneDeep($focus);
-            let d_minus_h = objectDiff(generalPropsDefault, newFocusState);
-            d_minus_h = {
-                ..._.cloneDeep(generalPropsDefault),
-                ..._.cloneDeep(d_minus_h),
-            };
-            for (let key in d_minus_h) {
-                if (_.isEqual(d_minus_h[key], newFocusState[key])) {
-                    newFocusState[key] = $normal[key];
-                }
-            }
+        ${({ $normal, $hover, $focus, $active, $default }) => {
+            let h_n = objectDiff($focus, $normal);
+            let d_hn = objectDiff(h_n, $default);
+            console.log(d_hn);
             return css({
                 ...generalStyles({
                     type: "focus",
                     normal: $normal,
                     hover: $hover,
-                    focus: newFocusState,
+                    focus: d_hn,
                     active: $active,
                 }),
             });
@@ -367,25 +352,17 @@ export const StyledComponent = styled.div<{
     }
 
     &:active {
-        ${({ $normal, $hover, $focus, $active }) => {
-            let newActiveState = _.cloneDeep($active);
-            let d_minus_h = objectDiff(generalPropsDefault, newActiveState);
-            d_minus_h = {
-                ..._.cloneDeep(generalPropsDefault),
-                ..._.cloneDeep(d_minus_h),
-            };
-            for (let key in d_minus_h) {
-                if (_.isEqual(d_minus_h[key], newActiveState[key])) {
-                    newActiveState[key] = $normal[key];
-                }
-            }
+        ${({ $normal, $hover, $focus, $active, $default }) => {
+            let h_n = objectDiff($active, $normal);
+            let d_hn = objectDiff(h_n, $default);
+            console.log(d_hn);
             return css({
                 ...generalStyles({
                     type: "active",
                     normal: $normal,
                     hover: $hover,
                     focus: $focus,
-                    active: newActiveState,
+                    active: d_hn,
                 }),
             });
         }}
@@ -412,7 +389,6 @@ export function generalStyles({
             break;
     }
     // let selected = normal;
-    console.log(selected.minWidth, selected.maxWidth);
     return {
         display: selected.display,
         flex: `${selected.flexGrow} ${selected.flexShrink} ${selected.flexBasis}`,
@@ -623,30 +599,34 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                 overrideOnChange
                 onChangeFn={(val: GeneralStatesType["type"]) => {
                     let selectedState = _.cloneDeep(getState(val, rest));
-                    let d_minus_h = objectDiff(
-                        generalPropsDefault,
-                        selectedState,
-                    );
-                    d_minus_h = {
-                        ..._.cloneDeep(generalPropsDefault),
-                        ..._.cloneDeep(d_minus_h),
-                    };
-                    for (let key in d_minus_h) {
-                        if (_.isEqual(d_minus_h[key], selectedState[key])) {
-                            // console.log(key)
-                            // console.log(
-                            //     key,
-                            //     selectedState[key],
-                            //     rest.normal[key],
-                            //     Object.isFrozen(selectedState[key]),
-                            // );
-                            selectedState[key] = rest.normal[key];
-                        }
-                    }
+
+                    let h_n = objectDiff(selectedState, rest.normal);
+                    let d_hn = objectDiff(h_n, generalPropsDefault);
+                    d_hn = { ...rest.normal, ...d_hn };
+                    // let d_minus_h = objectDiff(
+                    //     generalPropsDefault,
+                    //     selectedState,
+                    // );
+                    // d_minus_h = {
+                    //     ..._.cloneDeep(generalPropsDefault),
+                    //     ..._.cloneDeep(d_minus_h),
+                    // };
+                    // for (let key in d_minus_h) {
+                    //     if (_.isEqual(d_minus_h[key], selectedState[key])) {
+                    //         // console.log(key)
+                    //         // console.log(
+                    //         //     key,
+                    //         //     selectedState[key],
+                    //         //     rest.normal[key],
+                    //         //     Object.isFrozen(selectedState[key]),
+                    //         // );
+                    //         selectedState[key] = rest.normal[key];
+                    //     }
+                    // }
                     // console.log(objectDiff(generalPropsDefault, selectedState));
                     setProp((props: any) => {
                         props.type = val;
-                        props[val] = selectedState;
+                        props[val] = d_hn;
                     }, 1000);
                 }}
             />

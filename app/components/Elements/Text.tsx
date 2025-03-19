@@ -1,4 +1,4 @@
-import { useNode } from "@craftjs/core";
+import { useEditor, useNode } from "@craftjs/core";
 import React, { useState, useEffect, useCallback } from "react";
 import ContentEditable from "react-contenteditable";
 import {
@@ -17,7 +17,15 @@ type TextProps = {
     text?: string;
 } & GeneralStatesType;
 
+export const TextDefaultProps = {
+    text: "Hi",
+    ...generalStatesDefault,
+};
+
 export function Text({ text, ...props }: TextProps) {
+    const { enabled } = useEditor((state) => ({
+        enabled: state.options.enabled,
+    }));
     const {
         selected,
         actions: { setProp },
@@ -59,7 +67,7 @@ export function Text({ text, ...props }: TextProps) {
         [],
     );
 
-    return (
+    return enabled ? (
         <>
             <Resizer
                 propKey={{ width: "width", height: "height" }}
@@ -85,13 +93,19 @@ export function Text({ text, ...props }: TextProps) {
                 />
             </Resizer>
         </>
+    ) : (
+        <StyledComponent
+            as="p"
+            $normal={props.normal || {}}
+            $hover={props.hover || {}}
+            $focus={props.focus || {}}
+            $active={props.active || {}}
+            $default={TextDefaultProps.normal}
+        >
+            {value}
+        </StyledComponent>
     );
 }
-
-export const TextDefaultProps = {
-    text: "Hi",
-    ...generalStatesDefault,
-};
 
 function TextSettings() {
     return (
