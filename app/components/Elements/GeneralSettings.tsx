@@ -319,9 +319,10 @@ export const StyledComponent = styled.div<{
 
     &:hover {
         ${({ $normal, $hover, $focus, $active, $default }) => {
-            let h_n = objectDiff($hover, $normal);
+            let h_n = objectDiff($hover, $normal); // all the exceptions of hover that is not on normal
+            // 2.
             let d_hn = objectDiff(h_n, $default);
-            console.log(d_hn);
+            console.log(d_hn, $hover, $normal, $default);
             return css({
                 ...generalStyles({
                     type: "hover",
@@ -338,7 +339,6 @@ export const StyledComponent = styled.div<{
         ${({ $normal, $hover, $focus, $active, $default }) => {
             let h_n = objectDiff($focus, $normal);
             let d_hn = objectDiff(h_n, $default);
-            console.log(d_hn);
             return css({
                 ...generalStyles({
                     type: "focus",
@@ -355,7 +355,6 @@ export const StyledComponent = styled.div<{
         ${({ $normal, $hover, $focus, $active, $default }) => {
             let h_n = objectDiff($active, $normal);
             let d_hn = objectDiff(h_n, $default);
-            console.log(d_hn);
             return css({
                 ...generalStyles({
                     type: "active",

@@ -99,9 +99,11 @@ export const Resizer = ({
         active,
         type,
         inNodeContext,
+        hovered,
     } = useNode((node) => ({
         parent: node.data.parent,
         active: node.events.selected,
+        hovered: node.events.hovered,
         type: node.data.props.type,
         nodeWidth: node.data.props[node.data.props.type][propKey.width],
         nodeHeight: node.data.props[node.data.props.type][propKey.height],
@@ -283,10 +285,22 @@ export const Resizer = ({
                 updateInternalDimensionsWithOriginal();
             }}
             handleClasses={{
-                left: "z-9999999",
-                right: "z-9999999",
-                top: "z-9999999",
-                bottom: "z-9999999",
+                left: cn(
+                    "z-[9999999]",
+                    hovered && "border-l border-dashed border-blue-500",
+                ),
+                right: cn(
+                    "z-[9999999]",
+                    hovered && "border-r border-dashed border-blue-500",
+                ),
+                top: cn(
+                    "z-[9999999]",
+                    hovered && "border-t border-dashed border-blue-500",
+                ),
+                bottom: cn(
+                    "z-[9999999]",
+                    hovered && "border-b border-dashed border-blue-500",
+                ),
             }}
             {...props}
         >

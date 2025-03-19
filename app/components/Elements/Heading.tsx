@@ -1,4 +1,4 @@
-import { useNode } from "@craftjs/core";
+import { useEditor, useNode } from "@craftjs/core";
 import React, { useState, useEffect, useCallback } from "react";
 import ContentEditable from "react-contenteditable";
 import {
@@ -10,7 +10,7 @@ import {
     generalPropsDefault,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
-import { debounce } from "lodash";
+import _, { debounce } from "lodash";
 import { Accordion, AccordionItem } from "@heroui/react";
 import SelectableInput from "../input-components/SelectableInput";
 
@@ -19,7 +19,27 @@ type HeadingProps = {
     heading?: string;
 } & GeneralStatesType;
 
+const HeadingNormalProps = {
+    ..._.cloneDeep(generalPropsDefault),
+    fontSize: "2rem",
+    fontWeight: "bold",
+};
+
+export const HeadingDefaultProps: HeadingProps & GeneralStatesType = {
+    text: "Type your header here!",
+    heading: "h1",
+    // ..._.cloneDeep(generalStatesDefault),
+    type: "normal",
+    normal: HeadingNormalProps,
+    hover: _.cloneDeep(HeadingNormalProps),
+    focus: _.cloneDeep(HeadingNormalProps),
+    active: _.cloneDeep(HeadingNormalProps),
+};
+
 export function Heading({ text, heading, ...props }: HeadingProps) {
+    const { enabled } = useEditor((state) => ({
+        enabled: state.options.enabled,
+    }));
     const {
         selected,
         actions: { setProp },
@@ -50,7 +70,7 @@ export function Heading({ text, heading, ...props }: HeadingProps) {
         [],
     );
 
-    return (
+    return enabled ? (
         <>
             <Resizer
                 propKey={{ width: "width", height: "height" }}
@@ -75,29 +95,18 @@ export function Heading({ text, heading, ...props }: HeadingProps) {
                     tagName={heading}
                 />
             </Resizer>
-            {/* <StyledComponent
-                as={Resizer}
-                propKey={{
-                    width: "width",
-                    height: "height",
-                }}
-                normal={props.normal || {}}
-                hover={props.hover || {}}
-                focus={props.focus || {}}
-                active={props.active || {}}normal
-                onClick={() => selected && setEditable(true)}
-            >
-                <ContentEditable
-                    html={value as string}
-                    disabled={!editable}
-                    onChange={(e) => {
-                        setValue(e.target.value);
-                        debouncedSetProp(e.target.value);
-                    }}
-                    tagName="p"
-                />
-            </StyledComponent> */}
         </>
+    ) : (
+        <StyledComponent
+            as={heading}
+            $normal={props.normal || {}}
+            $hover={props.hover || {}}
+            $focus={props.focus || {}}
+            $active={props.active || {}}
+            $default={HeadingDefaultProps.normal}
+        >
+            {text}
+        </StyledComponent>
     );
 }
 
@@ -125,19 +134,8 @@ function HeadingSettings() {
     );
 }
 
-export const TextDefaultProps: HeadingProps & GeneralStatesType = {
-    text: "Type your header here!",
-    heading: "h1",
-    ...generalStatesDefault,
-    normal: {
-        ...generalPropsDefault,
-        fontSize: "2rem",
-        fontWeight: "bold",
-    },
-};
-
 Heading.craft = {
-    props: TextDefaultProps,
+    props: HeadingDefaultProps,
     related: {
         settings: HeadingSettings,
     },

@@ -28,16 +28,7 @@ export default function View() {
         >
             <div className="flex flex-row gap-4 justify-between page-container relative">
                 <Frame>
-                    <Element
-                        canvas
-                        is={Container}
-                        normal={{
-                            ...generalPropsDefault,
-                            paddingAll: "20px",
-                            width: "100%",
-                            backgrounds: [],
-                        }}
-                    >
+                    <Element canvas is={Container}>
                         <Element canvas id="1" is={Text} text="Hello world" />
                         {/* <Element
                                         canvas

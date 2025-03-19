@@ -1,4 +1,4 @@
-import { useNode } from "@craftjs/core";
+import { useEditor, useNode } from "@craftjs/core";
 import React from "react";
 import {
     generalStatesDefault,
@@ -7,6 +7,7 @@ import {
     GeneralStatesType,
     StyledComponent,
     generalPropsDefault,
+    GeneralSettingsProps,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
 import {
@@ -22,6 +23,7 @@ import SelectableInput from "../input-components/SelectableInput";
 import ImageInput from "../input-components/ImageInput";
 import SwitchInput from "../input-components/SwitchInput";
 import SizeInput from "../input-components/SizeInput";
+import { cloneDeep } from "lodash";
 
 type ImageProps = {
     src?: string;
@@ -39,6 +41,35 @@ type ImageProps = {
     loading?: "lazy" | "eager";
 } & GeneralStatesType;
 
+const ImageNormalProps: GeneralSettingsProps = {
+    ...generalPropsDefault,
+    fontSize: "2rem",
+    fontWeight: "bold",
+    overflowAll: "hidden",
+    width: "100%",
+    zIndex: "2",
+};
+export const ImageDefaultProps: ImageProps & GeneralStatesType = {
+    src: "https://fakeimg.pl/600x400",
+    alt: "Placeholder",
+    objectFit: "cover",
+    isBlurred: false,
+    isZoomed: false,
+    removeWrapper: false,
+    disableSkeleton: false,
+    objectPositionOption: "all",
+    objectPositionAll: "center",
+    objectPositionX: "center",
+    objectPositionY: "center",
+    loading: "lazy",
+
+    type: "normal",
+    normal: cloneDeep(ImageNormalProps),
+    hover: cloneDeep(ImageNormalProps),
+    focus: cloneDeep(ImageNormalProps),
+    active: cloneDeep(ImageNormalProps),
+};
+
 export function ImageComponent({
     src,
     alt,
@@ -54,24 +85,21 @@ export function ImageComponent({
     objectPositionOption,
     ...props
 }: ImageProps) {
-    console.log(
-        objectPositionAll,
-        objectPositionX,
-        objectPositionY,
-        objectPositionOption,
-    );
+    const { enabled } = useEditor((state) => ({
+        enabled: state.options.enabled,
+    }));
 
-    return (
+    return enabled ? (
         <>
             <Resizer
                 propKey={{ width: "width", height: "height" }}
-                style={{
-                    // width: rest[rest.type].width,
-                    // height: rest[rest.type].height,
+                // style={{
+                //     // width: rest[rest.type].width,
+                //     // height: rest[rest.type].height,
 
-                    width: "100%",
-                    height: "100%",
-                }}
+                //     width: "100%",
+                //     height: "100%",
+                // }}
             >
                 <Image
                     src={src}
@@ -95,7 +123,7 @@ export function ImageComponent({
                     }}
                     // className="!absolute"
                     classNames={{
-                        blurredImg: "!absolute",
+                        blurredImg: "!absolute z-[1]",
                         wrapper: "!max-w-full w-full",
                     }}
                     isBlurred={isBlurred}
@@ -106,31 +134,36 @@ export function ImageComponent({
                 />
             </Resizer>
         </>
+    ) : (
+        // @ts-ignore
+        <StyledComponent
+            as={Image}
+            $normal={props.normal}
+            $hover={props.hover}
+            $focus={props.focus}
+            $active={props.active}
+            src={src}
+            alt={alt}
+            style={{
+                objectFit,
+                objectPosition:
+                    objectPositionOption === "all"
+                        ? objectPositionAll
+                        : `${objectPositionX} ${objectPositionY}`,
+            }}
+            // className="!absolute"
+            classNames={{
+                blurredImg: "!absolute",
+                wrapper: "!max-w-full w-full",
+            }}
+            isBlurred={isBlurred}
+            isZoomed={isZoomed}
+            disableSkeleton={disableSkeleton}
+            removeWrapper={removeWrapper}
+            loading={loading}
+        />
     );
 }
-
-export const ImageDefaultProps: ImageProps & GeneralStatesType = {
-    src: "https://fakeimg.pl/600x400",
-    alt: "Placeholder",
-    objectFit: "cover",
-    isBlurred: false,
-    isZoomed: false,
-    removeWrapper: false,
-    disableSkeleton: false,
-    objectPositionOption: "all",
-    objectPositionAll: "center",
-    objectPositionX: "center",
-    objectPositionY: "center",
-    loading: "lazy",
-
-    ...generalStatesDefault,
-    normal: {
-        ...generalPropsDefault,
-        fontSize: "2rem",
-        fontWeight: "bold",
-        overflowAll: "hidden",
-    },
-};
 
 function ImageSettings() {
     const {
@@ -141,8 +174,9 @@ function ImageSettings() {
     } = useNode((node) => ({
         loading: node.data.props.loading,
         type: node.data.props.type,
-        objectPositionOption: node.data.props.objectPosition,
+        objectPositionOption: node.data.props.objectPositionOption,
     }));
+    console.log("objectPositionOption", objectPositionOption);
     return (
         <GeneralSettings>
             <Accordion
@@ -173,6 +207,7 @@ function ImageSettings() {
                     <Tabs
                         selectedKey={objectPositionOption}
                         onSelectionChange={(val) => {
+                            console.log(val);
                             setProp((props: any) => {
                                 return (props.objectPositionOption = val);
                             }, 1000);
@@ -188,6 +223,7 @@ function ImageSettings() {
                                     "right",
                                     "center",
                                 ]}
+                                sizeCanBeNegative
                                 clearDefaultValues
                                 label="All"
                             />
@@ -195,25 +231,15 @@ function ImageSettings() {
                         <Tab title="Custom" key="custom">
                             <SizeInput
                                 propName="objectPositionX"
-                                customValues={[
-                                    "top",
-                                    "bottom",
-                                    "left",
-                                    "right",
-                                    "center",
-                                ]}
+                                customValues={["left", "right", "center"]}
+                                sizeCanBeNegative
                                 clearDefaultValues
                                 label="X"
                             />
                             <SizeInput
                                 propName="objectPositionY"
-                                customValues={[
-                                    "top",
-                                    "bottom",
-                                    "left",
-                                    "right",
-                                    "center",
-                                ]}
+                                customValues={["top", "bottom", "center"]}
+                                sizeCanBeNegative
                                 clearDefaultValues
                                 label="Y"
                             />
@@ -234,7 +260,7 @@ function ImageSettings() {
                         label="Disable Skeleton"
                         propName="disableSkeleton"
                     />
-                    <SwitchInput label="Blur on Hover" propName="isBlurred" />
+                    <SwitchInput label="Blur background" propName="isBlurred" />
                     <SwitchInput
                         label="Lazy Loading"
                         propName="loading"
