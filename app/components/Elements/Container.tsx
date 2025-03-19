@@ -14,6 +14,7 @@ import {
     BackgroundType,
     defaultBackground,
 } from "../input-components/BackgroundInput";
+import { useEditor } from "@craftjs/core";
 
 type ContainerProps = {
     children?: React.ReactNode;
@@ -23,7 +24,12 @@ export function Container({
     children,
     ...props
 }: GeneralStatesType & ContainerProps) {
-    return (
+    const { enabled } = useEditor((state) => ({
+        enabled: state.options.enabled,
+    }));
+
+    console.log(enabled);
+    return enabled ? (
         <>
             <Resizer propKey={{ width: "width", height: "height" }}>
                 <div
@@ -54,6 +60,29 @@ export function Container({
                 active={props.active || {}}
             /> */}
         </>
+    ) : (
+        // <div
+        //     style={{
+        //         ...generalStyles({
+        //             type: props.type || "normal",
+        //             normal: props.normal || {},
+        //             hover: props.hover || {},
+        //             focus: props.focus || {},
+        //             active: props.active || {},
+        //         }),
+        //     }}
+        // >
+        //     {children}
+        // </div>
+        <StyledComponent
+            as="div"
+            $normal={props.normal || {}}
+            $hover={props.hover || {}}
+            $focus={props.focus || {}}
+            $active={props.active || {}}
+        >
+            {children}
+        </StyledComponent>
     );
 }
 

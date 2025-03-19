@@ -28,6 +28,7 @@ export default function SizeInput({
     customValues = [],
     additionalUnitValues = [],
     clearDefaultValues = false,
+    clearAllUnits = false,
     overrideOnChange = false,
     defaultValue = "",
     onChangeFn,
@@ -38,6 +39,7 @@ export default function SizeInput({
     customValues?: string[];
     additionalUnitValues?: string[];
     overrideOnChange?: boolean;
+    clearAllUnits?: boolean;
     clearDefaultValues?: boolean;
     defaultValue?: string;
     onChangeFn?: (value: string) => void;
@@ -149,20 +151,26 @@ export default function SizeInput({
                     </>
                     <>
                         {additionalUnitValues.map((option) => (
-                            <SelectItem key={option}>{option}</SelectItem>
+                            <SelectItem key={option}>
+                                {option === " " ? "--no unit--" : option}
+                            </SelectItem>
                         ))}
                     </>
 
-                    <SelectItem key="%">%</SelectItem>
-                    <SelectItem key="px">px</SelectItem>
-                    <SelectItem key="rem">rem</SelectItem>
-                    <SelectItem key="em">em</SelectItem>
-                    <SelectItem key="in">in</SelectItem>
-                    <SelectItem key="vw">vw</SelectItem>
-                    <SelectItem key="vh">vh</SelectItem>
-                    <SelectItem key="dvh">dvh</SelectItem>
-                    <SelectItem key="svh">svh</SelectItem>
-                    <SelectItem key="lvh">lvh</SelectItem>
+                    {!clearAllUnits && (
+                        <>
+                            <SelectItem key="%">%</SelectItem>
+                            <SelectItem key="px">px</SelectItem>
+                            <SelectItem key="rem">rem</SelectItem>
+                            <SelectItem key="em">em</SelectItem>
+                            <SelectItem key="in">in</SelectItem>
+                            <SelectItem key="vw">vw</SelectItem>
+                            <SelectItem key="vh">vh</SelectItem>
+                            <SelectItem key="dvh">dvh</SelectItem>
+                            <SelectItem key="svh">svh</SelectItem>
+                            <SelectItem key="lvh">lvh</SelectItem>
+                        </>
+                    )}
                 </Select>
             }
         />
