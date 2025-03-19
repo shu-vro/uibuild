@@ -32,16 +32,7 @@ export default function App() {
                 <Toolbox />
                 <Viewport>
                     <Frame>
-                        <Element
-                            canvas
-                            is={Container}
-                            normal={{
-                                ...generalPropsDefault,
-                                paddingAll: "20px",
-                                width: "100%",
-                                backgrounds: [],
-                            }}
-                        >
+                        <Element canvas is={Container}>
                             <Element
                                 canvas
                                 id="1"

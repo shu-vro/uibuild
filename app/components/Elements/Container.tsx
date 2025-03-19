@@ -3,6 +3,7 @@ import { Resizer } from "../Resizer";
 import {
     generalPropsDefault,
     GeneralSettings,
+    GeneralSettingsProps,
     // GeneralSettings,
     // GeneralSettingsProps,
     generalStatesDefault,
@@ -21,14 +22,19 @@ type ContainerProps = {
     children?: React.ReactNode;
 };
 
+const ContainerNormalProps: GeneralSettingsProps = {
+    ...generalPropsDefault,
+    backgrounds: [],
+    paddingAll: "20px",
+    width: "100%",
+};
+
 export const ContainerDefaultProps = {
-    ...cloneDeep(generalStatesDefault),
-    normal: {
-        ...generalPropsDefault,
-        backgrounds: [defaultBackground as BackgroundType],
-        paddingAll: "20px",
-        width: "100%",
-    },
+    type: "normal",
+    normal: cloneDeep(ContainerNormalProps),
+    hover: cloneDeep(ContainerNormalProps),
+    focus: cloneDeep(ContainerNormalProps),
+    active: cloneDeep(ContainerNormalProps),
 };
 
 export function Container({
@@ -39,7 +45,7 @@ export function Container({
         enabled: state.options.enabled,
     }));
 
-    console.log(enabled);
+    console.log(props);
     return enabled ? (
         <>
             <Resizer propKey={{ width: "width", height: "height" }}>

@@ -1,4 +1,4 @@
-import { useNode } from "@craftjs/core";
+import { useEditor, useNode } from "@craftjs/core";
 import React, { useState, useEffect, useCallback } from "react";
 import ContentEditable from "react-contenteditable";
 import {
@@ -10,7 +10,7 @@ import {
     generalPropsDefault,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
-import { debounce } from "lodash";
+import { cloneDeep, debounce } from "lodash";
 import { Accordion, AccordionItem, Input } from "@heroui/react";
 import TextInput from "../input-components/TextInput";
 import SelectableInput from "../input-components/SelectableInput";
@@ -21,7 +21,27 @@ type LinkProps = {
     target?: string;
 } & GeneralStatesType;
 
+const LinkNormalProps = {
+    ...cloneDeep(generalPropsDefault),
+    fontSize: "1rem",
+    fontWeight: "bold",
+    textDecoration: "underline",
+};
+
+export const LinkDefaultProps: LinkProps & GeneralStatesType = {
+    text: "Your Link here!",
+    href: "#",
+    target: "_blank",
+    normal: LinkNormalProps,
+    hover: cloneDeep(LinkNormalProps),
+    focus: cloneDeep(LinkNormalProps),
+    active: cloneDeep(LinkNormalProps),
+};
+
 export function LinkComponent({ text, ...props }: LinkProps) {
+    const { enabled } = useEditor((state) => ({
+        enabled: state.options.enabled,
+    }));
     const {
         selected,
         actions: { setProp },
@@ -52,7 +72,7 @@ export function LinkComponent({ text, ...props }: LinkProps) {
         [],
     );
 
-    return (
+    return enabled ? (
         <>
             <Resizer
                 propKey={{ width: "width", height: "height" }}
@@ -103,20 +123,22 @@ export function LinkComponent({ text, ...props }: LinkProps) {
                 />
             </StyledComponent> */}
         </>
+    ) : (
+        <StyledComponent
+            as="a"
+            $normal={props.normal || {}}
+            $hover={props.hover || {}}
+            $focus={props.focus || {}}
+            $active={props.active || {}}
+            $default={LinkDefaultProps.normal}
+            href={props.href}
+            target={props.target}
+            rel="noopener noreferrer"
+        >
+            {text}
+        </StyledComponent>
     );
 }
-
-export const LinkDefaultProps: LinkProps & GeneralStatesType = {
-    text: "Your Link here!",
-    href: "#",
-    target: "_blank",
-    ...generalStatesDefault,
-    normal: {
-        ...generalPropsDefault,
-        fontSize: "1rem",
-        fontWeight: "bold",
-    },
-};
 
 function LinkSettings() {
     return (

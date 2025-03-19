@@ -10,11 +10,15 @@ import { debounce } from "lodash";
 const parseSizeValue = (
     value: string = "",
     customValues: string[],
+    sizeCanBeNegative = false,
 ): [string, string] => {
     if (customValues.includes(value)) {
         return ["0", value];
     }
-    const match = value.match(/^(\d*\.?\d+)(\D+)$/);
+    let regex = sizeCanBeNegative
+        ? /(^-?\d*\.?\d+)(\D+)$/
+        : /^(\d*\.?\d+)(\D+)$/;
+    const match = value.match(regex);
     if (match) {
         const numberValue = match[1];
         return [numberValue, match[2]];
@@ -30,6 +34,7 @@ export default function SizeInput({
     clearDefaultValues = false,
     clearAllUnits = false,
     overrideOnChange = false,
+    sizeCanBeNegative = false,
     defaultValue = "",
     onChangeFn,
     ...rest
@@ -42,6 +47,7 @@ export default function SizeInput({
     clearAllUnits?: boolean;
     clearDefaultValues?: boolean;
     defaultValue?: string;
+    sizeCanBeNegative?: boolean;
     onChangeFn?: (value: string) => void;
 }) {
     let {
@@ -60,17 +66,28 @@ export default function SizeInput({
     if (!clearDefaultValues) {
         customValues = customValues.concat(["initial", "auto"]);
     }
-    // value = parseSizeValue(defaultValue || value, customValues);
     const [intVal, setIntVal] = useState(
-        parseSizeValue(defaultValue || value, customValues)[0] || "0",
+        parseSizeValue(
+            defaultValue || value,
+            customValues,
+            sizeCanBeNegative,
+        )[0] || "0",
     );
     const [unit, setUnit] = useState(
-        parseSizeValue(defaultValue || value, customValues)[1] || "rem",
+        parseSizeValue(
+            defaultValue || value,
+            customValues,
+            sizeCanBeNegative,
+        )[1] || "rem",
     );
 
     useEffect(() => {
         if (overrideOnChange) return;
-        const [numberValue, unitValue] = parseSizeValue(value, customValues);
+        const [numberValue, unitValue] = parseSizeValue(
+            value,
+            customValues,
+            sizeCanBeNegative,
+        );
         setIntVal(numberValue);
         setUnit(unitValue);
     }, [value]);
