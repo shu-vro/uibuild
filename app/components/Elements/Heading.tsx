@@ -135,6 +135,7 @@ function HeadingSettings() {
 }
 
 Heading.craft = {
+    name: "Heading",
     props: HeadingDefaultProps,
     related: {
         settings: HeadingSettings,
