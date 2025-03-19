@@ -1,6 +1,5 @@
 import { useNode } from "@craftjs/core";
-import React, { useState, useEffect, useCallback } from "react";
-import ContentEditable from "react-contenteditable";
+import React from "react";
 import {
     generalStatesDefault,
     GeneralSettings,
@@ -10,17 +9,28 @@ import {
     generalPropsDefault,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
-import { debounce } from "lodash";
-import { Accordion, AccordionItem, Image, Input } from "@heroui/react";
+import {
+    Accordion,
+    AccordionItem,
+    Image,
+    Input,
+    Tab,
+    Tabs,
+} from "@heroui/react";
 import TextInput from "../input-components/TextInput";
 import SelectableInput from "../input-components/SelectableInput";
 import ImageInput from "../input-components/ImageInput";
 import SwitchInput from "../input-components/SwitchInput";
+import SizeInput from "../input-components/SizeInput";
 
 type ImageProps = {
     src?: string;
     alt?: string;
     objectFit?: React.CSSProperties["objectFit"];
+    objectPositionOption?: "all" | "custom";
+    objectPositionAll?: string;
+    objectPositionX?: string;
+    objectPositionY?: string;
 
     isBlurred?: boolean;
     isZoomed?: boolean;
@@ -38,17 +48,18 @@ export function ImageComponent({
     removeWrapper,
     disableSkeleton,
     loading,
+    objectPositionAll,
+    objectPositionX,
+    objectPositionY,
+    objectPositionOption,
     ...props
 }: ImageProps) {
-    const {
-        selected,
-        actions: { setProp },
-        rest,
-    } = useNode((state) => ({
-        selected: state.events.selected,
-        dragged: state.events.dragged,
-        rest: state.data.props,
-    }));
+    console.log(
+        objectPositionAll,
+        objectPositionX,
+        objectPositionY,
+        objectPositionOption,
+    );
 
     return (
         <>
@@ -74,6 +85,10 @@ export function ImageComponent({
                             active: props.active || {},
                         }),
                         objectFit,
+                        objectPosition:
+                            objectPositionOption === "all"
+                                ? objectPositionAll
+                                : `${objectPositionX} ${objectPositionY}`,
 
                         width: "100%",
                         height: "100%",
@@ -102,6 +117,10 @@ export const ImageDefaultProps: ImageProps & GeneralStatesType = {
     isZoomed: false,
     removeWrapper: false,
     disableSkeleton: false,
+    objectPositionOption: "all",
+    objectPositionAll: "center",
+    objectPositionX: "center",
+    objectPositionY: "center",
     loading: "lazy",
 
     ...generalStatesDefault,
@@ -117,8 +136,12 @@ function ImageSettings() {
     const {
         actions: { setProp },
         loading,
+        objectPositionOption,
+        type,
     } = useNode((node) => ({
         loading: node.data.props.loading,
+        type: node.data.props.type,
+        objectPositionOption: node.data.props.objectPosition,
     }));
     return (
         <GeneralSettings>
@@ -145,6 +168,57 @@ function ImageSettings() {
                             "scale-down",
                         ]}
                     />
+
+                    <p>Object Position</p>
+                    <Tabs
+                        selectedKey={objectPositionOption}
+                        onSelectionChange={(val) => {
+                            setProp((props: any) => {
+                                return (props.objectPositionOption = val);
+                            }, 1000);
+                        }}
+                    >
+                        <Tab title="All" key="all">
+                            <SizeInput
+                                propName="objectPositionAll"
+                                customValues={[
+                                    "top",
+                                    "bottom",
+                                    "left",
+                                    "right",
+                                    "center",
+                                ]}
+                                clearDefaultValues
+                                label="All"
+                            />
+                        </Tab>
+                        <Tab title="Custom" key="custom">
+                            <SizeInput
+                                propName="objectPositionX"
+                                customValues={[
+                                    "top",
+                                    "bottom",
+                                    "left",
+                                    "right",
+                                    "center",
+                                ]}
+                                clearDefaultValues
+                                label="X"
+                            />
+                            <SizeInput
+                                propName="objectPositionY"
+                                customValues={[
+                                    "top",
+                                    "bottom",
+                                    "left",
+                                    "right",
+                                    "center",
+                                ]}
+                                clearDefaultValues
+                                label="Y"
+                            />
+                        </Tab>
+                    </Tabs>
                 </AccordionItem>
                 <AccordionItem
                     key="2"
