@@ -15,9 +15,20 @@ import {
     defaultBackground,
 } from "../input-components/BackgroundInput";
 import { useEditor } from "@craftjs/core";
+import { cloneDeep } from "lodash";
 
 type ContainerProps = {
     children?: React.ReactNode;
+};
+
+export const ContainerDefaultProps = {
+    ...cloneDeep(generalStatesDefault),
+    normal: {
+        ...generalPropsDefault,
+        backgrounds: [defaultBackground as BackgroundType],
+        paddingAll: "20px",
+        width: "100%",
+    },
 };
 
 export function Container({
@@ -48,53 +59,20 @@ export function Container({
                     {children}
                 </div>
             </Resizer>
-            {/* <StyledComponent
-                as={Resizer}
-                propKey={{
-                    width: "width",
-                    height: "height",
-                }}
-                normal={props.normal || {}}
-                hover={props.hover || {}}
-                focus={props.focus || {}}
-                active={props.active || {}}
-            /> */}
         </>
     ) : (
-        // <div
-        //     style={{
-        //         ...generalStyles({
-        //             type: props.type || "normal",
-        //             normal: props.normal || {},
-        //             hover: props.hover || {},
-        //             focus: props.focus || {},
-        //             active: props.active || {},
-        //         }),
-        //     }}
-        // >
-        //     {children}
-        // </div>
         <StyledComponent
             as="div"
             $normal={props.normal || {}}
             $hover={props.hover || {}}
             $focus={props.focus || {}}
             $active={props.active || {}}
+            $default={ContainerDefaultProps.normal}
         >
             {children}
         </StyledComponent>
     );
 }
-
-export const ContainerDefaultProps = {
-    ...generalStatesDefault,
-    normal: {
-        ...generalPropsDefault,
-        backgrounds: [defaultBackground as BackgroundType],
-        paddingAll: "20px",
-        width: "100%",
-    },
-};
 
 Container.craft = {
     displayName: "Container",

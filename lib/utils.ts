@@ -7,7 +7,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * This code is licensed under the terms of the MIT license
  *
  * Deep diff between two object, using lodash
  * @param  {Object} object Object compared
