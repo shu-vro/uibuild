@@ -135,13 +135,13 @@ export function ImageComponent({
             </Resizer>
         </>
     ) : (
-        // @ts-ignore
         <StyledComponent
             as={Image}
             $normal={props.normal}
             $hover={props.hover}
             $focus={props.focus}
             $active={props.active}
+            $default={ImageNormalProps} // Add the required $default property
             src={src}
             alt={alt}
             style={{
