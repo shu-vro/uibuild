@@ -13,8 +13,9 @@ import { useTheme } from "next-themes";
 import { PiMoonThin } from "react-icons/pi";
 import { RxSun } from "react-icons/rx";
 import { PiDeviceMobileCamera } from "react-icons/pi";
+import { cn } from "@/lib/utils";
 
-export default function ThemeButton({ ...props }: ButtonProps) {
+export default function ThemeButton({ className, ...props }: ButtonProps) {
     const { theme, setTheme } = useTheme();
     const [selectedKeys, setSelectedKeys] = React.useState(
         new Set([
@@ -31,7 +32,7 @@ export default function ThemeButton({ ...props }: ButtonProps) {
                     color="primary"
                     isIconOnly
                     variant="flat"
-                    className="text-xl"
+                    className={cn("text-xl", className)}
                     {...props}
                 >
                     {theme === "light" && <RxSun />}

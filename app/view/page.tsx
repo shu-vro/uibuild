@@ -11,6 +11,7 @@ import { ImageComponent } from "../components/Elements/ImageComponent";
 import { ButtonComponent } from "../components/Elements/ButtonComponent";
 import RenderNode from "../components/RenderNode";
 import { generalPropsDefault } from "../components/Elements/GeneralSettings";
+import { ThemeButtonComponent } from "../components/Elements/ThemeButtonComponent";
 
 export default function View() {
     return (
@@ -23,6 +24,7 @@ export default function View() {
                 LinkComponent,
                 ImageComponent,
                 ButtonComponent,
+                ThemeButtonComponent,
             }}
             onRender={RenderNode}
         >

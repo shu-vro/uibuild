@@ -93,6 +93,9 @@ export function ImageComponent({
         <>
             <Resizer
                 propKey={{ width: "width", height: "height" }}
+                style={{
+                    overflow: "hidden",
+                }}
                 // style={{
                 //     // width: rest[rest.type].width,
                 //     // height: rest[rest.type].height,
