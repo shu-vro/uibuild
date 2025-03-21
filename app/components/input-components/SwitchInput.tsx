@@ -1,6 +1,6 @@
 import { useNode } from "@craftjs/core";
 import { Switch, SwitchProps } from "@heroui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type Props = {
     label: string;
@@ -32,6 +32,14 @@ export default function SwitchInput({
     const [tempVal, setTempVal] = useState(
         typeof defaultValue === "boolean" ? defaultValue : value,
     );
+
+    useEffect(() => {
+        if (typeof defaultValue === "boolean") {
+            return;
+        }
+        setTempVal(value);
+    }, [value]);
+
     return (
         <div className="flex flex-row items-center justify-between">
             <div className="grow">{label}</div>

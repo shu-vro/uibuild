@@ -14,6 +14,8 @@ import { LinkComponent } from "./Elements/Link";
 import { ImageComponent } from "./Elements/ImageComponent";
 import { ButtonComponent } from "./Elements/ButtonComponent";
 import { PiCursorClick } from "react-icons/pi";
+import { ThemeButtonComponent } from "./Elements/ThemeButtonComponent";
+import { CgDarkMode } from "react-icons/cg";
 
 function CustomButton({
     Icon,
@@ -104,6 +106,16 @@ export default function Toolbox() {
                     }}
                 >
                     Button
+                </CustomButton>
+                <CustomButton
+                    Icon={CgDarkMode}
+                    ref={(ref) => {
+                        if (ref) {
+                            connectors.create(ref, <ThemeButtonComponent />);
+                        }
+                    }}
+                >
+                    Theme Button
                 </CustomButton>
             </div>
             <div className="max-h-[50vh] overflow-auto">
