@@ -8,6 +8,7 @@ import {
     Link,
     Button,
     ButtonGroup,
+    Tooltip,
 } from "@heroui/react";
 import ThemeButton from "./ThemeButton";
 import { LiaUndoSolid, LiaRedoSolid } from "react-icons/lia";
@@ -17,6 +18,7 @@ import lz from "lzutf8";
 import { toast } from "sonner";
 import { useEffectOnce } from "@craftjs/utils";
 import { set, get } from "idb-keyval";
+import { GoEye } from "react-icons/go";
 import { useDeviceWidth } from "@/contexts/DeviceWidthContext";
 
 export const AcmeLogo = () => {
@@ -52,7 +54,12 @@ export default function Header() {
         })();
     });
     return (
-        <Navbar maxWidth="full">
+        <Navbar
+            maxWidth="full"
+            className={`transition-height ease-in-out duration-300 ${
+                !enabled ? "h-0 overflow-hidden pointer-events-none" : "h-16"
+            }`}
+        >
             <NavbarBrand>
                 <AcmeLogo />
                 <p className="font-bold text-inherit">UiBuild</p>
@@ -93,53 +100,79 @@ export default function Header() {
             </NavbarContent>
             <NavbarContent justify="end">
                 <NavbarItem>
-                    <Button
-                        as={Link}
-                        color="primary"
-                        href="#"
-                        variant="flat"
-                        isIconOnly
-                        onPress={async () => {
-                            const json = JSON.parse(query.serialize());
-                            console.log(json);
-                            const saveData = lz.encodeBase64(
-                                lz.compress(JSON.stringify(json)),
-                            );
-                            await set("craft.js", saveData);
-                            toast.success("Saved!");
-                        }}
-                    >
-                        <BsSave />
-                    </Button>
+                    <Tooltip content="Save" color="primary" showArrow>
+                        <Button
+                            as={Link}
+                            color="primary"
+                            href="#"
+                            variant="flat"
+                            isIconOnly
+                            onPress={async () => {
+                                const json = JSON.parse(query.serialize());
+                                console.log(json);
+                                const saveData = lz.encodeBase64(
+                                    lz.compress(JSON.stringify(json)),
+                                );
+                                await set("craft.js", saveData);
+                                toast.success("Saved!");
+                            }}
+                        >
+                            <BsSave />
+                        </Button>
+                    </Tooltip>
                 </NavbarItem>
                 <NavbarItem>
-                    <ThemeButton />
+                    <Tooltip content="Preview" color="primary" showArrow>
+                        <Button
+                            as={Link}
+                            color={"primary"}
+                            href="#"
+                            variant="flat"
+                            isIconOnly
+                            onPress={() =>
+                                actions.setOptions(
+                                    (options) => (options.enabled = !enabled),
+                                )
+                            }
+                        >
+                            <GoEye />
+                        </Button>
+                    </Tooltip>
                 </NavbarItem>
                 <NavbarItem>
-                    <Button
-                        as={Link}
-                        color={canUndo ? "primary" : "default"}
-                        href="#"
-                        variant="flat"
-                        isIconOnly
-                        disabled={!enabled || !canUndo}
-                        onPress={() => actions.history.undo()}
-                    >
-                        <LiaUndoSolid />
-                    </Button>
+                    <Tooltip content="Theme" color="primary" showArrow>
+                        <ThemeButton />
+                    </Tooltip>
                 </NavbarItem>
                 <NavbarItem>
-                    <Button
-                        as={Link}
-                        color={canRedo ? "primary" : "default"}
-                        href="#"
-                        variant="flat"
-                        isIconOnly
-                        disabled={!enabled || !canRedo}
-                        onPress={() => actions.history.redo()}
-                    >
-                        <LiaRedoSolid />
-                    </Button>
+                    <Tooltip content="Undo" color="primary" showArrow>
+                        <Button
+                            as={Link}
+                            color={canUndo ? "primary" : "default"}
+                            href="#"
+                            variant="flat"
+                            isIconOnly
+                            disabled={!enabled || !canUndo}
+                            onPress={() => actions.history.undo()}
+                        >
+                            <LiaUndoSolid />
+                        </Button>
+                    </Tooltip>
+                </NavbarItem>
+                <NavbarItem>
+                    <Tooltip content="Redo" color="primary" showArrow>
+                        <Button
+                            as={Link}
+                            color={canRedo ? "primary" : "default"}
+                            href="#"
+                            variant="flat"
+                            isIconOnly
+                            disabled={!enabled || !canRedo}
+                            onPress={() => actions.history.redo()}
+                        >
+                            <LiaRedoSolid />
+                        </Button>
+                    </Tooltip>
                 </NavbarItem>
             </NavbarContent>
         </Navbar>

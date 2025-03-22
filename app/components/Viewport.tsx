@@ -1,13 +1,17 @@
 import { useDeviceWidth } from "@/contexts/DeviceWidthContext";
 import { cn } from "@/lib/utils";
 import { useEditor } from "@craftjs/core";
+import { Button } from "@heroui/react";
 import React from "react";
+import { GoEyeClosed } from "react-icons/go";
 
 export default function Viewport({ children }: { children: React.ReactNode }) {
-    const { enabled, connectors } = useEditor((state) => ({
+    const { enabled, connectors, actions } = useEditor((state) => ({
         enabled: state.options.enabled,
     }));
     const { size } = useDeviceWidth();
+    // const { preview, togglePreview } = usePreview();
+
     return (
         <div
             className={cn("border-x-2 transition-all ease-in-out", size)}
@@ -17,6 +21,19 @@ export default function Viewport({ children }: { children: React.ReactNode }) {
                 }
             }}
         >
+            <Button
+                color={"primary"}
+                variant="flat"
+                isIconOnly
+                onPress={() =>
+                    actions.setOptions(
+                        (options) => (options.enabled = !enabled),
+                    )
+                }
+                className={cn("fixed top-2 right-2 z-50", enabled && "hidden")}
+            >
+                <GoEyeClosed />
+            </Button>
             {children}
         </div>
     );
