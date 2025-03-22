@@ -25,7 +25,7 @@ export default function SettingsPanel() {
     });
 
     return (
-        <div className="w-[360px] sticky top-16 max-h-[calc(100vh-4rem)] overflow-auto">
+        <div className="w-[360px] sticky top-16 max-h-[calc(100vh-4rem)] overflow-auto shrink-0">
             {selected && isEnabled ? (
                 <>
                     <Chip color="warning">{selected?.name}</Chip>

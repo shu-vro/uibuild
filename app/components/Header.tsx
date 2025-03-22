@@ -7,6 +7,7 @@ import {
     NavbarItem,
     Link,
     Button,
+    ButtonGroup,
 } from "@heroui/react";
 import ThemeButton from "./ThemeButton";
 import { LiaUndoSolid, LiaRedoSolid } from "react-icons/lia";
@@ -16,6 +17,7 @@ import lz from "lzutf8";
 import { toast } from "sonner";
 import { useEffectOnce } from "@craftjs/utils";
 import { set, get } from "idb-keyval";
+import { useDeviceWidth } from "@/contexts/DeviceWidthContext";
 
 export const AcmeLogo = () => {
     return (
@@ -31,6 +33,7 @@ export const AcmeLogo = () => {
 };
 
 export default function Header() {
+    const { setMode } = useDeviceWidth();
     const { actions, query, enabled, canUndo, canRedo } = useEditor(
         (state, query) => ({
             enabled: state.options.enabled,
@@ -54,23 +57,40 @@ export default function Header() {
                 <AcmeLogo />
                 <p className="font-bold text-inherit">UiBuild</p>
             </NavbarBrand>
-            {/* <NavbarContent className="hidden sm:flex gap-4" justify="center">
+            <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarItem>
-                    <Link color="foreground" href="#">
-                        Features
-                    </Link>
+                    <ButtonGroup variant="light">
+                        <Button
+                            onPress={() => {
+                                setMode("full");
+                            }}
+                        >
+                            Full
+                        </Button>
+                        <Button
+                            onPress={() => {
+                                setMode("laptop");
+                            }}
+                        >
+                            Laptop
+                        </Button>
+                        <Button
+                            onPress={() => {
+                                setMode("tablet");
+                            }}
+                        >
+                            Tab
+                        </Button>
+                        <Button
+                            onPress={() => {
+                                setMode("mobile");
+                            }}
+                        >
+                            Mobile
+                        </Button>
+                    </ButtonGroup>
                 </NavbarItem>
-                <NavbarItem isActive>
-                    <Link aria-current="page" href="#">
-                        Customers
-                    </Link>
-                </NavbarItem>
-                <NavbarItem>
-                    <Link color="foreground" href="#">
-                        Integrations
-                    </Link>
-                </NavbarItem>
-            </NavbarContent> */}
+            </NavbarContent>
             <NavbarContent justify="end">
                 <NavbarItem>
                     <Button

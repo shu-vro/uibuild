@@ -11,6 +11,7 @@ export default {
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
         "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
     ],
+    safelist: ["w-full", "w-[1024px]", "w-[768px]", "w-[320px]"],
     theme: {
         extend: {
             screens: {

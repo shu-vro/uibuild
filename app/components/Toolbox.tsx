@@ -27,7 +27,7 @@ function CustomButton({
 } & React.ComponentProps<typeof Button>) {
     return (
         <Button
-            className="w-full h-32 flex-col items-center justify-center"
+            className="w-full h-32 flex-col items-center justify-center will-change-transform"
             variant="flat"
             color="secondary"
             {...rest}
