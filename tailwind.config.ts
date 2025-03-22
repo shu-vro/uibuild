@@ -3,6 +3,9 @@ import type { Config } from "tailwindcss";
 import tailwindcss_animate from "tailwindcss-animate";
 // @ts-ignore
 import tailwind_grid_areas from "@savvywombat/tailwindcss-grid-areas";
+import { MOCK_DEVICE_BREAKPOINTS } from "./contexts/DeviceWidthContext.tsx";
+
+const mock_devices = Object.values(MOCK_DEVICE_BREAKPOINTS);
 
 export default {
     content: [
@@ -11,7 +14,7 @@ export default {
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
         "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
     ],
-    safelist: ["w-full", "w-[1024px]", "w-[768px]", "w-[350px]"],
+    safelist: [...mock_devices],
     theme: {
         extend: {
             screens: {

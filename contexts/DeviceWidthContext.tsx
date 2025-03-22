@@ -2,10 +2,10 @@
 
 import { createContext, useContext, useState } from "react";
 
-type Mode = keyof typeof breakpoint;
+type Mode = keyof typeof MOCK_DEVICE_BREAKPOINTS;
 type DeviceWidthType = {
     mode: Mode;
-    size: (typeof breakpoint)[Mode];
+    size: (typeof MOCK_DEVICE_BREAKPOINTS)[Mode];
     setMode: React.Dispatch<React.SetStateAction<Mode>>;
 };
 const Context = createContext({
@@ -19,7 +19,7 @@ export function useDeviceWidth() {
     return useContext(Context);
 }
 
-const breakpoint = {
+export const MOCK_DEVICE_BREAKPOINTS = {
     full: "w-full",
     laptop: "w-[1024px]",
     tablet: "w-[768px]",
@@ -32,7 +32,7 @@ export const DeviceWidthProvider = ({
     children: React.ReactNode;
 }) => {
     const [mode, setMode] = useState<Mode>("full");
-    const size = breakpoint[mode];
+    const size = MOCK_DEVICE_BREAKPOINTS[mode];
     return (
         <Context.Provider value={{ mode, size, setMode }}>
             {children}
