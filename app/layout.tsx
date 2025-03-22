@@ -75,7 +75,15 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className="scroll-smooth max-sm:text-[12px]">
+        <html lang="en" className="scroll-smooth">
+            <head>
+                {process.env.NODE_ENV === "development" && (
+                    <script
+                        crossOrigin="anonymous"
+                        src="https://unpkg.com/react-scan/dist/auto.global.js"
+                    />
+                )}
+            </head>
             <body className={`${font.className} antialiased`}>
                 <ThemeProvider
                     attribute="class"

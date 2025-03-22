@@ -9,7 +9,7 @@ export default function Sonner() {
     return (
         <Toaster
             richColors
-            position="top-center"
+            position="bottom-left"
             theme={theme as any}
             expand
             pauseWhenPageIsHidden
