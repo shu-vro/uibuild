@@ -1,9 +1,10 @@
+import { cn } from "@/lib/utils";
 import { useEditor } from "@craftjs/core";
 import { Chip } from "@heroui/react";
 import React from "react";
 
 export default function SettingsPanel() {
-    const { selected, isEnabled } = useEditor((state, query) => {
+    const { selected, isEnabled, editorEnabled } = useEditor((state, query) => {
         const currentNodeId = query.getEvent("selected").last();
         let selected;
 
@@ -21,11 +22,17 @@ export default function SettingsPanel() {
         return {
             selected,
             isEnabled: state.options.enabled,
+            editorEnabled: state.options.enabled,
         };
     });
 
     return (
-        <div className="w-[360px] sticky top-16 max-h-[calc(100vh-4rem)] overflow-auto shrink-0">
+        <div
+            className={cn(
+                `w-[360px] sticky top-16 max-h-[calc(100vh-4rem)] overflow-auto shrink-0 transition-width duration-300`,
+                !editorEnabled ? "w-0" : "w-[360px]",
+            )}
+        >
             {selected && isEnabled ? (
                 <>
                     <Chip color="warning">{selected?.name}</Chip>

@@ -1,5 +1,5 @@
 import { useEditor, Element } from "@craftjs/core";
-import { Button } from "@heroui/react";
+import { Button, ScrollShadow } from "@heroui/react";
 import { RiText } from "react-icons/ri";
 import { BsBox } from "react-icons/bs";
 import { Text } from "./Elements/Text";
@@ -16,6 +16,7 @@ import { ButtonComponent } from "./Elements/ButtonComponent";
 import { PiCursorClick } from "react-icons/pi";
 import { ThemeButtonComponent } from "./Elements/ThemeButtonComponent";
 import { CgDarkMode } from "react-icons/cg";
+import { cn } from "@/lib/utils";
 
 function CustomButton({
     Icon,
@@ -39,10 +40,18 @@ function CustomButton({
 }
 
 export default function Toolbox() {
+    const { enabled } = useEditor((state, query) => ({
+        enabled: state.options.enabled,
+    }));
     const { connectors } = useEditor();
     return (
-        <div className="w-[300px] sticky top-16 max-h-[calc(100vh-4rem)] overflow-auto shrink-0">
-            <div className="max-h-[calc(50vh-4rem)] overflow-auto grid grid-cols-2 gap-3">
+        <div
+            className={cn(
+                `w-[300px] sticky top-16 max-h-[calc(100vh-4rem)] overflow-auto shrink-0 transition-width duration-300`,
+                !enabled ? "w-0" : "w-[300px]",
+            )}
+        >
+            <ScrollShadow className="max-h-[calc(50vh-4rem)] overflow-auto grid grid-cols-2 gap-3">
                 <CustomButton
                     Icon={RiText}
                     ref={(ref) => {
@@ -117,7 +126,7 @@ export default function Toolbox() {
                 >
                     Theme Button
                 </CustomButton>
-            </div>
+            </ScrollShadow>
             <div className="max-h-[50vh] overflow-auto">
                 <Layers />
             </div>
