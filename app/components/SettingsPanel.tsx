@@ -29,7 +29,7 @@ export default function SettingsPanel() {
     return (
         <div
             className={cn(
-                `w-[360px] sticky top-16 max-h-[calc(100vh-4rem)] overflow-auto shrink-0 transition-width duration-300`,
+                `w-[360px] sticky top-0 max-h-[calc(100vh-4rem)] overflow-auto shrink-0 transition-width duration-300 ease-in-out`,
                 !editorEnabled ? "w-0" : "w-[360px]",
             )}
         >

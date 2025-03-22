@@ -1327,22 +1327,22 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                             <CardBody className="flex flex-col gap-4">
                                                 <SizeInput
                                                     type={type}
-                                                    propName="borderWidthTopLeft"
+                                                    propName="borderRadiusTopLeft"
                                                     label="Top Left"
                                                 />
                                                 <SizeInput
                                                     type={type}
-                                                    propName="borderWidthTopRight"
+                                                    propName="borderRadiusTopRight"
                                                     label="Top Right"
                                                 />
                                                 <SizeInput
                                                     type={type}
-                                                    propName="borderWidthBottomLeft"
+                                                    propName="borderRadiusBottomLeft"
                                                     label="Bottom Left"
                                                 />
                                                 <SizeInput
                                                     type={type}
-                                                    propName="borderWidthBottomRight"
+                                                    propName="borderRadiusBottomRight"
                                                     label="Bottom Right"
                                                 />
                                             </CardBody>
