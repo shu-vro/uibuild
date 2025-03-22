@@ -16,6 +16,7 @@
         "noImplicitAny": false,
         "forceConsistentCasingInFileNames": true,
         "strictNullChecks": false,
+        "allowImportingTsExtensions": true,
         "plugins": [
             {
                 "name": "next"

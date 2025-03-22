@@ -1,6 +1,6 @@
 "use client";
 
-import { Editor, Frame, Element } from "@craftjs/core";
+import { Editor, Frame, Element, useEditor } from "@craftjs/core";
 import { Text } from "./components/Elements/Text";
 import Header from "./components/Header";
 import SettingsPanel from "./components/SettingsPanel";
@@ -14,6 +14,7 @@ import { ImageComponent } from "./components/Elements/ImageComponent";
 import { ButtonComponent } from "./components/Elements/ButtonComponent";
 import { ThemeButtonComponent } from "./components/Elements/ThemeButtonComponent";
 import { DeviceWidthProvider } from "@/contexts/DeviceWidthContext";
+import { cn } from "@/lib/utils";
 
 export default function PageWrapper() {
     return (
@@ -31,7 +32,7 @@ export default function PageWrapper() {
                 onRender={RenderNode}
             >
                 <Header />
-                <div className="flex flex-row justify-between page-container relative max-h-[calc(100vh-4rem)] overflow-y-auto overflow-x-hidden">
+                <Wrapper>
                     <Toolbox />
                     <Viewport>
                         <Frame>
@@ -46,8 +47,24 @@ export default function PageWrapper() {
                         </Frame>
                     </Viewport>
                     <SettingsPanel />
-                </div>
+                </Wrapper>
             </Editor>
         </DeviceWidthProvider>
+    );
+}
+
+function Wrapper({ children }: { children: React.ReactNode }) {
+    const { enabled } = useEditor((state, query) => ({
+        enabled: state.options.enabled,
+    }));
+    return (
+        <div
+            className={cn(
+                "flex flex-row justify-between page-container relative overflow-y-auto overflow-x-hidden",
+                enabled ? "max-h-[calc(100vh-4rem)]" : "max-h-screen",
+            )}
+        >
+            {children}
+        </div>
     );
 }
