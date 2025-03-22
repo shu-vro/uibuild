@@ -30,7 +30,7 @@ export default function Viewport({ children }: { children: React.ReactNode }) {
                         (options) => (options.enabled = !enabled),
                     )
                 }
-                className={cn("fixed top-2 right-2 z-50", enabled && "hidden")}
+                className={cn("fixed top-2 left-2 z-50", enabled && "hidden")}
             >
                 <GoEyeClosed />
             </Button>

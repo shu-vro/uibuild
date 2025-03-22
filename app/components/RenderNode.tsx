@@ -11,8 +11,9 @@ import shortid from "shortid";
 
 export default function RenderNode({ render }) {
     const { id } = useNode();
-    const { actions, query, isActive } = useEditor((_, query) => ({
+    const { actions, query, isActive, enabled } = useEditor((_, query) => ({
         isActive: query.getEvent("selected").contains(id),
+        enabled: query.getOptions().enabled,
     }));
 
     const {
@@ -137,7 +138,7 @@ export default function RenderNode({ render }) {
 
     return (
         <>
-            {isHover || isActive
+            {(isHover || isActive) && enabled
                 ? ReactDOM.createPortal(
                       <div
                           ref={currentRef}

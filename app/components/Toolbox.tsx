@@ -47,11 +47,11 @@ export default function Toolbox() {
     return (
         <div
             className={cn(
-                `w-[300px] sticky top-16 max-h-[calc(100vh-4rem)] overflow-auto shrink-0 transition-width duration-300`,
+                `w-[300px] sticky top-0 max-h-[calc(100vh-4rem)] overflow-auto shrink-0 transition-width ease-in-out duration-300`,
                 !enabled ? "w-0" : "w-[300px]",
             )}
         >
-            <ScrollShadow className="max-h-[calc(50vh-4rem)] overflow-auto grid grid-cols-2 gap-3">
+            <ScrollShadow className="max-h-[50vh] overflow-auto grid grid-cols-2 gap-3">
                 <CustomButton
                     Icon={RiText}
                     ref={(ref) => {
@@ -127,7 +127,7 @@ export default function Toolbox() {
                     Theme Button
                 </CustomButton>
             </ScrollShadow>
-            <div className="max-h-[50vh] overflow-auto">
+            <div className="max-h-[calc(50vh-4rem)] overflow-auto">
                 <Layers />
             </div>
         </div>
