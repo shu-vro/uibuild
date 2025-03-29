@@ -12,7 +12,6 @@ import {
 } from "@heroui/react";
 import ThemeButton from "./ThemeButton";
 import { LiaUndoSolid, LiaRedoSolid } from "react-icons/lia";
-import { BsSave } from "react-icons/bs";
 import { useEditor } from "@craftjs/core";
 import lz from "lzutf8";
 import { toast } from "sonner";
@@ -20,6 +19,7 @@ import { useEffectOnce } from "@craftjs/utils";
 import { set, get } from "idb-keyval";
 import { GoEye } from "react-icons/go";
 import { useDeviceWidth } from "@/contexts/DeviceWidthContext";
+import { IoSaveOutline } from "react-icons/io5";
 
 export const AcmeLogo = () => {
     return (
@@ -117,7 +117,7 @@ export default function Header() {
                                 toast.success("Saved!");
                             }}
                         >
-                            <BsSave />
+                            <IoSaveOutline />
                         </Button>
                     </Tooltip>
                 </NavbarItem>
