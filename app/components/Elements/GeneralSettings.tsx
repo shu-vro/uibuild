@@ -425,6 +425,7 @@ export function generalStyles({
         alignItems: selected.alignItems,
         flexDirection: selected.flexDirection,
         zIndex: selected.zIndex,
+        backgroundBlendMode: selected.backgroundBlendMode,
         borderRadius:
             selected.borderRadiusOption === "all"
                 ? selected.borderRadiusAll

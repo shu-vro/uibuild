@@ -8,6 +8,7 @@ import {
     GeneralStatesType,
     StyledComponent,
     generalPropsDefault,
+    GeneralSettingsProps,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
 import _, { debounce } from "lodash";
@@ -19,10 +20,11 @@ type HeadingProps = {
     heading?: string;
 } & GeneralStatesType;
 
-const HeadingNormalProps = {
+const HeadingNormalProps: GeneralSettingsProps & HeadingProps = {
     ..._.cloneDeep(generalPropsDefault),
     fontSize: "2rem",
     fontWeight: "bold",
+    width: "100%",
 };
 
 export const HeadingDefaultProps: HeadingProps & GeneralStatesType = {

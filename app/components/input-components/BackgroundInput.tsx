@@ -100,7 +100,7 @@ function BackgroundTile({
                 return n;
             }),
         );
-    }, [fields, isPopoverOpen]);
+    }, [fields]);
 
     return (
         <Popover
@@ -531,7 +531,10 @@ export default function BackgroundInput() {
                     size="sm"
                     variant="flat"
                     onPress={() => {
-                        setNodes([...nodes, defaultBackground]);
+                        setNodes([
+                            ...nodes,
+                            { ...defaultBackground, id: Math.random() },
+                        ]);
                     }}
                 >
                     <FaPlus />
