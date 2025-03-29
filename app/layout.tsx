@@ -3,7 +3,7 @@ import { Montserrat } from "next/font/google";
 
 // import { AppSidebar } from "./components/AppSidebar";
 // import Gradient from "./components/Gradient";
-import Sonner from "./components/Sonner";
+import Sonner from "./editor/components/Sonner";
 
 // import { SidebarProvider } from "@/components/ui/sidebar";
 import ThemeProvider from "@/contexts/theme-provider";

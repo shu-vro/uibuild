@@ -322,7 +322,6 @@ export const StyledComponent = styled.div<{
             let h_n = objectDiff($hover, $normal); // all the exceptions of hover that is not on normal
             // 2.
             let d_hn = objectDiff(h_n, $default);
-            console.log(d_hn, $hover, $normal, $default);
             return css({
                 ...generalStyles({
                     type: "hover",
@@ -603,27 +602,6 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                     let h_n = objectDiff(selectedState, rest.normal);
                     let d_hn = objectDiff(h_n, generalPropsDefault);
                     d_hn = { ...rest.normal, ...d_hn };
-                    // let d_minus_h = objectDiff(
-                    //     generalPropsDefault,
-                    //     selectedState,
-                    // );
-                    // d_minus_h = {
-                    //     ..._.cloneDeep(generalPropsDefault),
-                    //     ..._.cloneDeep(d_minus_h),
-                    // };
-                    // for (let key in d_minus_h) {
-                    //     if (_.isEqual(d_minus_h[key], selectedState[key])) {
-                    //         // console.log(key)
-                    //         // console.log(
-                    //         //     key,
-                    //         //     selectedState[key],
-                    //         //     rest.normal[key],
-                    //         //     Object.isFrozen(selectedState[key]),
-                    //         // );
-                    //         selectedState[key] = rest.normal[key];
-                    //     }
-                    // }
-                    // console.log(objectDiff(generalPropsDefault, selectedState));
                     setProp((props: any) => {
                         props.type = val;
                         props[val] = d_hn;

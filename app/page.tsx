@@ -1,18 +1,12 @@
-import { Metadata, Viewport } from "next";
-import PageWrapper from "./PageWrapper";
+import { Metadata } from "next";
+import React from "react";
+import HomePage from "./components/HomePage";
 
 export const metadata: Metadata = {
     title: "Editor",
+    description: "Editor for UiBuild",
 };
 
-export const viewport: Viewport = {
-    initialScale: 0.2,
-    minimumScale: 0.2,
-    maximumScale: 2,
-    width: "device-width",
-};
-
-export default function App() {
-    console.log("hi");
-    return <PageWrapper />;
+export default function page() {
+    return <HomePage />;
 }

@@ -109,11 +109,11 @@ export default function Header() {
                             isIconOnly
                             onPress={async () => {
                                 const json = JSON.parse(query.serialize());
-                                console.log(json);
                                 const saveData = lz.encodeBase64(
                                     lz.compress(JSON.stringify(json)),
                                 );
                                 await set("craft.js", saveData);
+                                console.log(json, saveData);
                                 toast.success("Saved!");
                             }}
                         >

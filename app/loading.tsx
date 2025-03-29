@@ -1,5 +1,5 @@
 import React from "react";
-import Loader from "./components/Loader";
+import Loader from "./editor/components/Loader";
 
 // export default function loading() {
 //     return <div className="fixed top-0 left-0 w-full h-full"></div>;
