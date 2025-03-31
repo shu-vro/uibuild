@@ -3,7 +3,7 @@ import type { Config } from "tailwindcss";
 import tailwindcss_animate from "tailwindcss-animate";
 // @ts-ignore
 import tailwind_grid_areas from "@savvywombat/tailwindcss-grid-areas";
-import { MOCK_DEVICE_BREAKPOINTS } from "./contexts/DeviceWidthContext.tsx";
+import { MOCK_DEVICE_BREAKPOINTS } from "./src/contexts/DeviceWidthContext.tsx";
 
 const mock_devices = Object.values(MOCK_DEVICE_BREAKPOINTS);
 
@@ -12,6 +12,7 @@ export default {
         "./pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
+        "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
         "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
     ],
     safelist: [...mock_devices],
