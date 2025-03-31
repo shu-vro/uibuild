@@ -24,7 +24,8 @@ export default function AppSidebarItems({ item }: AppSidebarItemsProps) {
                         sidebar.setOpenMobile(false);
                     }}
                     className="capitalize justify-start rounded-sm text-sidebar-foreground/70 text-medium py-5"
-                    href={item.url}>
+                    href={item.url}
+                >
                     {item.title}
                 </Button>
             </SidebarMenuSubButton>
