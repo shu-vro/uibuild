@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import { Card, Input, Button, Avatar, CardFooter } from "@heroui/react";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import Image from "next/image";
-import signupImage from "@/assets/signup.jpg";
+import signupImage from "@/src/assets/signup.jpg";
 import { Logo } from "@/src/app/editor/components/Header";
 import Link from "next/link";
 import { useUser } from "@/src/contexts/UserContext";

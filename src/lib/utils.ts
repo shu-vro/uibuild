@@ -15,3 +15,10 @@ export function cn(...inputs: ClassValue[]) {
  */
 export const objectDiff = (a, b) =>
     _.fromPairs(_.differenceWith(_.toPairs(a), _.toPairs(b), _.isEqual));
+
+export const firstLetterCollect = (name: string) => {
+    return name
+        .split(" ")
+        .map((n) => n[0].toUpperCase())
+        .join("");
+};
