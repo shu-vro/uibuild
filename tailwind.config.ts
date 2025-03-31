@@ -11,8 +11,7 @@ export default {
     content: [
         "./pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
-        "./app/**/*.{js,ts,jsx,tsx,mdx}",
-        "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+        "./src/**/*.{js,ts,jsx,tsx,mdx}",
         "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
     ],
     safelist: [...mock_devices],
@@ -21,24 +20,6 @@ export default {
             screens: {
                 lap: "1200px",
                 mob: "450px",
-            },
-            gridTemplateAreas: {
-                productLayoutLap: [
-                    "company product product",
-                    "company    more    more",
-                    "company    review  review",
-                ],
-                productLayoutNoLap: ["product", "more", "review", "company"],
-                companyLayoutLap: [
-                    "image   image    image",
-                    "name    name     name",
-                    "company product product",
-                ],
-                companyLayoutNoLap: ["image", "name", "company", "product"],
-            },
-            gridTemplateColumns: {
-                productLayoutLap: "1fr 1fr 1fr",
-                productLayoutNoLap: "1fr",
             },
             colors: {
                 background: "hsl(var(--background))",

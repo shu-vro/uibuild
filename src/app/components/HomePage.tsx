@@ -10,7 +10,6 @@ import {
     Button,
     Card,
     CardBody,
-    Chip,
     Tooltip,
     CardFooter,
     Select,
@@ -24,9 +23,13 @@ import {
 import { Logo } from "../editor/components/Header";
 import Link from "next/link";
 import ThemeButton from "../editor/components/ThemeButton";
+import { useUser } from "@/src/contexts/UserContext";
+import { firstLetterCollect } from "@/src/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
-    const signup = true;
+    const { user, logOut } = useUser();
+    const router = useRouter();
     return (
         <div>
             <Navbar maxWidth="full">
@@ -36,15 +39,20 @@ export default function HomePage() {
                 </NavbarBrand>
 
                 <NavbarContent justify="end">
-                    {signup ? (
+                    {user ? (
                         <Dropdown placement="bottom-end">
                             <DropdownTrigger>
                                 <Avatar
                                     isBordered
                                     size="sm"
                                     as="button"
+                                    name={firstLetterCollect(user.name)}
+                                    showFallback
+                                    classNames={{
+                                        // base: "bg-red-500",
+                                        name: "font-bold text-xl",
+                                    }}
                                     className="transition-transform"
-                                    src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                                 />
                             </DropdownTrigger>
                             <DropdownMenu
@@ -58,9 +66,7 @@ export default function HomePage() {
                                     <p className="font-semibold">
                                         Signed in as
                                     </p>
-                                    <p className="font-semibold">
-                                        zoey@example.com
-                                    </p>
+                                    <p className="font-semibold">{user.name}</p>
                                 </DropdownItem>
                                 <DropdownItem key="settings">
                                     My Settings
@@ -78,7 +84,14 @@ export default function HomePage() {
                                 <DropdownItem key="help_and_feedback">
                                     Help & Feedback
                                 </DropdownItem>
-                                <DropdownItem key="logout" color="danger">
+                                <DropdownItem
+                                    key="logout"
+                                    color="danger"
+                                    onPress={async () => {
+                                        await logOut();
+                                        router.push("/auth/login");
+                                    }}
+                                >
                                     Log Out
                                 </DropdownItem>
                             </DropdownMenu>
@@ -86,13 +99,13 @@ export default function HomePage() {
                     ) : (
                         <>
                             <NavbarItem className="hidden lg:flex">
-                                <Link href="#">Login</Link>
+                                <Link href="/auth/login">Login</Link>
                             </NavbarItem>
                             <NavbarItem>
                                 <Button
                                     as={Link}
                                     color="primary"
-                                    href="#"
+                                    href="/auth/signup"
                                     variant="flat"
                                 >
                                     Sign Up
