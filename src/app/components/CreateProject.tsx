@@ -25,8 +25,9 @@ export default function CreateProject() {
                 onPress={() => {
                     setIsOpen(true);
                 }}
+                className="min-h-80"
             >
-                <CardBody className="justify-center items-center text-6xl bg-primary/50">
+                <CardBody className="justify-center items-center text-center text-6xl bg-primary/50">
                     Create Project
                 </CardBody>
             </Card>
