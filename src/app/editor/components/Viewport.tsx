@@ -33,7 +33,10 @@ export default function Viewport({ children }: { children: React.ReactNode }) {
     return (
         <>
             <div
-                className={cn("border-x-2 transition-all ease-in-out", size)}
+                className={cn(
+                    "border-x-2 transition-all ease-in-out isolate overflow-x-auto",
+                    size,
+                )}
                 ref={(ref) => {
                     if (ref && enabled) {
                         connectors.select(connectors.hover(ref, null), null);
