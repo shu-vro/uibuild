@@ -101,7 +101,7 @@ export async function createAttributes() {
             collectionId.allVersions,
             "versionNum",
             true, // required
-            1, // minimum value
+            0, // minimum value
             10000, // maximum value
             undefined, // no default value for required attribute
             false, // not an array
@@ -208,10 +208,10 @@ export async function createAttributes() {
             dbId,
             collectionId.workspaceData,
             "currentVersion",
-            true, // required
-            1, // minimum value
+            false, // required
+            0, // minimum value
             10000, // maximum value
-            undefined, // no default value for required attribute
+            0, // no default value for required attribute
             false, // not an array
         );
         console.log(
