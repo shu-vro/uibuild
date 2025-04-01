@@ -3,10 +3,8 @@ import { Montserrat } from "next/font/google";
 
 // import { AppSidebar } from "./components/AppSidebar";
 // import Gradient from "./components/Gradient";
-import Sonner from "./editor/components/Sonner";
 
 // import { SidebarProvider } from "@/components/ui/sidebar";
-import ThemeProvider from "@/src/contexts/theme-provider";
 
 import "@smastrom/react-rating/style.css";
 import "./globals.css";
@@ -15,7 +13,7 @@ import "swiper/css/navigation";
 import "swiper/css/zoom";
 import "lenis/dist/lenis.css";
 import { createMetadata } from "@/src/lib/metadata";
-import { UserProvider, useUser } from "@/src/contexts/UserContext";
+import Providers from "../contexts/Providers";
 
 const font = Montserrat({
     subsets: ["latin"],
@@ -54,18 +52,9 @@ export default function RootLayout({
                 )}
             </head>
             <body className={`${font.className} antialiased`}>
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    {/* <AppSidebar /> */}
-                    <main className="w-full mx-auto">
-                        <UserProvider>{children}</UserProvider>
-                        <Sonner />
-                    </main>
-                </ThemeProvider>
+                <Providers>
+                    <main className="w-full mx-auto">{children}</main>
+                </Providers>
             </body>
         </html>
     );

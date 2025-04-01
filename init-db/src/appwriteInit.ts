@@ -233,7 +233,7 @@ export async function createAttributes() {
             RelationshipType.OneToMany,
             true,
             "versions",
-            "allVersions",
+            "workspace",
             RelationMutate.Cascade,
         );
         console.log(
