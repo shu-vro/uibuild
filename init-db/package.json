@@ -1,12 +1,21 @@
 {
-  "name": "init-db",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  }
+    "name": "init-db",
+    "module": "index.ts",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "dev": "bun run --watch index.ts",
+        "start": "bun run index.ts"
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.7",
+        "node-appwrite": "^15.0.1",
+        "ora": "^8.2.0"
+    }
 }

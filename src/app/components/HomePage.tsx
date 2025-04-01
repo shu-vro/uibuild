@@ -123,6 +123,11 @@ export default function HomePage() {
             <div className="p-4">
                 <h1 className="text-4xl font-bold my-4">Projects</h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <Card isPressable as={"span"}>
+                        <CardBody className="justify-center items-center text-6xl bg-primary/50">
+                            Create Project
+                        </CardBody>
+                    </Card>
                     {Array(10)
                         .fill(1)
                         .map((_, i) => (
