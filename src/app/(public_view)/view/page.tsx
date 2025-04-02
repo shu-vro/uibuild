@@ -2,16 +2,15 @@
 
 import { Editor, Element, Frame, useEditor } from "@craftjs/core";
 import React from "react";
-import { Text } from "../editor/components/Elements/Text";
-import { Container } from "../editor/components/Elements/Container";
+import { Text } from "@/src/app/editor/components/Elements/Text";
+import { Container } from "@/src/app/editor/components/Elements/Container";
 import ConfigComponent from "./ConfigComponent";
-import { Heading } from "../editor/components/Elements/Heading";
-import { LinkComponent } from "../editor/components/Elements/Link";
-import { ImageComponent } from "../editor/components/Elements/ImageComponent";
-import { ButtonComponent } from "../editor/components/Elements/ButtonComponent";
-import RenderNode from "../editor/components/RenderNode";
-import { generalPropsDefault } from "../editor/components/Elements/GeneralSettings";
-import { ThemeButtonComponent } from "../editor/components/Elements/ThemeButtonComponent";
+import { Heading } from "@/src/app/editor/components/Elements/Heading";
+import { LinkComponent } from "@/src/app/editor/components/Elements/Link";
+import { ImageComponent } from "@/src/app/editor/components/Elements/ImageComponent";
+import { ButtonComponent } from "@/src/app/editor/components/Elements/ButtonComponent";
+import RenderNode from "@/src/app/editor/components/RenderNode";
+import { ThemeButtonComponent } from "@/src/app/editor/components/Elements/ThemeButtonComponent";
 
 export default function View() {
     return (

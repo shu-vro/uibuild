@@ -140,6 +140,28 @@ export async function createAttributes() {
     try {
         const result = await databases.createStringAttribute(
             dbId,
+            collectionId.allVersions,
+            "public_id",
+            100, // maximum length
+            true, // required
+            undefined, // no default value provided for required attribute
+            false, // not an array
+            false, // not unique
+        );
+        console.log(
+            chalk.green(`Attribute created successfully: ${result.key}`),
+        );
+    } catch (error: any) {
+        console.error(
+            chalk.red(`Failed to create "public_id" attribute:`),
+            error.message,
+        );
+    }
+
+    // Create "name" attribute in workspaceData collection
+    try {
+        const result = await databases.createStringAttribute(
+            dbId,
             collectionId.workspaceData,
             "name",
             100, // maximum length

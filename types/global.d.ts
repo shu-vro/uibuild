@@ -2,8 +2,9 @@ import { Models } from "appwrite";
 
 declare global {
     interface AllVersionsType extends Models.Document {
-        versionNum: string;
+        versionNum: number;
         versionUrl: string;
+        public_id: string;
         workspace: WorkspaceDataType;
     }
 

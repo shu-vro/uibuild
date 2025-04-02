@@ -20,6 +20,7 @@ import { GoEye } from "react-icons/go";
 import { useDeviceWidth } from "@/src/contexts/DeviceWidthContext";
 import { IoSaveOutline } from "react-icons/io5";
 import Link from "next/link";
+import { useWorkspaceInfo } from "@/src/contexts/WorkspaceInfoProvider";
 
 export function Logo() {
     return (
@@ -48,6 +49,7 @@ export default function Header() {
             }
         })();
     });
+    const { save, saveVersion } = useWorkspaceInfo();
     return (
         <Navbar
             maxWidth="full"
@@ -95,6 +97,23 @@ export default function Header() {
             </NavbarContent>
             <NavbarContent justify="end">
                 <NavbarItem>
+                    <Button
+                        color="primary"
+                        variant="flat"
+                        // isIconOnly
+                        onPress={async () => {
+                            const json = JSON.parse(query.serialize());
+                            const saveData = lz.encodeBase64(
+                                lz.compress(JSON.stringify(json)),
+                            );
+                            saveVersion(saveData);
+                            toast.success("Saved!");
+                        }}
+                    >
+                        New Version
+                    </Button>
+                </NavbarItem>
+                <NavbarItem>
                     <Tooltip content="Save" color="primary" showArrow>
                         <Button
                             as={Link}
@@ -107,8 +126,7 @@ export default function Header() {
                                 const saveData = lz.encodeBase64(
                                     lz.compress(JSON.stringify(json)),
                                 );
-                                await set("craft.js", saveData);
-                                console.log(json, saveData);
+                                save(saveData);
                                 toast.success("Saved!");
                             }}
                         >

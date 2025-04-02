@@ -26,3 +26,24 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         </QueryClientProvider>
     );
 }
+
+export function NotProtectedProviders({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    return (
+        <QueryClientProvider client={queryClient}>
+            <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+            >
+                {children}
+                <Sonner />
+                <ReactQueryDevtools initialIsOpen={false} />
+            </ThemeProvider>
+        </QueryClientProvider>
+    );
+}
