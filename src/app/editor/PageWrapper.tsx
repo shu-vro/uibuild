@@ -15,10 +15,11 @@ import { ButtonComponent } from "./components/Elements/ButtonComponent";
 import { ThemeButtonComponent } from "./components/Elements/ThemeButtonComponent";
 import { DeviceWidthProvider } from "@/src/contexts/DeviceWidthContext";
 import { cn } from "@/src/lib/utils";
+import WorkspaceInfoProvider from "@/src/contexts/WorkspaceInfoProvider";
 
 export default function PageWrapper() {
     return (
-        <DeviceWidthProvider>
+        <Providers>
             <Editor
                 resolver={{
                     Text,
@@ -49,6 +50,14 @@ export default function PageWrapper() {
                     <SettingsPanel />
                 </Wrapper>
             </Editor>
+        </Providers>
+    );
+}
+
+function Providers({ children }: { children: React.ReactNode }) {
+    return (
+        <DeviceWidthProvider>
+            <WorkspaceInfoProvider>{children}</WorkspaceInfoProvider>
         </DeviceWidthProvider>
     );
 }

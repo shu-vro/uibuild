@@ -4,7 +4,7 @@ import Loader from "./editor/components/Loader";
 // export default function loading() {
 //     return <div className="fixed top-0 left-0 w-full h-full"></div>;
 // }
-export default function loading() {
+export default function Loading() {
     return (
         <div className="fixed top-0 left-0 w-full h-full grid place-items-center">
             <div className="flex flex-col justify-center items-center">
