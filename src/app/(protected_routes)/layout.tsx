@@ -7,13 +7,12 @@ import { Montserrat } from "next/font/google";
 // import { SidebarProvider } from "@/components/ui/sidebar";
 
 import "@smastrom/react-rating/style.css";
-import "./globals.css";
+import "../globals.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/zoom";
-import "lenis/dist/lenis.css";
 import { createMetadata } from "@/src/lib/metadata";
-import Providers from "../contexts/Providers";
+import Providers from "../../contexts/Providers";
 
 const font = Montserrat({
     subsets: ["latin"],

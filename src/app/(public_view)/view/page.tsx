@@ -2,15 +2,15 @@
 
 import { Editor, Element, Frame, useEditor } from "@craftjs/core";
 import React from "react";
-import { Text } from "@/src/app/editor/components/Elements/Text";
-import { Container } from "@/src/app/editor/components/Elements/Container";
+import { Text } from "@/src/app/(protected_routes)/editor/components/Elements/Text";
+import { Container } from "@/src/app/(protected_routes)/editor/components/Elements/Container";
 import ConfigComponent from "./ConfigComponent";
-import { Heading } from "@/src/app/editor/components/Elements/Heading";
-import { LinkComponent } from "@/src/app/editor/components/Elements/Link";
-import { ImageComponent } from "@/src/app/editor/components/Elements/ImageComponent";
-import { ButtonComponent } from "@/src/app/editor/components/Elements/ButtonComponent";
-import RenderNode from "@/src/app/editor/components/RenderNode";
-import { ThemeButtonComponent } from "@/src/app/editor/components/Elements/ThemeButtonComponent";
+import { Heading } from "@/src/app/(protected_routes)/editor/components/Elements/Heading";
+import { LinkComponent } from "@/src/app/(protected_routes)/editor/components/Elements/Link";
+import { ImageComponent } from "@/src/app/(protected_routes)/editor/components/Elements/ImageComponent";
+import { ButtonComponent } from "@/src/app/(protected_routes)/editor/components/Elements/ButtonComponent";
+import RenderNode from "@/src/app/(protected_routes)/editor/components/RenderNode";
+import { ThemeButtonComponent } from "@/src/app/(protected_routes)/editor/components/Elements/ThemeButtonComponent";
 
 export default function View() {
     return (

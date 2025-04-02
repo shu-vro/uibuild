@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@/src/contexts/UserContext";
 import Loading from "../loading";
 
-export default function ProtectedRoute({
+export default function ProtectRoutes({
     children,
 }: {
     children: React.ReactNode;
@@ -16,7 +16,7 @@ export default function ProtectedRoute({
     useEffect(() => {
         if (!isLoading && !user) {
             // Redirect to login if not authenticated
-            router.push("/login");
+            router.push("/auth/login");
         }
     }, [user, isLoading, router]);
 
