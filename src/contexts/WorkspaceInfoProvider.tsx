@@ -15,6 +15,7 @@ type WorkspaceInfoProviderProps = {
     workspace: WorkspaceDataType;
     save(data: string): Promise<any>;
     saveVersion(data: string): Promise<any>;
+    loadVersion(version: string): Promise<any>;
 };
 
 const Context = createContext({} as WorkspaceInfoProviderProps);
@@ -39,12 +40,20 @@ export default function WorkspaceInfoProvider({
         error,
         refetch,
     } = useQuery<Models.DocumentList<WorkspaceDataType>>({
-        queryKey: ["workspace", params.workspaceId, user?.$id],
+        queryKey: [
+            "workspace",
+            params.slug,
+            user?.$id,
+            searchParams.get("workspaceId"),
+        ],
         queryFn: async () => {
             return databases.listDocuments(dbId, CollectionId.workspaceData, [
                 Query.and([
                     Query.equal("belongsTo", [user?.$id]),
-                    Query.equal("$id", [params.workspaceId as string]),
+                    Query.equal("$id", [
+                        searchParams.get("workspaceId") as string,
+                    ]),
+                    Query.equal("slug", [params.slug as string]),
                 ]),
             ]);
         },
@@ -59,6 +68,9 @@ export default function WorkspaceInfoProvider({
         versionUrl: string,
         publicId: string,
     ) => {
+        if (!workspace?.documents?.[0]) {
+            throw new Error("No workspace found");
+        }
         return await databases.createDocument<AllVersionsType>(
             dbId,
             CollectionId.allVersions,
@@ -67,7 +79,7 @@ export default function WorkspaceInfoProvider({
                 versionNum: currentVersion + 1,
                 versionUrl: versionUrl,
                 public_id: publicId,
-                workspace: params.workspaceId,
+                workspace: workspace.documents[0].$id,
             },
             [
                 Permission.read(Role.any()),
@@ -118,12 +130,11 @@ export default function WorkspaceInfoProvider({
         if (!selectedVersion) {
             return toast.error("No version found");
         }
-        console.log(selectedVersion);
         const uploadResult = (await saveVersionAction(
             prepareData,
             selectedVersion.public_id,
         )) as UploadApiResponse;
-        console.log(uploadResult);
+        return uploadResult;
     }
 
     const save = async (data: string) => {
@@ -156,10 +167,10 @@ export default function WorkspaceInfoProvider({
             await refetch();
         } catch (error: unknown) {
             if (error instanceof Error) {
-                console.error("Error saving version:", error);
+                console.info("info saving version:", error);
                 toast.error("Error saving version: " + error.message);
             } else {
-                console.error("An unknown error occurred", error);
+                console.info("An unknown error occurred", error);
             }
         }
     };
@@ -190,21 +201,36 @@ export default function WorkspaceInfoProvider({
                 CollectionId.workspaceData,
                 document.$id,
                 {
-                    // name: document.name,
-                    // description: document.description,
-                    // belongsTo: document.belongsTo,
                     currentVersion: versionDoc.versionNum,
                 },
             );
             await refetch();
         } catch (error) {
             if (error instanceof Error) {
-                console.error("Error saving version:", error);
+                console.info("Error saving version:", error);
                 toast.error("Error saving version: " + error.message);
             } else {
-                console.error("An unknown error occurred", error);
+                console.info("An unknown error occurred", error);
             }
         }
+    };
+
+    const loadVersion = async (version: string) => {
+        if (!workspace?.documents?.[0]) {
+            throw new Error("No workspace found");
+        }
+        const document = workspace.documents[0];
+        const targetVersion = parseInt(version);
+        const selectedVersion = document.versions.find(
+            (version) => version.versionNum === targetVersion,
+        );
+        if (!selectedVersion) {
+            return toast.error("No version found");
+        }
+        const file = await fetch(selectedVersion.versionUrl);
+        const fileData = await file.text();
+        const decompressedData = lz.decompress(lz.decodeBase64(fileData));
+        return decompressedData;
     };
 
     if (isLoading) return <Loading />;
@@ -217,7 +243,12 @@ export default function WorkspaceInfoProvider({
 
     return (
         <Context.Provider
-            value={{ workspace: workspace.documents[0], save, saveVersion }}
+            value={{
+                workspace: workspace.documents[0],
+                save,
+                saveVersion,
+                loadVersion,
+            }}
         >
             {children}
         </Context.Provider>

@@ -62,7 +62,7 @@ function ProjectCard({ project }: { project: WorkspaceDataType }) {
                 <div className="mb-10">
                     <h1 className="text-3xl font-bold my-3">
                         <Link
-                            href={`/editor/${project.$id}?version=${selectedVersion}`}
+                            href={`/editor/${project.slug}?version=${selectedVersion}&workspaceId=${project.$id}`}
                         >
                             {project.name}
                             <span className="absolute inset-0"></span>

@@ -158,6 +158,28 @@ export async function createAttributes() {
         );
     }
 
+    // Create "slug" attribute in workspaceData collection
+    try {
+        const result = await databases.createStringAttribute(
+            dbId,
+            collectionId.workspaceData,
+            "slug",
+            100, // maximum length
+            true, // required
+            undefined, // no default value provided for required attribute
+            false, // not an array
+            false, // not encrypted
+        );
+        console.log(
+            chalk.green(`Attribute created successfully: ${result.key}`),
+        );
+    } catch (error: any) {
+        console.error(
+            chalk.red(`Failed to create "slug" attribute:`),
+            error.message,
+        );
+    }
+
     // Create "name" attribute in workspaceData collection
     try {
         const result = await databases.createStringAttribute(
@@ -168,7 +190,7 @@ export async function createAttributes() {
             true, // required
             undefined, // no default value provided for required attribute
             false, // not an array
-            false, // not unique
+            false, // not encrypted
         );
         console.log(
             chalk.green(`Attribute created successfully: ${result.key}`),
