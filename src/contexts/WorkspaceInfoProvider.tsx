@@ -7,7 +7,7 @@ import { CollectionId, databases, dbId } from "@/appwriteConfig";
 import { ID, Models, Permission, Query, Role } from "appwrite";
 import Loading from "../app/(protected_routes)/loading";
 import { toast } from "sonner";
-import lz from "lzutf8";
+import lzString from "lz-string";
 import saveVersionAction from "../actions/saveVersionAction";
 import { UploadApiResponse } from "cloudinary";
 
@@ -134,6 +134,16 @@ export default function WorkspaceInfoProvider({
             prepareData,
             selectedVersion.public_id,
         )) as UploadApiResponse;
+        // have to update the version document
+        const newVersion = await databases.updateDocument<AllVersionsType>(
+            dbId,
+            CollectionId.allVersions,
+            selectedVersion.$id,
+            {
+                versionUrl: uploadResult.secure_url,
+            },
+        );
+        console.log(newVersion, uploadResult);
         return uploadResult;
     }
 
@@ -142,8 +152,10 @@ export default function WorkspaceInfoProvider({
             return toast.error("No workspace found");
 
         const document = workspace.documents[0];
-        const prepareData =
-            "data:text/plain;base64," + lz.encodeBase64(lz.compress(data));
+
+        const prepareData = btoa(
+            unescape(encodeURIComponent(lzString.compressToBase64(data))),
+        );
 
         try {
             if (document.currentVersion === 0) {
@@ -181,8 +193,8 @@ export default function WorkspaceInfoProvider({
 
         const document = workspace.documents[0];
 
-        const prepareData =
-            "data:text/plain;base64," + lz.encodeBase64(lz.compress(data));
+        // const prepareData = Buffer.from(data, "base64").toString("utf-8");
+        const prepareData = data;
 
         try {
             const uploadResult = (await saveVersionAction(
@@ -227,9 +239,15 @@ export default function WorkspaceInfoProvider({
         if (!selectedVersion) {
             return toast.error("No version found");
         }
-        const file = await fetch(selectedVersion.versionUrl);
+        const file = await fetch(selectedVersion.versionUrl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "text/plain",
+                Accept: "text/plain",
+            },
+        });
         const fileData = await file.text();
-        const decompressedData = lz.decompress(lz.decodeBase64(fileData));
+        const decompressedData = lzString.decompressFromBase64(fileData);
         return decompressedData;
     };
 
