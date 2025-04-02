@@ -5,7 +5,7 @@ import { useUser } from "./UserContext";
 import { useQuery } from "@tanstack/react-query";
 import { CollectionId, databases, dbId } from "@/appwriteConfig";
 import { ID, Models, Permission, Query, Role } from "appwrite";
-import Loading from "../app/loading";
+import Loading from "../app/(protected_routes)/loading";
 import { toast } from "sonner";
 import lz from "lzutf8";
 import saveVersionAction from "../actions/saveVersionAction";

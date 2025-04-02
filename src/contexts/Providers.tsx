@@ -5,7 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ThemeProvider from "@/src/contexts/theme-provider";
 import { UserProvider } from "@/src/contexts/UserContext";
-import Sonner from "../app/editor/components/Sonner";
+import Sonner from "../app/(protected_routes)/editor/components/Sonner";
+import ProtectRoutes from "../app/(protected_routes)/components/ProtectRoutes";
 
 // Create your QueryClient inside a client component.
 const queryClient = new QueryClient();
@@ -19,7 +20,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 enableSystem
                 disableTransitionOnChange
             >
-                <UserProvider>{children}</UserProvider>
+                <UserProvider>
+                    {/* <ProtectRoutes> */}
+                    {children}
+                    {/* </ProtectRoutes> */}
+                </UserProvider>
                 <Sonner />
                 <ReactQueryDevtools initialIsOpen={false} />
             </ThemeProvider>

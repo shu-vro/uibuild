@@ -54,6 +54,8 @@ function ProjectCard({ project }: { project: WorkspaceDataType }) {
         project.currentVersion,
     );
 
+    console.log(project);
+
     return (
         <Card isPressable as={"span"} className="min-h-80">
             <CardBody className="relative isolate p-6">
@@ -85,13 +87,14 @@ function ProjectCard({ project }: { project: WorkspaceDataType }) {
                         setSelectedVersion(parseInt(key.toString()));
                     }}
                 >
-                    {Array(10)
-                        .fill(1)
-                        .map((_, i) => (
-                            <SelectItem
-                                key={`${9 - i}`}
-                            >{`${9 - i}`}</SelectItem>
-                        ))}
+                    {project.versions.map((version) => (
+                        <SelectItem
+                            key={version.versionNum.toString()}
+                            textValue={version.versionNum.toString()}
+                        >
+                            {version.versionNum}
+                        </SelectItem>
+                    ))}
                 </Select>
             </CardFooter>
         </Card>

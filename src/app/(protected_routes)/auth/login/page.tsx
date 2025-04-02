@@ -4,8 +4,8 @@ import React, { useCallback } from "react";
 import { Card, Input, Button, Avatar, CardFooter } from "@heroui/react";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import Image from "next/image";
-import signupImage from "@/src/assets/signup.jpg";
-import { Logo } from "@/src/app/editor/components/Header";
+import loginImage from "@/src/assets/login.jpg";
+import { Logo } from "@/src/app/(protected_routes)/editor/components/Header";
 import Link from "next/link";
 import { useUser } from "@/src/contexts/UserContext";
 import { toast } from "sonner";
@@ -13,53 +13,53 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
     const router = useRouter();
-    const { createUserUsingEmailAndPassword } = useUser();
+    const { loginUserUsingEmailAndPassword } = useUser();
+
     const handleSubmit = useCallback(
         async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
-            const name = formData.get("name") as string;
             const email = formData.get("email") as string;
-            const password1 = formData.get("password1") as string;
-            const password2 = formData.get("password2") as string;
-            if (password1 !== password2) {
-                toast.error("Passwords do not match");
-                return;
-            }
+            const password = formData.get("password") as string;
+            console.log(email, password);
             try {
-                await createUserUsingEmailAndPassword(email, password1, name);
-                toast.success("Account created successfully");
+                await loginUserUsingEmailAndPassword(email, password);
+                toast.success("Login successful!");
                 router.push("/");
             } catch (error: any) {
-                toast.error("Error creating account: " + error.message);
-                console.log(error);
+                toast.error("Login failed: " + error.message);
+                console.log(error.message);
             }
         },
-        [createUserUsingEmailAndPassword, router],
+        [loginUserUsingEmailAndPassword, router],
     );
     return (
         <div className="min-h-screen flex">
             <div className="fixed top-4 left-4 z-20">
                 <Logo />
             </div>
+            {/* Left side: Image */}
+            <div className="hidden md:block md:w-1/2 z-10">
+                <Image
+                    src={loginImage}
+                    alt="login"
+                    width={600}
+                    height={800}
+                    className="w-full h-screen object-cover"
+                />
+            </div>
 
-            {/* left side: Login Form */}
+            {/* Right side: Login Form */}
             <div className="w-full md:w-1/2 flex items-center justify-center bg-background p-4 relative">
-                <div className="w-[800px] h-[800px] rounded-full bg-primary/25 fixed -top-14 left-10 z-[0] blur-3xl"></div>
+                <div className="w-[800px] h-[800px] rounded-full bg-primary/25 fixed -top-14 right-10 z-[0] blur-3xl"></div>
                 <Card className="p-8 max-w-md w-full shadow-xl">
                     <h2 className="text-3xl font-bold mb-6 text-center">
-                        Create an Account
+                        Welcome Back
                     </h2>
                     <form
                         className="flex flex-col gap-4"
                         onSubmit={handleSubmit}
                     >
-                        <Input
-                            label="Name"
-                            type="text"
-                            className="w-full"
-                            name="name"
-                        />
                         <Input
                             label="Email"
                             type="email"
@@ -67,16 +67,11 @@ export default function Page() {
                             name="email"
                         />
                         <Input
-                            name="password1"
+                            name="password"
                             label="Password"
                             type="password"
                             className="w-full"
-                        />
-                        <Input
-                            name="password2"
-                            label="Confirm Password"
-                            type="password"
-                            className="w-full"
+                            autoComplete="current-password"
                         />
                         <Button
                             color="primary"
@@ -84,7 +79,7 @@ export default function Page() {
                             className="mt-2"
                             type="submit"
                         >
-                            Signup
+                            Login
                         </Button>
                     </form>
 
@@ -116,27 +111,17 @@ export default function Page() {
                     <CardFooter>
                         <div className="flex justify-center items-center mt-4">
                             <p className="text-sm text-gray-600">
-                                Already have an account?{" "}
+                                Don't have an account?{" "}
                                 <Link
-                                    href="/auth/login"
+                                    href="/auth/signup"
                                     className="text-primary font-semibold"
                                 >
-                                    Login
+                                    Sign Up
                                 </Link>
                             </p>
                         </div>
                     </CardFooter>
                 </Card>
-            </div>
-            {/* right side: Image */}
-            <div className="hidden md:block md:w-1/2 z-10">
-                <Image
-                    src={signupImage}
-                    alt="login"
-                    width={600}
-                    height={800}
-                    className="w-full h-screen object-cover object-bottom"
-                />
             </div>
         </div>
     );

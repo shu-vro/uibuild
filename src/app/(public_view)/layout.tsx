@@ -2,6 +2,7 @@ import Providers, { NotProtectedProviders } from "@/src/contexts/Providers";
 import { createMetadata } from "@/src/lib/metadata";
 import { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
+import "../globals.css";
 
 const APP_NAME = "UiBuild";
 const APP_DESCRIPTION = "Best app in the world!";
