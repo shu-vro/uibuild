@@ -8,15 +8,69 @@ import {
     ModalFooter,
 } from "@heroui/modal";
 import { CollectionId, databases, dbId } from "@/appwriteConfig";
-import { ID, Permission, Role } from "appwrite";
+import { ID, Permission, Query, Role } from "appwrite";
 import { useUser } from "@/src/contexts/UserContext";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { debounce } from "lodash";
+
+// write a generateSlug function that will generate slug by user input. this function will convert space to dash (-) and remove special characters. only a-z and 0-9 and - will be allowed, else would be cutted off.
+function generateSlug(str: string) {
+    return str
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+}
 
 export default function CreateProject() {
     const [isOpen, setIsOpen] = useState(false);
     const { user } = useUser();
     const router = useRouter();
+    const [slug, setSlug] = useState("");
+    const [slugDescription, setSlugDescription] = useState(
+        "This will be the slug of your project",
+    );
+    const [slugValid, setSlugValid] = useState<true | string>(true);
+
+    function handleSubmit(): React.FormEventHandler<HTMLElement> {
+        return async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget as HTMLFormElement);
+            const projectName = formData.get("projectName");
+            const projectSlug = formData.get("projectSlug");
+            const generatedSlug = generateSlug(projectSlug as string);
+            const projectDescription = formData.get("projectDescription");
+
+            console.log(projectName, projectDescription);
+
+            try {
+                // we need to check if the project slug is already taken
+                const info = await databases.createDocument<WorkspaceDataType>(
+                    dbId,
+                    CollectionId.workspaceData,
+                    ID.unique(),
+                    {
+                        name: projectName,
+                        slug: generatedSlug,
+                        description: projectDescription,
+                        belongsTo: user.$id, // Replace with actual user ID
+                    },
+                    [
+                        Permission.read(Role.any()),
+                        Permission.update(Role.user(user.$id)),
+                        Permission.delete(Role.user(user.$id)),
+                    ],
+                );
+                toast.success(info.name + " Project created successfully");
+                router.push(
+                    `/editor/${info.slug}?version=${info.currentVersion}&workspaceId=${info.$id}`,
+                );
+            } catch (error) {
+                toast.error("Failed to create project");
+                console.error("Error creating project:", error);
+            }
+        };
+    }
 
     return (
         <>
@@ -37,44 +91,7 @@ export default function CreateProject() {
                 onOpenChange={setIsOpen}
                 size="full"
                 as={"form"}
-                onSubmit={async (e) => {
-                    e.preventDefault();
-                    const formData = new FormData(
-                        e.currentTarget as HTMLFormElement,
-                    );
-                    const projectName = formData.get("projectName");
-                    const projectDescription =
-                        formData.get("projectDescription");
-
-                    console.log(projectName, projectDescription);
-
-                    try {
-                        const info = await databases.createDocument(
-                            dbId,
-                            CollectionId.workspaceData,
-                            ID.unique(),
-                            {
-                                name: projectName,
-                                description: projectDescription,
-                                belongsTo: user.$id, // Replace with actual user ID
-                            },
-                            [
-                                Permission.read(Role.any()),
-                                Permission.update(Role.user(user.$id)),
-                                Permission.delete(Role.user(user.$id)),
-                            ],
-                        );
-                        toast.success(
-                            info.name + " Project created successfully",
-                        );
-                        router.push(
-                            `/editor/${info.$id}?version=${info.currentVersion}`,
-                        );
-                    } catch (error) {
-                        toast.error("Failed to create project");
-                        console.error("Error creating project:", error);
-                    }
-                }}
+                onSubmit={handleSubmit()}
             >
                 <ModalContent className="p-8">
                     {(onClose) => (
@@ -90,6 +107,51 @@ export default function CreateProject() {
                                     maxLength={100}
                                     isRequired
                                     name="projectName"
+                                />
+                                <Input
+                                    label="Project Unique Id"
+                                    className="mb-4"
+                                    size="lg"
+                                    maxLength={100}
+                                    isRequired
+                                    name="projectSlug"
+                                    description={slugDescription}
+                                    value={slug}
+                                    validate={(val) => {
+                                        return slugValid;
+                                    }}
+                                    onValueChange={(val) => {
+                                        setSlug(val);
+                                        setSlugDescription(
+                                            "Your slug will be: " +
+                                                generateSlug(val),
+                                        );
+
+                                        debounce(async () => {
+                                            const list =
+                                                await databases.listDocuments(
+                                                    dbId,
+                                                    CollectionId.workspaceData,
+                                                    [Query.equal("slug", val)],
+                                                );
+
+                                            if (list.total > 0) {
+                                                setSlugDescription(
+                                                    "This slug is already taken",
+                                                );
+                                                setSlugValid(
+                                                    "This slug is already taken",
+                                                );
+                                            } else {
+                                                setSlugDescription(
+                                                    "Your slug will be: " +
+                                                        generateSlug(val),
+                                                );
+                                                setSlugValid(true);
+                                            }
+                                            setSlugValid(generateSlug(val));
+                                        }, 500);
+                                    }}
                                 />
                                 <Textarea
                                     label="Project Description"
@@ -107,7 +169,7 @@ export default function CreateProject() {
                                     Close
                                 </Button>
                                 <Button color="primary" type="submit">
-                                    Action
+                                    Create Project
                                 </Button>
                             </ModalFooter>
                         </>

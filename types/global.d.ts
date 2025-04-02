@@ -9,6 +9,7 @@ declare global {
     }
 
     interface WorkspaceDataType extends Models.Document {
+        slug: string;
         name: string;
         description: string;
         belongsTo: string;

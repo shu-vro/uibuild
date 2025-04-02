@@ -8,6 +8,8 @@ import {
     Button,
     ButtonGroup,
     Tooltip,
+    Select,
+    SelectItem,
 } from "@heroui/react";
 import ThemeButton from "./ThemeButton";
 import { LiaUndoSolid, LiaRedoSolid } from "react-icons/lia";
@@ -21,6 +23,7 @@ import { useDeviceWidth } from "@/src/contexts/DeviceWidthContext";
 import { IoSaveOutline } from "react-icons/io5";
 import Link from "next/link";
 import { useWorkspaceInfo } from "@/src/contexts/WorkspaceInfoProvider";
+import { useSearchParams } from "next/navigation";
 
 export function Logo() {
     return (
@@ -32,6 +35,7 @@ export function Logo() {
 
 export default function Header() {
     const { setMode } = useDeviceWidth();
+    const searchParams = useSearchParams();
     const { actions, query, enabled, canUndo, canRedo } = useEditor(
         (state, query) => ({
             enabled: state.options.enabled,
@@ -41,15 +45,16 @@ export default function Header() {
     );
     useEffectOnce(() => {
         (async () => {
-            const data = await get("craft.js");
-            if (data) {
-                const json = JSON.parse(lz.decompress(lz.decodeBase64(data)));
-                actions.deserialize(json);
-                toast.success("Loaded previous state");
-            }
+            // const data = await get("craft.js");
+            // if (data) {
+            //     const json = JSON.parse(lz.decompress(lz.decodeBase64(data)));
+            //     actions.deserialize(json);
+            //     toast.success("Loaded previous state");
+            // }
         })();
     });
-    const { save, saveVersion } = useWorkspaceInfo();
+    const { workspace, loadVersion, save, saveVersion } = useWorkspaceInfo();
+
     return (
         <Navbar
             maxWidth="full"
@@ -112,6 +117,30 @@ export default function Header() {
                     >
                         New Version
                     </Button>
+                </NavbarItem>
+                <NavbarItem>
+                    <Select
+                        className="w-[160px]"
+                        startContent="Version"
+                        color="secondary"
+                        disallowEmptySelection
+                        // defaultSelectedKeys={[project.currentVersion.toString()]}
+                        selectedKeys={
+                            new Set([searchParams.get("version") ?? "0"])
+                        }
+                        onSelectionChange={(key) => {
+                            //
+                        }}
+                    >
+                        {workspace.versions.map((version) => (
+                            <SelectItem
+                                key={version.versionNum.toString()}
+                                textValue={version.versionNum.toString()}
+                            >
+                                {version.versionNum}
+                            </SelectItem>
+                        ))}
+                    </Select>
                 </NavbarItem>
                 <NavbarItem>
                     <Tooltip content="Save" color="primary" showArrow>
