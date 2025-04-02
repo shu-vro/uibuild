@@ -22,7 +22,7 @@ export default async function saveVersionAction(
         //     "data:text/plain;base64,
 
         const uploadResult = await cloudinary.uploader
-            .upload(file, {
+            .upload("data:text/plain;base64," + file, {
                 use_filename: true,
                 unique_filename: true,
                 exif: false,

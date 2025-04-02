@@ -14,7 +14,6 @@ import {
 import ThemeButton from "./ThemeButton";
 import { LiaUndoSolid, LiaRedoSolid } from "react-icons/lia";
 import { useEditor } from "@craftjs/core";
-import lz from "lzutf8";
 import { toast } from "sonner";
 import { useEffectOnce } from "@craftjs/utils";
 import { set, get } from "idb-keyval";
@@ -24,6 +23,7 @@ import { IoSaveOutline } from "react-icons/io5";
 import Link from "next/link";
 import { useWorkspaceInfo } from "@/src/contexts/WorkspaceInfoProvider";
 import { useSearchParams } from "next/navigation";
+import lzString from "lz-string";
 
 export function Logo() {
     return (
@@ -45,12 +45,13 @@ export default function Header() {
     );
     useEffectOnce(() => {
         (async () => {
-            // const data = await get("craft.js");
-            // if (data) {
-            //     const json = JSON.parse(lz.decompress(lz.decodeBase64(data)));
-            //     actions.deserialize(json);
-            //     toast.success("Loaded previous state");
-            // }
+            const versionData = await loadVersion(
+                searchParams.get("version") ?? "0",
+            );
+            if (versionData) {
+                const json = JSON.parse(versionData);
+                actions.deserialize(json);
+            }
         })();
     });
     const { workspace, loadVersion, save, saveVersion } = useWorkspaceInfo();
@@ -107,11 +108,10 @@ export default function Header() {
                         variant="flat"
                         // isIconOnly
                         onPress={async () => {
-                            const json = JSON.parse(query.serialize());
-                            const saveData = lz.encodeBase64(
-                                lz.compress(JSON.stringify(json)),
+                            const saveData = lzString.compressToBase64(
+                                query.serialize(),
                             );
-                            saveVersion(saveData);
+                            await saveVersion(saveData);
                             toast.success("Saved!");
                         }}
                     >
@@ -124,12 +124,12 @@ export default function Header() {
                         startContent="Version"
                         color="secondary"
                         disallowEmptySelection
-                        // defaultSelectedKeys={[project.currentVersion.toString()]}
-                        selectedKeys={
+                        defaultSelectedKeys={
                             new Set([searchParams.get("version") ?? "0"])
                         }
                         onSelectionChange={(key) => {
-                            //
+                            const versionData = loadVersion(key as string);
+                            console.log(versionData);
                         }}
                     >
                         {workspace.versions.map((version) => (
@@ -152,10 +152,17 @@ export default function Header() {
                             isIconOnly
                             onPress={async () => {
                                 const json = JSON.parse(query.serialize());
-                                const saveData = lz.encodeBase64(
-                                    lz.compress(JSON.stringify(json)),
-                                );
-                                save(saveData);
+                                console.log(json);
+                                // const saveData = lz.encodeBase64(
+                                //     lz.compress(JSON.stringify(json)),
+                                // );
+                                // const saveData = lzString.compressToBase64(
+                                //     query.serialize(),
+                                // );
+                                // const savedata2 =
+                                //     lzString.compressToBase64(saveData);
+                                // console.log(query.serialize(), saveData);
+                                save(query.serialize());
                                 toast.success("Saved!");
                             }}
                         >
