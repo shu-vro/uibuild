@@ -82,7 +82,6 @@ function ProjectCard({ project }: { project: WorkspaceDataType }) {
                     startContent="Version"
                     color="secondary"
                     disallowEmptySelection
-                    // defaultSelectedKeys={[project.currentVersion.toString()]}
                     selectedKeys={new Set([selectedVersion.toString()])}
                     onSelectionChange={(key) => {
                         setSelectedVersion(parseInt(key.toString()));

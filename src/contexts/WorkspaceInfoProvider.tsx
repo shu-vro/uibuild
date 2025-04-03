@@ -64,7 +64,7 @@ export default function WorkspaceInfoProvider({
     });
 
     const createVersionDoc = async (
-        currentVersion: number,
+        totalVersions: number,
         versionUrl: string,
         publicId: string,
     ) => {
@@ -76,7 +76,7 @@ export default function WorkspaceInfoProvider({
             CollectionId.allVersions,
             ID.unique(),
             {
-                versionNum: currentVersion + 1,
+                versionNum: totalVersions + 1,
                 versionUrl: versionUrl,
                 public_id: publicId,
                 workspace: workspace.documents[0].$id,
@@ -112,6 +112,7 @@ export default function WorkspaceInfoProvider({
                 // description: document.description,
                 // belongsTo: document.belongsTo,
                 currentVersion: versionData.versionNum,
+                totalVersions: versionData.versionNum,
             },
         );
         toast.success("Version created: " + versionData.versionNum);
@@ -158,7 +159,7 @@ export default function WorkspaceInfoProvider({
         );
 
         try {
-            if (document.currentVersion === 0) {
+            if (document.totalVersions === 0) {
                 if (document.versions.length === 0) {
                     await handleNoVersionAndNoFile(document, prepareData);
                 } else {
@@ -203,7 +204,7 @@ export default function WorkspaceInfoProvider({
             console.log("file uploaded");
 
             const versionDoc = await createVersionDoc(
-                document.currentVersion,
+                document.totalVersions,
                 uploadResult.secure_url,
                 uploadResult.public_id,
             );
@@ -214,6 +215,7 @@ export default function WorkspaceInfoProvider({
                 document.$id,
                 {
                     currentVersion: versionDoc.versionNum,
+                    totalVersions: versionDoc.versionNum,
                 },
             );
             await refetch();
@@ -237,7 +239,8 @@ export default function WorkspaceInfoProvider({
             (version) => version.versionNum === targetVersion,
         );
         if (!selectedVersion) {
-            return toast.error("No version found");
+            toast.error("No version found");
+            throw new Error("No version found");
         }
         const file = await fetch(selectedVersion.versionUrl, {
             method: "GET",

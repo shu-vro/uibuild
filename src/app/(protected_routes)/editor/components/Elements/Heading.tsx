@@ -89,6 +89,8 @@ export function Heading({ text, heading, ...props }: HeadingProps) {
                             focus: props.focus || {},
                             active: props.active || {},
                         }),
+                        width: "100%",
+                        height: "100%",
                     }}
                     onChange={(e) => {
                         setValue(e.target.value);
