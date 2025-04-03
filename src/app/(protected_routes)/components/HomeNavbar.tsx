@@ -19,11 +19,9 @@ import Link from "next/link";
 import ThemeButton from "../editor/components/ThemeButton";
 import { useUser } from "@/src/contexts/UserContext";
 import { firstLetterCollect } from "@/src/lib/utils";
-import { useRouter } from "next/navigation";
 
 export default function HomeNavbar() {
     const { user, logOut } = useUser();
-    const router = useRouter();
     return (
         <Navbar maxWidth="full">
             <NavbarBrand as={Link} href="/" className="flex items-center">
@@ -77,7 +75,6 @@ export default function HomeNavbar() {
                                 color="danger"
                                 onPress={async () => {
                                     await logOut();
-                                    router.push("/auth/login");
                                 }}
                             >
                                 Log Out

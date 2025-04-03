@@ -1,13 +1,14 @@
 "use client";
 
 import { account } from "@/appwriteConfig";
-import { useEffectOnce } from "@craftjs/utils";
 import { Models, ID } from "appwrite";
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type UserContextType = {
     user: Models.User<Models.Preferences> | null;
     isLoading: boolean;
+    isAuthing: boolean;
     createUserUsingEmailAndPassword: (
         email: string,
         password: string,
@@ -33,19 +34,24 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<Models.User<Models.Preferences> | null>(
         null,
     );
+    const [isLoading, setIsLoading] = useState(true);
+    const [isAuthing, setIsAuthing] = useState(false);
 
     useEffect(() => {
         const fetchSavedUser = async () => {
+            setIsLoading(true);
             try {
                 const fetchedUser = await account.get();
                 setUser(fetchedUser);
             } catch (error) {
-                console.log("No user found");
+                toast.warning("No user found");
+                console.log("no user found", error);
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchSavedUser();
     }, []);
-    const [isLoading, setIsLoading] = useState(false);
 
     const fetchSavedUser = async () => {
         return await account.get();
@@ -56,7 +62,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         password: string,
         displayName: string,
     ) => {
-        setIsLoading(true);
+        setIsAuthing(true);
         const user = await account.create(
             ID.unique(),
             email,
@@ -64,18 +70,18 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             displayName,
         );
         setUser(user);
-        setIsLoading(false);
+        setIsAuthing(false);
     };
 
     const loginUserUsingEmailAndPassword = async (
         email: string,
         password: string,
     ) => {
-        setIsLoading(true);
+        setIsAuthing(true);
         await account.createEmailPasswordSession(email, password);
         const fetchedUser = await fetchSavedUser();
         setUser(fetchedUser);
-        setIsLoading(false);
+        setIsAuthing(false);
     };
 
     const logOut = async () => {
@@ -87,6 +93,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             value={{
                 user,
                 isLoading,
+                isAuthing,
                 createUserUsingEmailAndPassword,
                 loginUserUsingEmailAndPassword,
                 fetchSavedUser,
