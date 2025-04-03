@@ -1,18 +1,15 @@
 import { useEditor, useNode } from "@craftjs/core";
-import React, { useState, useEffect, useCallback } from "react";
-import ContentEditable from "react-contenteditable";
+import React, { useCallback } from "react";
 import {
     generalStatesDefault,
     GeneralSettings,
     generalStyles,
     GeneralStatesType,
-    StyledComponent,
     generalPropsDefault,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
 import { debounce } from "lodash";
 import { Accordion, AccordionItem, Button } from "@heroui/react";
-import ImageInput from "../input-components/ImageInput";
 import TextInput from "../input-components/TextInput";
 // New imports for extra settings inputs
 import SelectableInput from "../input-components/SelectableInput";
@@ -66,18 +63,7 @@ export function ButtonComponent({
         id: state.id,
     }));
 
-    const { actions } = useEditor((_, query) => ({}));
-
-    const debouncedSetProp = useCallback(
-        debounce((value) => {
-            setProp(
-                (props: any) =>
-                    (props.text = value.replace(/<\/?[^>]+(>|$)/g, "")),
-                500,
-            );
-        }, 500),
-        [],
-    );
+    const { actions } = useEditor();
 
     return (
         <>

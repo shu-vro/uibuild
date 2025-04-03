@@ -15,10 +15,12 @@ import TextInput from "../input-components/TextInput";
 
 type TextProps = {
     text?: string;
+    id?: string;
 } & GeneralStatesType;
 
 export const TextDefaultProps = {
     text: "Hi",
+    id: "",
     ...generalStatesDefault,
 };
 
@@ -74,6 +76,7 @@ export function Text({ text, ...props }: TextProps) {
                 onClick={() => selected && setEditable(true)}
             >
                 <ContentEditable
+                    id={props.id}
                     style={{
                         ...generalStyles({
                             type: props.type || "normal",
@@ -95,6 +98,7 @@ export function Text({ text, ...props }: TextProps) {
         </>
     ) : (
         <StyledComponent
+            id={props.id}
             as="p"
             $normal={props.normal || {}}
             $hover={props.hover || {}}
@@ -121,6 +125,7 @@ function TextSettings() {
             >
                 <AccordionItem key="1" aria-label="Text" title="Text Props">
                     <TextInput propName="text" label="Text Content" />
+                    <TextInput propName="id" label="ID" />
                 </AccordionItem>
             </Accordion>
         </GeneralSettings>

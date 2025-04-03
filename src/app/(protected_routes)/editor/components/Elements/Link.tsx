@@ -20,6 +20,7 @@ type LinkProps = {
     text?: string;
     href?: string;
     target?: string;
+    id?: string;
 } & GeneralStatesType;
 
 const LinkNormalProps: GeneralSettingsProps = {
@@ -34,6 +35,7 @@ export const LinkDefaultProps: LinkProps & GeneralStatesType = {
     text: "Your Link here!",
     href: "#",
     target: "_blank",
+    id: "",
     type: "normal",
     normal: LinkNormalProps,
     hover: cloneDeep(LinkNormalProps),
@@ -82,6 +84,7 @@ export function LinkComponent({ text, ...props }: LinkProps) {
                 onClick={() => selected && setEditable(true)}
             >
                 <ContentEditable
+                    id={props.id}
                     html={value as string}
                     disabled={!editable}
                     style={{
@@ -106,6 +109,7 @@ export function LinkComponent({ text, ...props }: LinkProps) {
         </>
     ) : (
         <StyledComponent
+            id={props.id}
             as="a"
             $normal={props.normal || {}}
             $hover={props.hover || {}}
@@ -139,6 +143,11 @@ function LinkSettings() {
                         propName="target"
                         label="Target"
                         options={["_blank", "_self", "_parent", "_top"]}
+                    />
+                    <TextInput
+                        propName="id"
+                        label="ID"
+                        placeholder="Enter ID"
                     />
                 </AccordionItem>
             </Accordion>
