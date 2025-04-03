@@ -21,9 +21,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
                 disableTransitionOnChange
             >
                 <UserProvider>
-                    {/* <ProtectRoutes> */}
-                    {children}
-                    {/* </ProtectRoutes> */}
+                    <ProtectRoutes>{children}</ProtectRoutes>
                 </UserProvider>
                 <Sonner />
                 <ReactQueryDevtools initialIsOpen={false} />

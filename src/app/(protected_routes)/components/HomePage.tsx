@@ -12,7 +12,12 @@ import { Query } from "appwrite";
 import { useUser } from "@/src/contexts/UserContext";
 
 export default function HomePage() {
-    const { user } = useUser();
+    const { user, isLoading: userLoading } = useUser();
+
+    // If user is null - show nothing or redirect immediately
+    if (!user && !userLoading) {
+        return <div>Redirecting...</div>;
+    }
     const {
         data: projects,
         isLoading,
@@ -21,7 +26,6 @@ export default function HomePage() {
     } = useQuery({
         queryKey: ["projects", user.$id],
         queryFn: async () => {
-            console.log(user);
             return databases.listDocuments(dbId, CollectionId.workspaceData, [
                 Query.equal("belongsTo", user.$id),
                 Query.orderAsc("$updatedAt"),
@@ -32,7 +36,6 @@ export default function HomePage() {
     if (isLoading) return <div>Loading...</div>;
     if (isError) return <div>Error loading projects: {error.message}</div>;
     const documents = projects.documents as WorkspaceDataType[];
-    console.log(documents);
     return (
         <div>
             <HomeNavbar />
@@ -53,8 +56,6 @@ function ProjectCard({ project }: { project: WorkspaceDataType }) {
     const [selectedVersion, setSelectedVersion] = useState(
         project.currentVersion,
     );
-
-    console.log(project);
 
     return (
         <Card isPressable as={"span"} className="min-h-80">

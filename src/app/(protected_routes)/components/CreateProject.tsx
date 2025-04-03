@@ -1,5 +1,6 @@
+import React, { useState, useMemo } from "react";
+import { debounce } from "lodash";
 import { Button, Card, CardBody, Input, Textarea } from "@heroui/react";
-import React, { useState } from "react";
 import {
     Modal,
     ModalContent,
@@ -12,9 +13,8 @@ import { ID, Permission, Query, Role } from "appwrite";
 import { useUser } from "@/src/contexts/UserContext";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { debounce } from "lodash";
 
-// write a generateSlug function that will generate slug by user input. this function will convert space to dash (-) and remove special characters. only a-z and 0-9 and - will be allowed, else would be cutted off.
+// Generate slug: convert spaces to dashes, remove special characters.
 function generateSlug(str: string) {
     return str
         .toLowerCase()
@@ -32,6 +32,37 @@ export default function CreateProject() {
     );
     const [slugValid, setSlugValid] = useState<true | string>(true);
 
+    // Create a debounced function only once using useMemo.
+    const debouncedCheckSlug = useMemo(
+        () =>
+            debounce(async (value: string) => {
+                const list = await databases.listDocuments(
+                    dbId,
+                    CollectionId.workspaceData,
+                    [Query.equal("slug", value)],
+                );
+                console.log(list);
+                if (list.total > 0) {
+                    setSlugDescription("This slug is already taken");
+                    setSlugValid("This slug is already taken");
+                } else {
+                    setSlugDescription(
+                        "Your slug will be: " + generateSlug(value),
+                    );
+                    setSlugValid(true);
+                }
+            }, 500),
+        [],
+    );
+
+    const handleValueChange = (val: string) => {
+        setSlug(val);
+        // Show immediate feedback for slug
+        setSlugDescription("Your slug will be: " + generateSlug(val));
+        // Call the debounced function with the current value
+        debouncedCheckSlug(val);
+    };
+
     function handleSubmit(): React.FormEventHandler<HTMLElement> {
         return async (e) => {
             e.preventDefault();
@@ -44,8 +75,8 @@ export default function CreateProject() {
             console.log(projectName, projectDescription);
 
             try {
-                // we need to check if the project slug is already taken
-                const info = await databases.createDocument<WorkspaceDataType>(
+                // Check if the project slug is already taken is handled by debounce above.
+                const info = await databases.createDocument(
                     dbId,
                     CollectionId.workspaceData,
                     ID.unique(),
@@ -117,40 +148,9 @@ export default function CreateProject() {
                                     name="projectSlug"
                                     description={slugDescription}
                                     value={slug}
-                                    validate={(val) => {
-                                        return slugValid;
-                                    }}
+                                    validate={(val) => slugValid}
                                     onValueChange={(val) => {
-                                        setSlug(val);
-                                        setSlugDescription(
-                                            "Your slug will be: " +
-                                                generateSlug(val),
-                                        );
-
-                                        debounce(async () => {
-                                            const list =
-                                                await databases.listDocuments(
-                                                    dbId,
-                                                    CollectionId.workspaceData,
-                                                    [Query.equal("slug", val)],
-                                                );
-
-                                            if (list.total > 0) {
-                                                setSlugDescription(
-                                                    "This slug is already taken",
-                                                );
-                                                setSlugValid(
-                                                    "This slug is already taken",
-                                                );
-                                            } else {
-                                                setSlugDescription(
-                                                    "Your slug will be: " +
-                                                        generateSlug(val),
-                                                );
-                                                setSlugValid(true);
-                                            }
-                                            setSlugValid(generateSlug(val));
-                                        }, 500);
+                                        handleValueChange(val);
                                     }}
                                 />
                                 <Textarea
