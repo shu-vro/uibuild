@@ -5,7 +5,7 @@ import { useNode } from "@craftjs/core";
 import { Input, InputProps, Select, SelectItem } from "@heroui/react";
 import React, { useEffect, useMemo, useState } from "react";
 import { GeneralStatesType } from "../Elements/GeneralSettings";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 
 const parseSizeValue = (
     value: string = "",

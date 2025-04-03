@@ -23,7 +23,7 @@ import SelectableInput from "../input-components/SelectableInput";
 import ImageInput from "../input-components/ImageInput";
 import SwitchInput from "../input-components/SwitchInput";
 import SizeInput from "../input-components/SizeInput";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 
 type ImageProps = {
     src?: string;

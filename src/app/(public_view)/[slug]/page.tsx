@@ -11,6 +11,7 @@ import { ImageComponent } from "@/src/app/(protected_routes)/editor/components/E
 import { ButtonComponent } from "@/src/app/(protected_routes)/editor/components/Elements/ButtonComponent";
 import RenderNode from "@/src/app/(protected_routes)/editor/components/RenderNode";
 import { ThemeButtonComponent } from "@/src/app/(protected_routes)/editor/components/Elements/ThemeButtonComponent";
+import { Html } from "@/src/app/(protected_routes)/editor/components/Elements/Html";
 
 export default function View() {
     return (
@@ -18,6 +19,7 @@ export default function View() {
             enabled={false}
             resolver={{
                 Text,
+                Html,
                 Heading,
                 Container,
                 LinkComponent,
@@ -29,7 +31,7 @@ export default function View() {
         >
             <div className="flex flex-row gap-4 justify-between page-container relative">
                 <Frame>
-                    <Element canvas is={Container}>
+                    <Element canvas is={Html}>
                         <Element canvas id="1" is={Text} text="Hello world" />
                         {/* <Element
                                         canvas

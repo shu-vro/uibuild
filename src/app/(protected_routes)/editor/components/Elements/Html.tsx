@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Resizer } from "../Resizer";
 import {
     generalPropsDefault,
@@ -8,37 +8,37 @@ import {
     generalStyles,
     StyledComponent,
 } from "./GeneralSettings";
-import { useEditor } from "@craftjs/core";
-import { cloneDeep } from "lodash";
-import { Accordion, AccordionItem } from "@heroui/react";
+import { useEditor, useNode } from "@craftjs/core";
+import debounce from "lodash/debounce";
+import cloneDeep from "lodash/cloneDeep";
+import { Accordion, AccordionItem, Textarea } from "@heroui/react";
 import TextInput from "../input-components/TextInput";
 
-type ContainerProps = {
+type HtmlProps = {
     children?: React.ReactNode;
-    id?: string;
 };
 
-const ContainerNormalProps: GeneralSettingsProps = {
+const HtmlNormalProps: GeneralSettingsProps = {
     ...generalPropsDefault,
     backgrounds: [],
     paddingAll: "20px",
     width: "100%",
 };
 
-export const ContainerDefaultProps = {
+export const HtmlDefaultProps = {
     id: "",
     type: "normal",
-    normal: cloneDeep(ContainerNormalProps),
-    hover: cloneDeep(ContainerNormalProps),
-    focus: cloneDeep(ContainerNormalProps),
-    active: cloneDeep(ContainerNormalProps),
+
+    title: "Please Edit Me",
+    description: "Please Edit Me",
+
+    normal: cloneDeep(HtmlNormalProps),
+    hover: cloneDeep(HtmlNormalProps),
+    focus: cloneDeep(HtmlNormalProps),
+    active: cloneDeep(HtmlNormalProps),
 };
 
-export function Container({
-    children,
-    id,
-    ...props
-}: GeneralStatesType & ContainerProps) {
+export function Html({ children, ...props }: GeneralStatesType & HtmlProps) {
     const { enabled } = useEditor((state) => ({
         enabled: state.options.enabled,
     }));
@@ -47,7 +47,6 @@ export function Container({
         <>
             <Resizer propKey={{ width: "width", height: "height" }}>
                 <div
-                    id={id}
                     style={{
                         ...generalStyles({
                             type: props.type || "normal",
@@ -66,20 +65,34 @@ export function Container({
         </>
     ) : (
         <StyledComponent
-            id={id}
             as="div"
             $normal={props.normal || {}}
             $hover={props.hover || {}}
             $focus={props.focus || {}}
             $active={props.active || {}}
-            $default={ContainerDefaultProps.normal}
+            $default={HtmlDefaultProps.normal}
         >
             {children}
         </StyledComponent>
     );
 }
 
-function ContainerSettings() {
+function HtmlSettings() {
+    const { props } = useNode((node) => ({
+        props: node.data.props,
+    }));
+
+    const debouncedSetProp = useCallback(
+        debounce((val: string | null) => {
+            setProp((props: any) => {
+                if (type) {
+                    return (props[type][propName] = val || null);
+                }
+                return (props[propName] = val || null);
+            });
+        }, 1000),
+        [setProp],
+    );
     return (
         <GeneralSettings>
             <Accordion
@@ -91,11 +104,16 @@ function ContainerSettings() {
                     content: "flex flex-col gap-4 m-0",
                 }}
             >
-                <AccordionItem key="1" aria-label="Link" title="Container">
-                    <TextInput
-                        propName="id"
-                        label="ID"
-                        placeholder="Enter ID"
+                <AccordionItem key="1" aria-label="Link" title="Html">
+                    <TextInput propName="title" label="Title" />
+                    <Textarea
+                        label="Description"
+                        rows={5}
+                        className="w-full"
+                        defaultValue={props.description}
+                        onValueChange={(val) => {
+                            //
+                        }}
                     />
                 </AccordionItem>
             </Accordion>
@@ -103,11 +121,11 @@ function ContainerSettings() {
     );
 }
 
-Container.craft = {
-    displayName: "Container",
-    props: ContainerDefaultProps,
+Html.craft = {
+    displayName: "Html",
+    props: HtmlDefaultProps,
     related: {
-        settings: ContainerSettings,
+        settings: HtmlSettings,
     },
     rules: {
         canDrag: () => true,

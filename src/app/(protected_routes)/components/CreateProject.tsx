@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { Button, Card, CardBody, Input, Textarea } from "@heroui/react";
 import {
     Modal,

@@ -1,10 +1,11 @@
 "use client";
 
 import { useNode } from "@craftjs/core";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import TextInput from "./TextInput";
 import { GeneralStatesType } from "../Elements/GeneralSettings";
 import { Textarea } from "@heroui/react";
+import debounce from "lodash/debounce";
 
 interface ImageUploadParams {
     e: React.ChangeEvent<HTMLInputElement>;
@@ -51,6 +52,27 @@ const onImageUpload = ({
     fr.readAsDataURL(file);
 };
 
+function sanitizeImageUrl(url: string | null): string | null {
+    // Allow empty/null values
+    if (!url) return null;
+
+    // Allow valid data URLs (e.g. base64 images)
+    const dataUrlRegex = /^data:image\/(png|jpeg|jpg|webp|gif);base64,/i;
+    if (dataUrlRegex.test(url)) return url;
+
+    // Try to interpret as a normal URL
+    try {
+        const parsed = new URL(url);
+        // Only allow http and https protocols.
+        if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+            return parsed.toString();
+        }
+    } catch (e) {
+        // not a valid URL
+    }
+    return null;
+}
+
 export default function ImageInput({
     propName,
     type,
@@ -78,6 +100,18 @@ export default function ImageInput({
     }));
     const [overriddenValue, setOverriddenValue] = useState(
         defaultValue || value || "",
+    );
+
+    const debouncedSetProp = useCallback(
+        debounce((val: string | null) => {
+            setProp((props: any) => {
+                if (type) {
+                    return (props[type][propName] = val || null);
+                }
+                return (props[propName] = val || null);
+            });
+        }, 1000),
+        [setProp],
     );
     return (
         <div>
@@ -122,14 +156,11 @@ export default function ImageInput({
                 maxRows={3}
                 label="Image URL"
                 onValueChange={(val) => {
-                    setOverriddenValue(val || null);
+                    const sanitizedValue = sanitizeImageUrl(val);
+                    console.log(sanitizedValue);
+                    setOverriddenValue(sanitizedValue || null);
 
-                    setProp((props: any) => {
-                        if (type) {
-                            return (props[type][propName] = val || null);
-                        }
-                        return (props[propName] = val || null);
-                    });
+                    debouncedSetProp(sanitizedValue || null);
                 }}
             ></Textarea>
             {/* <TextInput propName={propName} type={type} label="Image URL" /> */}

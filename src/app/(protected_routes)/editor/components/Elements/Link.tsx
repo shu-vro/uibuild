@@ -11,7 +11,8 @@ import {
     GeneralSettingsProps,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
-import { cloneDeep, debounce } from "lodash";
+import debounce from "lodash/debounce";
+import cloneDeep from "lodash/cloneDeep";
 import { Accordion, AccordionItem, Input } from "@heroui/react";
 import TextInput from "../input-components/TextInput";
 import SelectableInput from "../input-components/SelectableInput";

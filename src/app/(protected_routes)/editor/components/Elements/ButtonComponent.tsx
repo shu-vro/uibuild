@@ -8,7 +8,6 @@ import {
     generalPropsDefault,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
-import { debounce } from "lodash";
 import { Accordion, AccordionItem, Button } from "@heroui/react";
 import TextInput from "../input-components/TextInput";
 // New imports for extra settings inputs

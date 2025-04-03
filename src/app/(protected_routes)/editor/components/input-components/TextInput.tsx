@@ -2,10 +2,10 @@
 
 import { cn } from "@/src/lib/utils";
 import { useNode } from "@craftjs/core";
-import { Input, InputProps, Select, SelectItem } from "@heroui/react";
+import { Input, InputProps } from "@heroui/react";
 import React, { useEffect, useState, useCallback } from "react";
 import { GeneralStatesType } from "../Elements/GeneralSettings";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 
 export default function TextInput({
     propName,

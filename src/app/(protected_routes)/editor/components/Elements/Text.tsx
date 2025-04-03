@@ -9,7 +9,7 @@ import {
     StyledComponent,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import { Accordion, AccordionItem } from "@heroui/react";
 import TextInput from "../input-components/TextInput";
 
