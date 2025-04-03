@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { GeneralStatesType } from "./GeneralSettings";
 import { useEditor, useNode } from "@craftjs/core";
 import { Accordion, AccordionItem, Button } from "@heroui/react";
 import { useTheme } from "next-themes";
@@ -10,7 +9,6 @@ import SelectableInput from "../input-components/SelectableInput";
 import SwitchInput from "../input-components/SwitchInput";
 import ThemeButton from "../ThemeButton";
 import { cn } from "@/src/lib/utils";
-import { useEffectOnce } from "@craftjs/utils";
 
 type ContainerProps = {
     defaultOption?: "light" | "dark" | "system";

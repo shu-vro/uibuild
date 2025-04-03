@@ -17,9 +17,12 @@ import {
 } from "../input-components/BackgroundInput";
 import { useEditor } from "@craftjs/core";
 import { cloneDeep } from "lodash";
+import { Accordion, AccordionItem } from "@heroui/react";
+import TextInput from "../input-components/TextInput";
 
 type ContainerProps = {
     children?: React.ReactNode;
+    id?: string;
 };
 
 const ContainerNormalProps: GeneralSettingsProps = {
@@ -30,6 +33,7 @@ const ContainerNormalProps: GeneralSettingsProps = {
 };
 
 export const ContainerDefaultProps = {
+    id: "",
     type: "normal",
     normal: cloneDeep(ContainerNormalProps),
     hover: cloneDeep(ContainerNormalProps),
@@ -39,6 +43,7 @@ export const ContainerDefaultProps = {
 
 export function Container({
     children,
+    id,
     ...props
 }: GeneralStatesType & ContainerProps) {
     const { enabled } = useEditor((state) => ({
@@ -49,6 +54,7 @@ export function Container({
         <>
             <Resizer propKey={{ width: "width", height: "height" }}>
                 <div
+                    id={id}
                     style={{
                         ...generalStyles({
                             type: props.type || "normal",
@@ -67,6 +73,7 @@ export function Container({
         </>
     ) : (
         <StyledComponent
+            id={id}
             as="div"
             $normal={props.normal || {}}
             $hover={props.hover || {}}
@@ -79,11 +86,35 @@ export function Container({
     );
 }
 
+function ContainerSettings() {
+    return (
+        <GeneralSettings>
+            <Accordion
+                defaultSelectedKeys={["1"]}
+                selectionMode="multiple"
+                variant="splitted"
+                className="px-0"
+                itemClasses={{
+                    content: "flex flex-col gap-4 m-0",
+                }}
+            >
+                <AccordionItem key="1" aria-label="Link" title="Link">
+                    <TextInput
+                        propName="id"
+                        label="ID"
+                        placeholder="Enter ID"
+                    />
+                </AccordionItem>
+            </Accordion>
+        </GeneralSettings>
+    );
+}
+
 Container.craft = {
     displayName: "Container",
     props: ContainerDefaultProps,
     related: {
-        settings: GeneralSettings,
+        settings: ContainerSettings,
     },
     rules: {
         canDrag: () => true,

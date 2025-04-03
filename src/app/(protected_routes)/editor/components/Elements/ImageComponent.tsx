@@ -28,6 +28,7 @@ import { cloneDeep } from "lodash";
 type ImageProps = {
     src?: string;
     alt?: string;
+    id?: string;
     objectFit?: React.CSSProperties["objectFit"];
     objectPositionOption?: "all" | "custom";
     objectPositionAll?: string;
@@ -52,6 +53,7 @@ const ImageNormalProps: GeneralSettingsProps = {
 export const ImageDefaultProps: ImageProps & GeneralStatesType = {
     src: "https://fakeimg.pl/600x400",
     alt: "Placeholder",
+    id: "",
     objectFit: "cover",
     isBlurred: false,
     isZoomed: false,
@@ -107,6 +109,7 @@ export function ImageComponent({
                 <Image
                     src={src}
                     alt={alt}
+                    id={props.id}
                     style={{
                         ...generalStyles({
                             type: props.type || "normal",
@@ -140,6 +143,7 @@ export function ImageComponent({
     ) : (
         <StyledComponent
             as={Image}
+            id={props.id}
             $normal={props.normal}
             $hover={props.hover}
             $focus={props.focus}
@@ -203,6 +207,11 @@ function ImageSettings() {
                             "none",
                             "scale-down",
                         ]}
+                    />
+                    <TextInput
+                        propName="id"
+                        label="ID"
+                        placeholder="Enter ID"
                     />
 
                     <p>Object Position</p>

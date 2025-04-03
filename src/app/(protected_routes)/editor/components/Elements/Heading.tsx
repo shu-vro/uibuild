@@ -14,10 +14,12 @@ import { Resizer } from "../Resizer";
 import _, { debounce } from "lodash";
 import { Accordion, AccordionItem } from "@heroui/react";
 import SelectableInput from "../input-components/SelectableInput";
+import TextInput from "../input-components/TextInput";
 
 type HeadingProps = {
     text?: string;
     heading?: string;
+    id?: string;
 } & GeneralStatesType;
 
 const HeadingNormalProps: GeneralSettingsProps & HeadingProps = {
@@ -30,6 +32,7 @@ const HeadingNormalProps: GeneralSettingsProps & HeadingProps = {
 export const HeadingDefaultProps: HeadingProps & GeneralStatesType = {
     text: "Type your header here!",
     heading: "h1",
+    id: "",
     // ..._.cloneDeep(generalStatesDefault),
     type: "normal",
     normal: HeadingNormalProps,
@@ -79,6 +82,7 @@ export function Heading({ text, heading, ...props }: HeadingProps) {
                 onClick={() => selected && setEditable(true)}
             >
                 <ContentEditable
+                    id={props.id}
                     html={value as string}
                     disabled={!editable}
                     style={{
@@ -102,6 +106,7 @@ export function Heading({ text, heading, ...props }: HeadingProps) {
         </>
     ) : (
         <StyledComponent
+            id={props.id}
             as={heading}
             $normal={props.normal || {}}
             $hover={props.hover || {}}
@@ -131,6 +136,11 @@ function HeadingSettings() {
                         propName="heading"
                         label="Heading"
                         options={["h1", "h2", "h3", "h4", "h5", "h6"]}
+                    />
+                    <TextInput
+                        propName="id"
+                        label="ID"
+                        placeholder="Enter ID"
                     />
                 </AccordionItem>
             </Accordion>
