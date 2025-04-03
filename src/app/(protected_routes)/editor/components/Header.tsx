@@ -45,12 +45,16 @@ export default function Header() {
     );
     useEffectOnce(() => {
         (async () => {
-            const versionData = await loadVersion(
-                searchParams.get("version") ?? "0",
-            );
-            if (versionData) {
-                const json = JSON.parse(versionData);
-                actions.deserialize(json);
+            try {
+                const versionData = await loadVersion(
+                    searchParams.get("version") ?? "0",
+                );
+                if (versionData) {
+                    const json = JSON.parse(versionData);
+                    actions.deserialize(json);
+                }
+            } catch (error) {
+                console.info("Error loading version data:", error);
             }
         })();
     });

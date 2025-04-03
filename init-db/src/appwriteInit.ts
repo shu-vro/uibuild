@@ -268,6 +268,28 @@ export async function createAttributes() {
         );
     }
 
+    // Create "currentVersion" attribute in workspaceData collection
+    try {
+        const result = await databases.createIntegerAttribute(
+            dbId,
+            collectionId.workspaceData,
+            "totalVersions", // number of versions (starting from 0)
+            false, // required
+            0, // minimum value
+            10000, // maximum value
+            0, // no default value for required attribute
+            false, // not an array
+        );
+        console.log(
+            chalk.green(`Attribute created successfully: ${result.key}`),
+        );
+    } catch (error: any) {
+        console.error(
+            chalk.red(`Failed to create "totalVersions" attribute:`),
+            error.message,
+        );
+    }
+
     // Create relationship attribute for versions linking workspaceData to allVersions collection
     try {
         const result = await databases.createRelationshipAttribute(

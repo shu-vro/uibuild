@@ -14,6 +14,7 @@ declare global {
         description: string;
         belongsTo: string;
         currentVersion: number;
+        totalVersions: number;
         versions: AllVersionsType[];
     }
 }
