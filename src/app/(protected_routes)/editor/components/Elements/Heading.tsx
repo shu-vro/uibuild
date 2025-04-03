@@ -11,7 +11,8 @@ import {
     GeneralSettingsProps,
 } from "./GeneralSettings";
 import { Resizer } from "../Resizer";
-import _, { debounce } from "lodash";
+import debounce from "lodash/debounce";
+import cloneDeep from "lodash/cloneDeep";
 import { Accordion, AccordionItem } from "@heroui/react";
 import SelectableInput from "../input-components/SelectableInput";
 import TextInput from "../input-components/TextInput";
@@ -23,7 +24,7 @@ type HeadingProps = {
 } & GeneralStatesType;
 
 const HeadingNormalProps: GeneralSettingsProps & HeadingProps = {
-    ..._.cloneDeep(generalPropsDefault),
+    ...cloneDeep(generalPropsDefault),
     fontSize: "2rem",
     fontWeight: "bold",
     width: "100%",
@@ -36,9 +37,9 @@ export const HeadingDefaultProps: HeadingProps & GeneralStatesType = {
     // ..._.cloneDeep(generalStatesDefault),
     type: "normal",
     normal: HeadingNormalProps,
-    hover: _.cloneDeep(HeadingNormalProps),
-    focus: _.cloneDeep(HeadingNormalProps),
-    active: _.cloneDeep(HeadingNormalProps),
+    hover: cloneDeep(HeadingNormalProps),
+    focus: cloneDeep(HeadingNormalProps),
+    active: cloneDeep(HeadingNormalProps),
 };
 
 export function Heading({ text, heading, ...props }: HeadingProps) {

@@ -47,7 +47,7 @@ import BackgroundInput, {
 } from "../input-components/BackgroundInput";
 import styled, { css } from "styled-components";
 import { objectDiff } from "@/src/lib/utils";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 
 export type GeneralSettingsProps = {
     display?: string;
@@ -597,7 +597,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                 options={["normal", "hover", "focus", "active"]}
                 overrideOnChange
                 onChangeFn={(val: GeneralStatesType["type"]) => {
-                    let selectedState = _.cloneDeep(getState(val, rest));
+                    let selectedState = cloneDeep(getState(val, rest));
 
                     let h_n = objectDiff(selectedState, rest.normal);
                     let d_hn = objectDiff(h_n, generalPropsDefault);

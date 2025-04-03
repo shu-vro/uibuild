@@ -1,4 +1,7 @@
-import _ from "lodash";
+import fromPairs from "lodash/fromPairs";
+import isEqual from "lodash/isEqual";
+import toPairs from "lodash/toPairs";
+import differenceWith from "lodash/differenceWith";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -14,7 +17,7 @@ export function cn(...inputs: ClassValue[]) {
  * @return {Object}        Return a new object who represent the diff
  */
 export const objectDiff = (a, b) =>
-    _.fromPairs(_.differenceWith(_.toPairs(a), _.toPairs(b), _.isEqual));
+    fromPairs(differenceWith(toPairs(a), toPairs(b), isEqual));
 
 export const firstLetterCollect = (name: string) => {
     return name

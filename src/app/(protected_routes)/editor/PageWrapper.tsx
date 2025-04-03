@@ -16,6 +16,7 @@ import { ThemeButtonComponent } from "./components/Elements/ThemeButtonComponent
 import { DeviceWidthProvider } from "@/src/contexts/DeviceWidthContext";
 import { cn } from "@/src/lib/utils";
 import WorkspaceInfoProvider from "@/src/contexts/WorkspaceInfoProvider";
+import { Html } from "./components/Elements/Html";
 
 export default function PageWrapper() {
     return (
@@ -23,6 +24,7 @@ export default function PageWrapper() {
             <Editor
                 resolver={{
                     Text,
+                    Html,
                     Heading,
                     Container,
                     LinkComponent,
@@ -37,7 +39,7 @@ export default function PageWrapper() {
                     <Toolbox />
                     <Viewport>
                         <Frame>
-                            <Element canvas is={Container}>
+                            <Element canvas is={Html}>
                                 <Element
                                     canvas
                                     id="1"

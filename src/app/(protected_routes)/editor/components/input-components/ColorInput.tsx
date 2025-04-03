@@ -1,6 +1,6 @@
 import { useNode } from "@craftjs/core";
 import React, { useCallback, useEffect } from "react";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import ColorPicker, {
     ColorPickerProps,
 } from "react-best-gradient-color-picker";
