@@ -3,7 +3,13 @@ import type { Config } from "tailwindcss";
 import tailwindcss_animate from "tailwindcss-animate";
 // @ts-ignore
 import tailwind_grid_areas from "@savvywombat/tailwindcss-grid-areas";
-import { MOCK_DEVICE_BREAKPOINTS } from "./src/contexts/DeviceWidthContext.tsx";
+
+export const MOCK_DEVICE_BREAKPOINTS = {
+    full: "w-full",
+    laptop: "w-[1024px]",
+    tablet: "w-[768px]",
+    mobile: "w-[350px]",
+} as const;
 
 const mock_devices = Object.values(MOCK_DEVICE_BREAKPOINTS);
 
