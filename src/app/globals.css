@@ -125,3 +125,21 @@ body {
 .gMHLVz {
     @apply !bg-default-300;
 }
+.wave {
+    margin-left: -50%;
+    margin-top: -30%;
+}
+
+.wave:nth-child(2),
+.wave:nth-child(3) {
+    top: 210px;
+}
+
+@keyframes wave {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

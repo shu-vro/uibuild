@@ -131,9 +131,14 @@ export default function Header() {
                         defaultSelectedKeys={
                             new Set([searchParams.get("version") ?? "0"])
                         }
-                        onSelectionChange={(key) => {
-                            const versionData = loadVersion(key as string);
-                            console.log(versionData);
+                        onSelectionChange={async (key) => {
+                            const versionData = await loadVersion(
+                                key.currentKey,
+                            );
+                            if (versionData) {
+                                const json = JSON.parse(versionData);
+                                actions.deserialize(json);
+                            }
                         }}
                     >
                         {workspace.versions.map((version) => (

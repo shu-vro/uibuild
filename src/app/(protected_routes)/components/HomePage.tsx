@@ -84,7 +84,15 @@ function ProjectCard({ project }: { project: WorkspaceDataType }) {
                     disallowEmptySelection
                     selectedKeys={new Set([selectedVersion.toString()])}
                     onSelectionChange={(key) => {
-                        setSelectedVersion(parseInt(key.toString()));
+                        setSelectedVersion(parseInt(key.currentKey));
+                        databases.updateDocument(
+                            dbId,
+                            CollectionId.workspaceData,
+                            project.$id,
+                            {
+                                currentVersion: parseInt(key.currentKey),
+                            },
+                        );
                     }}
                 >
                     {project.versions.map((version) => (

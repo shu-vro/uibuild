@@ -242,6 +242,7 @@ export default function WorkspaceInfoProvider({
             toast.error("No version found");
             throw new Error("No version found");
         }
+        console.log(selectedVersion);
         const file = await fetch(selectedVersion.versionUrl, {
             method: "GET",
             headers: {
