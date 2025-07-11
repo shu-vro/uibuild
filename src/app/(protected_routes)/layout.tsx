@@ -1,11 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
-
-// import { AppSidebar } from "./components/AppSidebar";
-// import Gradient from "./components/Gradient";
-
-// import { SidebarProvider } from "@/components/ui/sidebar";
-
 import "../globals.css";
 import { createMetadata } from "@/src/lib/metadata";
 import Providers from "../../contexts/Providers";

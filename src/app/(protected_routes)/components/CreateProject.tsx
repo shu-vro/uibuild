@@ -105,7 +105,7 @@ export default function CreateProject() {
 
     return (
         <>
-            <Card
+            {/* <Card
                 isPressable
                 onPress={() => {
                     setIsOpen(true);
@@ -115,7 +115,28 @@ export default function CreateProject() {
                 <CardBody className="justify-center items-center text-center text-6xl bg-primary/50">
                     Create Project
                 </CardBody>
-            </Card>
+            </Card> */}
+            <button
+                type="button"
+                className="bg-transparent relative w-full h-full rounded-2xl overflow-hidden shadow-[0px_8px_28px_-9px_rgba(0,0,0,0.45)] min-h-80"
+                onClick={() => {
+                    setIsOpen(true);
+                }}
+            >
+                <div className="image"></div>
+
+                {Array(3)
+                    .fill(1)
+                    .map((_, i) => (
+                        <div
+                            key={i}
+                            className="wave absolute w-[200%] h-[200%] opacity-60 left-0 top-0 bg-gradient-to-br from-[#af40ff] via-[#5b42f3_60%] to-[#00ddeb] rounded-[40%] animate-[wave_55s_linear_infinite]"
+                        ></div>
+                    ))}
+                <div className="text-center absolute left-0 right-0 text-white font-semibold text-4xl top-1/2 -translate-y-1/2">
+                    CREATE PROJECT
+                </div>
+            </button>
 
             <Modal
                 isOpen={isOpen}
