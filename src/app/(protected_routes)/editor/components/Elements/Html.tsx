@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Resizer } from "../Resizer";
 import {
     generalPropsDefault,
@@ -13,10 +13,7 @@ import debounce from "lodash/debounce";
 import cloneDeep from "lodash/cloneDeep";
 import { Accordion, AccordionItem, Textarea } from "@heroui/react";
 import TextInput from "../input-components/TextInput";
-
-type HtmlProps = {
-    children?: React.ReactNode;
-};
+import { useWorkspaceInfo } from "@/src/contexts/WorkspaceInfoProvider";
 
 const HtmlNormalProps: GeneralSettingsProps = {
     ...generalPropsDefault,
@@ -38,10 +35,33 @@ export const HtmlDefaultProps = {
     active: cloneDeep(HtmlNormalProps),
 };
 
-export function Html({ children, ...props }: GeneralStatesType & HtmlProps) {
+export function Html({
+    children,
+    ...props
+}: GeneralStatesType & typeof HtmlNormalProps) {
     const { enabled } = useEditor((state) => ({
         enabled: state.options.enabled,
     }));
+
+    const { workspace } = useWorkspaceInfo();
+
+    useEffect(() => {
+        if (!enabled) {
+            document.head.querySelector("title")!.textContent =
+                props.title || workspace.name || "Default Title";
+            const metaDescription = document.head.querySelector(
+                'meta[name="description"]',
+            );
+            if (metaDescription) {
+                metaDescription.setAttribute(
+                    "content",
+                    props.description ||
+                        workspace.description ||
+                        "Default Description",
+                );
+            }
+        }
+    }, [enabled, workspace.name, workspace.description]);
 
     return enabled ? (
         <>
@@ -78,17 +98,19 @@ export function Html({ children, ...props }: GeneralStatesType & HtmlProps) {
 }
 
 function HtmlSettings() {
-    const { props } = useNode((node) => ({
+    const {
+        props,
+        actions: { setProp },
+    } = useNode((node) => ({
         props: node.data.props,
     }));
 
-    const debouncedSetProp = useCallback(
+    const { workspace } = useWorkspaceInfo();
+
+    const debouncedSetDescription = useCallback(
         debounce((val: string | null) => {
             setProp((props: any) => {
-                if (type) {
-                    return (props[type][propName] = val || null);
-                }
-                return (props[propName] = val || null);
+                return (props.description = val || null);
             });
         }, 1000),
         [setProp],
@@ -110,9 +132,11 @@ function HtmlSettings() {
                         label="Description"
                         rows={5}
                         className="w-full"
-                        defaultValue={props.description}
+                        defaultValue={
+                            props.description || workspace.description || ""
+                        }
                         onValueChange={(val) => {
-                            //
+                            debouncedSetDescription(val);
                         }}
                     />
                 </AccordionItem>
