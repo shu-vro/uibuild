@@ -9,15 +9,28 @@ import {
     CardFooter,
     Select,
     SelectItem,
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    useDisclosure,
+    Input,
 } from "@heroui/react";
 import Link from "next/link";
 import HomeNavbar from "./HomeNavbar";
 import CreateProject from "./CreateProject";
-import { useQuery } from "@tanstack/react-query";
+import {
+    QueryObserverResult,
+    RefetchOptions,
+    useQuery,
+} from "@tanstack/react-query";
 import { CollectionId, databases, dbId } from "@/appwriteConfig";
-import { Query } from "appwrite";
+import { Models, Query } from "appwrite";
 import { useUser } from "@/src/contexts/UserContext";
 import { LuExternalLink } from "react-icons/lu";
+import { RxTrash } from "react-icons/rx";
+import { toast } from "sonner";
 
 export default function HomePage() {
     const { user, isLoading: userLoading } = useUser();
@@ -31,6 +44,7 @@ export default function HomePage() {
         isLoading,
         isError,
         error,
+        refetch,
     } = useQuery({
         queryKey: ["projects", user.$id],
         queryFn: async () => {
@@ -52,7 +66,11 @@ export default function HomePage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     <CreateProject />
                     {documents.map((project, i) => (
-                        <ProjectCard key={i} project={project} />
+                        <ProjectCard
+                            key={i}
+                            project={project}
+                            refetch={refetch}
+                        />
                     ))}
                 </div>
             </div>
@@ -60,16 +78,28 @@ export default function HomePage() {
     );
 }
 
-function ProjectCard({ project }: { project: WorkspaceDataType }) {
+function ProjectCard({
+    project,
+    refetch,
+}: {
+    project: WorkspaceDataType;
+    refetch: (
+        options?: RefetchOptions,
+    ) => Promise<
+        QueryObserverResult<Models.DocumentList<Models.Document>, Error>
+    >;
+}) {
     const [selectedVersion, setSelectedVersion] = useState(
         project.currentVersion,
     );
+    const [openModal, setOpenModal] = useState(false);
+    const [deleteValue, setDeleteValue] = useState("");
 
     const baseUrl = window.location.origin;
     const remoteUrl = `${baseUrl}/${project.slug}`;
 
     return (
-        <Card isPressable as={"span"} className="min-h-80">
+        <Card isPressable as={"form"} className="min-h-80">
             <CardBody className="relative isolate p-6">
                 <div className="mb-10">
                     <h1 className="text-3xl font-bold my-3">
@@ -86,14 +116,6 @@ function ProjectCard({ project }: { project: WorkspaceDataType }) {
                 </div>
             </CardBody>
             <CardFooter className="max-lg:flex-col max-lg:items-end gap-2 @container">
-                {/* <Link
-                    href={remoteUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-slate-400 dark:bg-slate-700 px-2 py-1 rounded-sm truncate @lg:bg-red"
-                >
-                    <LuExternalLink />
-                </Link> */}
                 <Button
                     as={Link}
                     href={remoteUrl}
@@ -104,6 +126,16 @@ function ProjectCard({ project }: { project: WorkspaceDataType }) {
                     variant="flat"
                 >
                     <LuExternalLink />
+                </Button>
+                <Button
+                    onPress={() => {
+                        setOpenModal(true);
+                    }}
+                    isIconOnly
+                    color="danger"
+                    variant="flat"
+                >
+                    <RxTrash className="text-lg" />
                 </Button>
                 <div className="grow" />
                 <Select
@@ -135,6 +167,70 @@ function ProjectCard({ project }: { project: WorkspaceDataType }) {
                     ))}
                 </Select>
             </CardFooter>
+            <Modal isOpen={openModal} onOpenChange={setOpenModal}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">
+                                Delete Project?
+                            </ModalHeader>
+                            <ModalBody>
+                                <p>
+                                    Deletation process is <b>irreversible</b>.
+                                    Are you sure you want to delete this
+                                    project?
+                                </p>
+                                <p>
+                                    Write <b>DELETE</b> in the input below to
+                                    confirm:
+                                </p>
+                                <Input
+                                    type="text"
+                                    variant="bordered"
+                                    className="w-full p-2"
+                                    placeholder="DELETE"
+                                    radius="none"
+                                    value={deleteValue}
+                                    onChange={(e) => {
+                                        setDeleteValue(e.target.value);
+                                    }}
+                                />
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="default" onPress={onClose}>
+                                    NO, CLOSE MODAL
+                                </Button>
+                                <Button
+                                    color="danger"
+                                    onPress={async () => {
+                                        if (deleteValue === "DELETE") {
+                                            try {
+                                                await databases.deleteDocument(
+                                                    dbId,
+                                                    CollectionId.workspaceData,
+                                                    project.$id,
+                                                );
+                                                toast.success(
+                                                    "Project deleted successfully!",
+                                                );
+                                                await refetch();
+                                                onClose();
+                                            } catch (error: any) {
+                                                toast.error(
+                                                    "Failed to delete project: " +
+                                                        error.message,
+                                                );
+                                            }
+                                        }
+                                    }}
+                                >
+                                    YES, DELETE MY PROJECT
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </Card>
     );
 }

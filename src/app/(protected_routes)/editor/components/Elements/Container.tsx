@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Resizer } from "../Resizer";
 import {
     generalPropsDefault,
@@ -43,19 +43,31 @@ export function Container({
         enabled: state.options.enabled,
     }));
 
+    const computedStyles = useMemo(
+        () =>
+            generalStyles({
+                type: props.type || "normal",
+                normal: props.normal || {},
+                hover: props.hover || {},
+                focus: props.focus || {},
+                active: props.active || {},
+            }),
+        [props],
+    );
+
     return enabled ? (
         <>
-            <Resizer propKey={{ width: "width", height: "height" }}>
+            <Resizer
+                propKey={{ width: "width", height: "height" }}
+                style={{
+                    // should inherit margin
+                    margin: computedStyles.margin,
+                }}
+            >
                 <div
                     id={id}
                     style={{
-                        ...generalStyles({
-                            type: props.type || "normal",
-                            normal: props.normal || {},
-                            hover: props.hover || {},
-                            focus: props.focus || {},
-                            active: props.active || {},
-                        }),
+                        ...computedStyles,
                         width: "100%",
                         height: "100%",
                     }}

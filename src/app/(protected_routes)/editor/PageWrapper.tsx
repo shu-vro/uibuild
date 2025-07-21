@@ -41,8 +41,18 @@ export default function PageWrapper() {
                     <Viewport>
                         <Frame>
                             <Element canvas is={Html}>
-                                <Element canvas is={Container}>
-                                    {/* Hero Section */}
+                                <Element
+                                    canvas
+                                    is={Container}
+                                    normal={{
+                                        ...generalPropsDefault,
+                                        marginLeft: "auto",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        marginRight: "auto",
+                                        marginOption: "custom",
+                                    }}
+                                >
                                     <Element
                                         canvas
                                         is={Container}
@@ -188,13 +198,16 @@ export default function PageWrapper() {
                                         />
                                     </Element>
 
-                                    {/* Features Section */}
                                     <Element
                                         canvas
                                         is={Container}
                                         normal={{
                                             ...generalPropsDefault,
-                                            paddingAll: "80px 40px",
+                                            paddingOption: "custom",
+                                            paddingTop: "80px",
+                                            paddingBottom: "80px",
+                                            paddingLeft: "40px",
+                                            paddingRight: "40px",
                                             backgroundColor: "#f8fafc",
                                             width: "100%",
                                         }}
