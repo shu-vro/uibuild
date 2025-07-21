@@ -597,14 +597,15 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                 options={["normal", "hover", "focus", "active"]}
                 overrideOnChange
                 onChangeFn={(val: GeneralStatesType["type"]) => {
-                    let selectedState = cloneDeep(getState(val, rest));
-
-                    let h_n = objectDiff(selectedState, rest.normal);
-                    let d_hn = objectDiff(h_n, generalPropsDefault);
-                    d_hn = { ...rest.normal, ...d_hn };
+                    // Simply set the type without resetting state values
                     setProp((props: any) => {
                         props.type = val;
-                        props[val] = d_hn;
+                        // Ensure the target state exists, if not, copy from normal
+                        if (!props[val]) {
+                            props[val] = cloneDeep(
+                                props.normal || generalPropsDefault,
+                            );
+                        }
                     }, 1000);
                 }}
             />
