@@ -35,5 +35,5 @@
         "src/app/companies/index.tsc",
         "types/global.d.ts"
     ],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "init-db"]
 }
