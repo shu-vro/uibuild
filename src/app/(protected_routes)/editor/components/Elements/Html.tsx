@@ -61,7 +61,7 @@ export function Html({
                 );
             }
         }
-    }, [enabled, workspace.name, workspace.description]);
+    }, [enabled, workspace?.name, workspace?.description]);
 
     return enabled ? (
         <>

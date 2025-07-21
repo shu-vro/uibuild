@@ -2,7 +2,14 @@
 
 import React, { useState } from "react";
 
-import { Card, CardBody, CardFooter, Select, SelectItem } from "@heroui/react";
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    Select,
+    SelectItem,
+} from "@heroui/react";
 import Link from "next/link";
 import HomeNavbar from "./HomeNavbar";
 import CreateProject from "./CreateProject";
@@ -10,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { CollectionId, databases, dbId } from "@/appwriteConfig";
 import { Query } from "appwrite";
 import { useUser } from "@/src/contexts/UserContext";
+import { LuExternalLink } from "react-icons/lu";
 
 export default function HomePage() {
     const { user, isLoading: userLoading } = useUser();
@@ -57,6 +65,9 @@ function ProjectCard({ project }: { project: WorkspaceDataType }) {
         project.currentVersion,
     );
 
+    const baseUrl = window.location.origin;
+    const remoteUrl = `${baseUrl}/${project.slug}`;
+
     return (
         <Card isPressable as={"span"} className="min-h-80">
             <CardBody className="relative isolate p-6">
@@ -74,10 +85,29 @@ function ProjectCard({ project }: { project: WorkspaceDataType }) {
                     </p>
                 </div>
             </CardBody>
-            <CardFooter>
+            <CardFooter className="max-lg:flex-col max-lg:items-end gap-2 @container">
+                {/* <Link
+                    href={remoteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-slate-400 dark:bg-slate-700 px-2 py-1 rounded-sm truncate @lg:bg-red"
+                >
+                    <LuExternalLink />
+                </Link> */}
+                <Button
+                    as={Link}
+                    href={remoteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    isIconOnly
+                    color="success"
+                    variant="flat"
+                >
+                    <LuExternalLink />
+                </Button>
                 <div className="grow" />
                 <Select
-                    className="w-[160px]"
+                    className="w-[140px] shrink-0"
                     size="lg"
                     startContent="Version"
                     color="secondary"
