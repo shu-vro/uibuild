@@ -703,7 +703,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                                 key="flex-start"
                                                 title={
                                                     <Tooltip content="Start">
-                                                        <LuAlignVerticalJustifyStart />
+                                                        <PiAlignLeft />
                                                     </Tooltip>
                                                 }
                                             ></Tab>
@@ -711,7 +711,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                                 key="center"
                                                 title={
                                                     <Tooltip content="Center">
-                                                        <LuAlignVerticalJustifyCenter />
+                                                        <PiAlignCenterHorizontal />
                                                     </Tooltip>
                                                 }
                                             ></Tab>
@@ -719,7 +719,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                                 key="flex-end"
                                                 title={
                                                     <Tooltip content="End">
-                                                        <LuAlignVerticalJustifyEnd />
+                                                        <PiAlignRight />
                                                     </Tooltip>
                                                 }
                                             ></Tab>
@@ -742,7 +742,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                             <Tab
                                                 key="space-evently"
                                                 title={
-                                                    <Tooltip content="Space Evently">
+                                                    <Tooltip content="Space Evenly">
                                                         <LuStretchHorizontal />
                                                     </Tooltip>
                                                 }
@@ -767,7 +767,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                                 key="flex-start"
                                                 title={
                                                     <Tooltip content="Start">
-                                                        <PiAlignLeft />
+                                                        <LuAlignVerticalJustifyStart />
                                                     </Tooltip>
                                                 }
                                             ></Tab>
@@ -775,7 +775,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                                 key="center"
                                                 title={
                                                     <Tooltip content="Center">
-                                                        <PiAlignCenterHorizontal />
+                                                        <LuAlignVerticalJustifyCenter />
                                                     </Tooltip>
                                                 }
                                             ></Tab>
@@ -783,7 +783,7 @@ export function GeneralSettings({ children }: { children?: React.ReactNode }) {
                                                 key="flex-end"
                                                 title={
                                                     <Tooltip content="End">
-                                                        <PiAlignRight />
+                                                        <LuAlignVerticalJustifyEnd />
                                                     </Tooltip>
                                                 }
                                             ></Tab>
