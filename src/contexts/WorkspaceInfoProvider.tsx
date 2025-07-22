@@ -124,7 +124,7 @@ export default function WorkspaceInfoProvider({
         searchParams: URLSearchParams,
     ) {
         // There are existing versions – update the file for the selected version
-        const targetVersion = parseInt(searchParams.get("version") ?? "");
+        const targetVersion = parseInt(searchParams.get("version") ?? "0");
         const selectedVersion = document.versions.find(
             (version) => version.versionNum === targetVersion,
         );
@@ -242,7 +242,6 @@ export default function WorkspaceInfoProvider({
             toast.error("No version found");
             throw new Error("No version found");
         }
-        console.log(selectedVersion);
         const file = await fetch(selectedVersion.versionUrl, {
             method: "GET",
             headers: {

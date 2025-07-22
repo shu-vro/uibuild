@@ -41,6 +41,364 @@ export default function PageWrapper() {
                     <Viewport>
                         <Frame>
                             <Element canvas is={Html}>
+                                {/* Sticky Navbar */}
+                                <Element
+                                    canvas
+                                    is={Container}
+                                    normal={{
+                                        ...generalPropsDefault,
+                                        position: "sticky",
+                                        top: "0",
+                                        zIndex: "1000",
+                                        width: "100%",
+                                        backgroundColor:
+                                            "rgba(255, 255, 255, 0.95)",
+                                        backdropFilter: "blur(10px)",
+                                        borderBottom:
+                                            "1px solid rgba(0, 0, 0, 0.1)",
+                                        paddingAll: "1rem 2rem",
+                                        boxShadow:
+                                            "0 2px 10px rgba(0, 0, 0, 0.1)",
+                                    }}
+                                >
+                                    <Element
+                                        canvas
+                                        is={Container}
+                                        normal={{
+                                            ...generalPropsDefault,
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                            maxWidth: "1200px",
+                                            marginLeft: "auto",
+                                            marginRight: "auto",
+                                            width: "100%",
+                                        }}
+                                    >
+                                        {/* Logo/Brand */}
+                                        <Element
+                                            canvas
+                                            is={Container}
+                                            normal={{
+                                                ...generalPropsDefault,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: "0.75rem",
+                                            }}
+                                        >
+                                            <Element
+                                                is={Text}
+                                                text="🚀"
+                                                normal={{
+                                                    ...generalPropsDefault,
+                                                    fontSize: "1.5rem",
+                                                }}
+                                            />
+                                            <Element
+                                                is={Heading}
+                                                heading="h2"
+                                                text="UiBuild"
+                                                normal={{
+                                                    ...generalPropsDefault,
+                                                    fontSize: "1.5rem",
+                                                    fontWeight: "800",
+                                                    color: "#1a202c",
+                                                    marginBottom: "0",
+                                                }}
+                                            />
+                                        </Element>
+
+                                        {/* Desktop Navigation */}
+                                        <Element
+                                            canvas
+                                            is={Container}
+                                            normal={{
+                                                ...generalPropsDefault,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gapAll: "2rem",
+                                            }}
+                                        >
+                                            <Element
+                                                is={LinkComponent}
+                                                text="Features"
+                                                href="#features"
+                                                normal={{
+                                                    ...generalPropsDefault,
+                                                    color: "#4a5568",
+                                                    textDecoration: "none",
+                                                    fontWeight: "500",
+                                                    fontSize: "1rem",
+                                                    transition:
+                                                        "color 0.2s ease",
+                                                }}
+                                                hover={{
+                                                    ...generalPropsDefault,
+                                                    color: "#4f46e5",
+                                                }}
+                                            />
+                                            <Element
+                                                is={LinkComponent}
+                                                text="About"
+                                                href="#about"
+                                                normal={{
+                                                    ...generalPropsDefault,
+                                                    color: "#4a5568",
+                                                    textDecoration: "none",
+                                                    fontWeight: "500",
+                                                    fontSize: "1rem",
+                                                    transition:
+                                                        "color 0.2s ease",
+                                                }}
+                                                hover={{
+                                                    ...generalPropsDefault,
+                                                    color: "#4f46e5",
+                                                }}
+                                            />
+                                            <Element
+                                                is={LinkComponent}
+                                                text="Pricing"
+                                                href="#pricing"
+                                                normal={{
+                                                    ...generalPropsDefault,
+                                                    color: "#4a5568",
+                                                    textDecoration: "none",
+                                                    fontWeight: "500",
+                                                    fontSize: "1rem",
+                                                    transition:
+                                                        "color 0.2s ease",
+                                                }}
+                                                hover={{
+                                                    ...generalPropsDefault,
+                                                    color: "#4f46e5",
+                                                }}
+                                            />
+                                            <Element
+                                                is={LinkComponent}
+                                                text="Contact"
+                                                href="#contact"
+                                                normal={{
+                                                    ...generalPropsDefault,
+                                                    color: "#4a5568",
+                                                    textDecoration: "none",
+                                                    fontWeight: "500",
+                                                    fontSize: "1rem",
+                                                    transition:
+                                                        "color 0.2s ease",
+                                                }}
+                                                hover={{
+                                                    ...generalPropsDefault,
+                                                    color: "#4f46e5",
+                                                }}
+                                            />
+                                        </Element>
+
+                                        {/* CTA Buttons */}
+                                        <Element
+                                            canvas
+                                            is={Container}
+                                            normal={{
+                                                ...generalPropsDefault,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: "1rem",
+                                            }}
+                                        >
+                                            <Element
+                                                is={ButtonComponent}
+                                                text="Login"
+                                                variant="light"
+                                                color="default"
+                                                normal={{
+                                                    ...generalPropsDefault,
+                                                    paddingAll: "0.5rem 1rem",
+                                                    fontSize: "0.9rem",
+                                                    fontWeight: "500",
+                                                    color: "#4a5568",
+                                                    "@media (max-width: 640px)":
+                                                        {
+                                                            display: "none",
+                                                        },
+                                                }}
+                                                hover={{
+                                                    ...generalPropsDefault,
+                                                    color: "#4f46e5",
+                                                }}
+                                            />
+                                            <Element
+                                                is={ButtonComponent}
+                                                text="Get Started"
+                                                variant="solid"
+                                                color="primary"
+                                                normal={{
+                                                    ...generalPropsDefault,
+                                                    paddingAll:
+                                                        "0.75rem 1.5rem",
+                                                    fontSize: "0.9rem",
+                                                    fontWeight: "600",
+                                                    backgroundColor: "#4f46e5",
+                                                    color: "#ffffff",
+                                                    borderRadiusAll: "8px",
+                                                    boxShadow:
+                                                        "0 2px 4px rgba(79, 70, 229, 0.2)",
+                                                    transition: "all 0.2s ease",
+                                                }}
+                                                hover={{
+                                                    ...generalPropsDefault,
+                                                    backgroundColor: "#4338ca",
+                                                    boxShadow:
+                                                        "0 4px 8px rgba(79, 70, 229, 0.3)",
+                                                    transform:
+                                                        "translateY(-1px)",
+                                                }}
+                                            />
+
+                                            {/* Mobile Menu Button */}
+                                            <Element
+                                                is={ButtonComponent}
+                                                text="☰"
+                                                variant="ghost"
+                                                color="default"
+                                                normal={{
+                                                    ...generalPropsDefault,
+                                                    display: "none",
+                                                    paddingAll: "0.75rem",
+                                                    fontSize: "1.2rem",
+                                                    color: "#4a5568",
+                                                    "@media (max-width: 768px)":
+                                                        {
+                                                            display: "flex",
+                                                        },
+                                                }}
+                                                hover={{
+                                                    ...generalPropsDefault,
+                                                    backgroundColor:
+                                                        "rgba(0, 0, 0, 0.05)",
+                                                }}
+                                            />
+                                        </Element>
+                                    </Element>
+
+                                    {/* Mobile Navigation Menu (Hidden by default) */}
+                                    <Element
+                                        canvas
+                                        is={Container}
+                                        normal={{
+                                            ...generalPropsDefault,
+                                            display: "none",
+                                            flexDirection: "column",
+                                            gap: "1rem",
+                                            paddingAll: "1rem 0",
+                                            borderTop:
+                                                "1px solid rgba(0, 0, 0, 0.1)",
+                                            marginTop: "1rem",
+                                            "@media (max-width: 768px)": {
+                                                // Note: This would need JavaScript to toggle visibility
+                                                // Users can modify this in the editor
+                                            },
+                                        }}
+                                    >
+                                        <Element
+                                            is={LinkComponent}
+                                            text="Features"
+                                            href="#features"
+                                            normal={{
+                                                ...generalPropsDefault,
+                                                color: "#4a5568",
+                                                textDecoration: "none",
+                                                fontWeight: "500",
+                                                fontSize: "1rem",
+                                                paddingAll: "0.5rem 0",
+                                            }}
+                                        />
+                                        <Element
+                                            is={LinkComponent}
+                                            text="About"
+                                            href="#about"
+                                            normal={{
+                                                ...generalPropsDefault,
+                                                color: "#4a5568",
+                                                textDecoration: "none",
+                                                fontWeight: "500",
+                                                fontSize: "1rem",
+                                                paddingAll: "0.5rem 0",
+                                            }}
+                                        />
+                                        <Element
+                                            is={LinkComponent}
+                                            text="Pricing"
+                                            href="#pricing"
+                                            normal={{
+                                                ...generalPropsDefault,
+                                                color: "#4a5568",
+                                                textDecoration: "none",
+                                                fontWeight: "500",
+                                                fontSize: "1rem",
+                                                paddingAll: "0.5rem 0",
+                                            }}
+                                        />
+                                        <Element
+                                            is={LinkComponent}
+                                            text="Contact"
+                                            href="#contact"
+                                            normal={{
+                                                ...generalPropsDefault,
+                                                color: "#4a5568",
+                                                textDecoration: "none",
+                                                fontWeight: "500",
+                                                fontSize: "1rem",
+                                                paddingAll: "0.5rem 0",
+                                            }}
+                                        />
+                                        <Element
+                                            canvas
+                                            is={Container}
+                                            normal={{
+                                                ...generalPropsDefault,
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                gap: "0.5rem",
+                                                paddingAll: "1rem 0 0 0",
+                                                borderTop:
+                                                    "1px solid rgba(0, 0, 0, 0.1)",
+                                            }}
+                                        >
+                                            <Element
+                                                is={ButtonComponent}
+                                                text="Login"
+                                                variant="light"
+                                                color="default"
+                                                normal={{
+                                                    ...generalPropsDefault,
+                                                    paddingAll: "0.75rem",
+                                                    fontSize: "1rem",
+                                                    fontWeight: "500",
+                                                    color: "#4a5568",
+                                                    width: "100%",
+                                                    textAlign: "center",
+                                                }}
+                                            />
+                                            <Element
+                                                is={ButtonComponent}
+                                                text="Get Started"
+                                                variant="solid"
+                                                color="primary"
+                                                normal={{
+                                                    ...generalPropsDefault,
+                                                    paddingAll: "0.75rem",
+                                                    fontSize: "1rem",
+                                                    fontWeight: "600",
+                                                    backgroundColor: "#4f46e5",
+                                                    color: "#ffffff",
+                                                    borderRadiusAll: "8px",
+                                                    width: "100%",
+                                                    textAlign: "center",
+                                                }}
+                                            />
+                                        </Element>
+                                    </Element>
+                                </Element>
+
                                 <Element
                                     canvas
                                     is={Container}
@@ -62,7 +420,7 @@ export default function PageWrapper() {
                                                 "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                                             paddingAll: "120px 40px",
                                             textAlign: "center",
-                                            width: "100%",
+                                            width: "850px",
                                             position: "relative",
                                             minHeight: "100vh",
                                             display: "flex",

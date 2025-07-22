@@ -47,11 +47,14 @@ export default function Header() {
         (async () => {
             try {
                 const versionData = await loadVersion(
-                    searchParams.get("version") ?? "0",
+                    searchParams.get("version") ?? "1",
                 );
                 if (versionData) {
                     const json = JSON.parse(versionData);
                     actions.deserialize(json);
+                    toast.success(
+                        `Loaded version ${searchParams.get("version")} successfully!`,
+                    );
                 }
             } catch (error) {
                 console.info("Error loading version data:", error);
@@ -139,6 +142,10 @@ export default function Header() {
                                 const json = JSON.parse(versionData);
                                 actions.deserialize(json);
                             }
+                            // Update URL without reloading
+                            const url = new URL(window.location.href);
+                            url.searchParams.set("version", key.currentKey);
+                            window.history.pushState({}, "", url);
                         }}
                     >
                         {workspace.versions.map((version) => (
