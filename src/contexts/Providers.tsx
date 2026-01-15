@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ThemeProvider from "@/src/contexts/theme-provider";
@@ -13,20 +13,22 @@ const queryClient = new QueryClient();
 
 export default function Providers({ children }: { children: React.ReactNode }) {
     return (
-        <QueryClientProvider client={queryClient}>
-            <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-            >
-                <UserProvider>
-                    <ProtectRoutes>{children}</ProtectRoutes>
-                </UserProvider>
-                <Sonner />
-                <ReactQueryDevtools initialIsOpen={false} />
-            </ThemeProvider>
-        </QueryClientProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+            <QueryClientProvider client={queryClient}>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <UserProvider>
+                        <ProtectRoutes>{children}</ProtectRoutes>
+                    </UserProvider>
+                    <Sonner />
+                    <ReactQueryDevtools initialIsOpen={false} />
+                </ThemeProvider>
+            </QueryClientProvider>
+        </Suspense>
     );
 }
 
@@ -36,17 +38,19 @@ export function NotProtectedProviders({
     children: React.ReactNode;
 }) {
     return (
-        <QueryClientProvider client={queryClient}>
-            <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-            >
-                {children}
-                <Sonner />
-                <ReactQueryDevtools initialIsOpen={false} />
-            </ThemeProvider>
-        </QueryClientProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+            <QueryClientProvider client={queryClient}>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {children}
+                    <Sonner />
+                    <ReactQueryDevtools initialIsOpen={false} />
+                </ThemeProvider>
+            </QueryClientProvider>
+        </Suspense>
     );
 }
