@@ -144,7 +144,6 @@ export default function WorkspaceInfoProvider({
                 versionUrl: uploadResult.secure_url,
             },
         );
-        console.log(newVersion, uploadResult);
         return uploadResult;
     }
 
@@ -201,7 +200,6 @@ export default function WorkspaceInfoProvider({
             const uploadResult = (await saveVersionAction(
                 prepareData,
             )) as UploadApiResponse;
-            console.log("file uploaded");
 
             const versionDoc = await createVersionDoc(
                 document.totalVersions,
